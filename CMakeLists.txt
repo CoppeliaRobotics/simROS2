@@ -79,31 +79,31 @@ set(SOURCES
     ${VREP_EXPORTED_SOURCES}
     ${CMAKE_CURRENT_BINARY_DIR}/generated/callbacks.cpp
 )
-add_library(v_repExtROS2Interface SHARED ${SOURCES})
-add_dependencies(v_repExtROS2Interface generate_ros_code)
-target_link_libraries(v_repExtROS2Interface ${VREP_LIBRARIES})
-ament_target_dependencies(v_repExtROS2Interface rclcpp)
-ament_target_dependencies(v_repExtROS2Interface actionlib_msgs)
-ament_target_dependencies(v_repExtROS2Interface diagnostic_msgs)
-ament_target_dependencies(v_repExtROS2Interface geometry_msgs)
-ament_target_dependencies(v_repExtROS2Interface map_msgs)
-ament_target_dependencies(v_repExtROS2Interface nav_msgs)
-ament_target_dependencies(v_repExtROS2Interface sensor_msgs)
-ament_target_dependencies(v_repExtROS2Interface shape_msgs)
-ament_target_dependencies(v_repExtROS2Interface std_msgs)
-ament_target_dependencies(v_repExtROS2Interface test_msgs)
-ament_target_dependencies(v_repExtROS2Interface tf2_geometry_msgs)
-ament_target_dependencies(v_repExtROS2Interface tf2_msgs)
-ament_target_dependencies(v_repExtROS2Interface tf2_sensor_msgs)
-ament_target_dependencies(v_repExtROS2Interface trajectory_msgs)
-ament_target_dependencies(v_repExtROS2Interface visualization_msgs)
+add_library(simExtROS2Interface SHARED ${SOURCES})
+add_dependencies(simExtROS2Interface generate_ros_code)
+target_link_libraries(simExtROS2Interface ${VREP_LIBRARIES})
+ament_target_dependencies(simExtROS2Interface rclcpp)
+ament_target_dependencies(simExtROS2Interface actionlib_msgs)
+ament_target_dependencies(simExtROS2Interface diagnostic_msgs)
+ament_target_dependencies(simExtROS2Interface geometry_msgs)
+ament_target_dependencies(simExtROS2Interface map_msgs)
+ament_target_dependencies(simExtROS2Interface nav_msgs)
+ament_target_dependencies(simExtROS2Interface sensor_msgs)
+ament_target_dependencies(simExtROS2Interface shape_msgs)
+ament_target_dependencies(simExtROS2Interface std_msgs)
+ament_target_dependencies(simExtROS2Interface test_msgs)
+ament_target_dependencies(simExtROS2Interface tf2_geometry_msgs)
+ament_target_dependencies(simExtROS2Interface tf2_msgs)
+ament_target_dependencies(simExtROS2Interface tf2_sensor_msgs)
+ament_target_dependencies(simExtROS2Interface trajectory_msgs)
+ament_target_dependencies(simExtROS2Interface visualization_msgs)
 
 ## This will produce the library directly in vrep root folder. The default folder
-## for the libv_repExtROS2Interface.so file will not be devel/lib anymore.
-#set_target_properties(v_repExtROS2Interface PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${VREP_ROOT})
+## for the libsimExtROS2Interface.so file will not be devel/lib anymore.
+#set_target_properties(simExtROS2Interface PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${VREP_ROOT})
 
 ## install the library to VREP_ROOT folder
 ## this command will install the generated library to the vrep root folder no matter where the library is generated.
-#install(TARGETS v_repExtROS2Interface DESTINATION ${VREP_ROOT})
+#install(TARGETS simExtROS2Interface DESTINATION ${VREP_ROOT})
 
 ament_package()
