@@ -1,6 +1,6 @@
 <package format="2">
-  <name>vrep_ros_interface</name>
-  <description>V-REP plugin for ROS interface</description>
+  <name>sim_ros2_interface</name>
+  <description>CoppeliaSim ROS2 interface plugin</description>
   <maintainer email="marc@coppeliarobotics.com">Marc</maintainer>
   <version>3.3.0</version>
   <author>Federico Ferri</author>

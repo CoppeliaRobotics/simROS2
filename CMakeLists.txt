@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(vrep_ros_interface)
+project(sim_ros2_interface)
 
 if(NOT CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 14)
@@ -31,7 +31,7 @@ set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/CoppeliaRobotics-modules)
-find_package(VREP 3.6.1.2 REQUIRED)
+find_package(CoppeliaSim 3.6.1.2 REQUIRED)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc)
@@ -54,8 +54,8 @@ include_directories(${tf2_msgs_INCLUDE_DIRS})
 include_directories(${tf2_sensor_msgs_INCLUDE_DIRS})
 include_directories(${trajectory_msgs_INCLUDE_DIRS})
 include_directories(${visualization_msgs_INCLUDE_DIRS})
-include_directories(${VREP_INCLUDE})
-include_directories(${VREP_COMMON})
+include_directories(${COPPELIASIM_INCLUDE_DIR})
+include_directories(${COPPELIASIM_COMMON_DIR})
 
 set(ROS_MSG_SRV_CACHE "${CMAKE_CURRENT_BINARY_DIR}/ros-msg-srv-defs.pickle")
 add_custom_command(OUTPUT "${ROS_MSG_SRV_CACHE}" COMMAND python "${CMAKE_CURRENT_SOURCE_DIR}/tools/parse_messages_and_services.py" "${CMAKE_CURRENT_SOURCE_DIR}/meta/messages.txt" "${CMAKE_CURRENT_SOURCE_DIR}/meta/services.txt" "${ROS_MSG_SRV_CACHE}" DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/meta/messages.txt" "${CMAKE_CURRENT_SOURCE_DIR}/meta/services.txt" "${CMAKE_CURRENT_SOURCE_DIR}/tools/parse_messages_and_services.py")
@@ -63,25 +63,25 @@ add_custom_command(OUTPUT "${ROS_MSG_SRV_CACHE}" COMMAND python "${CMAKE_CURRENT
 set(generatedFiles)
 file(GLOB templateFiles RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/templates/ ${CMAKE_CURRENT_SOURCE_DIR}/templates/*)
 foreach(templateFile ${templateFiles})
-    add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}" COMMAND python "${CMAKE_CURRENT_SOURCE_DIR}/external/v_repStubsGen/external/pycpp/pycpp.py" -p "cache_file=${ROS_MSG_SRV_CACHE}" -i "${CMAKE_CURRENT_SOURCE_DIR}/templates/${templateFile}" -o "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tools" DEPENDS "${ROS_MSG_SRV_CACHE}" "${CMAKE_CURRENT_SOURCE_DIR}/templates/${templateFile}")
+    add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}" COMMAND python "${CMAKE_CURRENT_SOURCE_DIR}/external/simStubsGen/external/pycpp/pycpp.py" -p "cache_file=${ROS_MSG_SRV_CACHE}" -i "${CMAKE_CURRENT_SOURCE_DIR}/templates/${templateFile}" -o "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tools" DEPENDS "${ROS_MSG_SRV_CACHE}" "${CMAKE_CURRENT_SOURCE_DIR}/templates/${templateFile}")
     set(generatedFiles ${generatedFiles} "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}")
 endforeach()
 add_custom_target(generate_ros_code DEPENDS ${generatedFiles})
-vrep_generate_stubs(${CMAKE_CURRENT_BINARY_DIR}/generated XML_FILE ${CMAKE_CURRENT_SOURCE_DIR}/meta/callbacks.xml LUA_FILE ${CMAKE_CURRENT_SOURCE_DIR}/simExtROS2Interface.lua)
+coppeliasim_generate_stubs(${CMAKE_CURRENT_BINARY_DIR}/generated XML_FILE ${CMAKE_CURRENT_SOURCE_DIR}/meta/callbacks.xml LUA_FILE ${CMAKE_CURRENT_SOURCE_DIR}/simExtROS2Interface.lua)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/config.h)
 
 set(SOURCES
-    src/vrep_ros_interface.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/external/v_repPlusPlus/Plugin.cpp
+    src/sim_ros2_interface.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/simPlusPlus/Plugin.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/generated/stubs.cpp
     src/ros_msg_builtin_io.cpp
-    ${VREP_EXPORTED_SOURCES}
+    ${COPPELIASIM_EXPORTED_SOURCES}
     ${CMAKE_CURRENT_BINARY_DIR}/generated/callbacks.cpp
 )
 add_library(simExtROS2Interface SHARED ${SOURCES})
 add_dependencies(simExtROS2Interface generate_ros_code)
-target_link_libraries(simExtROS2Interface ${VREP_LIBRARIES})
+target_link_libraries(simExtROS2Interface ${COPPELIASIM_LIBRARIES})
 ament_target_dependencies(simExtROS2Interface rclcpp)
 ament_target_dependencies(simExtROS2Interface actionlib_msgs)
 ament_target_dependencies(simExtROS2Interface diagnostic_msgs)
@@ -98,12 +98,12 @@ ament_target_dependencies(simExtROS2Interface tf2_sensor_msgs)
 ament_target_dependencies(simExtROS2Interface trajectory_msgs)
 ament_target_dependencies(simExtROS2Interface visualization_msgs)
 
-## This will produce the library directly in vrep root folder. The default folder
+## This will produce the library directly in CoppeliaSim root folder. The default folder
 ## for the libsimExtROS2Interface.so file will not be devel/lib anymore.
-#set_target_properties(simExtROS2Interface PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${VREP_ROOT})
+#set_target_properties(simExtROS2Interface PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${COPPELIASIM_ROOT_DIR})
 
-## install the library to VREP_ROOT folder
-## this command will install the generated library to the vrep root folder no matter where the library is generated.
-#install(TARGETS simExtROS2Interface DESTINATION ${VREP_ROOT})
+## install the library to COPPELIASIM_ROOT_DIR folder
+## this command will install the generated library to the CoppeliaSim root folder no matter where the library is generated.
+#install(TARGETS simExtROS2Interface DESTINATION ${COPPELIASIM_ROOT_DIR})
 
 ament_package()

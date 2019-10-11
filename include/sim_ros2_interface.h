@@ -1,5 +1,5 @@
-#ifndef VREP_ROS_INTERFACE_H_INCLUDED
-#define VREP_ROS_INTERFACE_H_INCLUDED
+#ifndef SIM_ROS2_INTERFACE_H_INCLUDED
+#define SIM_ROS2_INTERFACE_H_INCLUDED
 
 #include <iostream>
 #include <sstream>
@@ -14,7 +14,7 @@
 
 //#include <image_transport/image_transport.h>
 
-#define PLUGIN_NAME "RosInterface"
+#define PLUGIN_NAME "Ros2Interface"
 #define PLUGIN_VERSION 5
 
 struct ScriptCallback
@@ -75,4 +75,4 @@ struct ServiceServerProxy : Proxy
 #include <stubs.h>
 #include <callbacks.h>
 
-#endif // VREP_ROS_INTERFACE_H_INCLUDED
+#endif // SIM_ROS2_INTERFACE_H_INCLUDED

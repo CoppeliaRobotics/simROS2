@@ -2,7 +2,7 @@
 \mainpage
 \htmlinclude manifest.html
 
-\b vrep_ros_interface 
+\b sim_ros2_interface 
 
 <!-- 
 Provide an overview of your package.

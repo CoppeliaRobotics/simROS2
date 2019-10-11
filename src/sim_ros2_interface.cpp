@@ -1,5 +1,5 @@
-#include <vrep_ros_interface.h>
-#include <v_repPlusPlus/Plugin.h>
+#include <sim_ros2_interface.h>
+#include <simPlusPlus/Plugin.h>
 
 #include <cstdlib>
 #include <functional>
@@ -561,11 +561,11 @@ bool initialize()
 
     int node_name_length = 0;
     char *node_name = nullptr;
-#if VREP_PROGRAM_FULL_VERSION_NB >= 3060104 // 3.6.1.rev4
-    node_name = simGetStringNamedParam("RosInterface.nodeName", &node_name_length);
+#if SIM_PROGRAM_FULL_VERSION_NB >= 3060104 // 3.6.1.rev4
+    node_name = simGetStringNamedParam("Ros2Interface.nodeName", &node_name_length);
 #endif
 
-    node = rclcpp::Node::make_shared(node_name && node_name_length ? node_name : "vrep_ros_interface");
+    node = rclcpp::Node::make_shared(node_name && node_name_length ? node_name : "sim_ros2_interface");
 
     if(node_name) simReleaseBuffer(node_name);
 
@@ -676,7 +676,7 @@ void shutdownTransientProxies(SScriptCallBack *p)
     shutdownTransientServiceServers(p);
 }
 
-class Plugin : public vrep::Plugin
+class Plugin : public sim::Plugin
 {
 public:
     void onStart()
@@ -696,7 +696,7 @@ public:
         shutdown();
     }
 
-    void onInstancePass(const vrep::InstancePassFlags &flags, bool first)
+    void onInstancePass(const sim::InstancePassFlags &flags, bool first)
     {
         rclcpp::spin_some(node);
     }
@@ -712,7 +712,7 @@ public:
             if(previousStopSimulationRequestCounter == -1)
                 previousStopSimulationRequestCounter = stopSimulationRequestCounter;
             if(previousStopSimulationRequestCounter == stopSimulationRequestCounter)
-                out = 0; // this tells V-REP that we don't wanna execute the main script
+                out = 0; // this tells CoppeliaSim that we don't wanna execute the main script
         }
         else
             previousStopSimulationRequestCounter = -1;
@@ -732,4 +732,4 @@ private:
     int previousStopSimulationRequestCounter = -1;
 };
 
-VREP_PLUGIN(PLUGIN_NAME, PLUGIN_VERSION, Plugin)
+SIM_PLUGIN(PLUGIN_NAME, PLUGIN_VERSION, Plugin)

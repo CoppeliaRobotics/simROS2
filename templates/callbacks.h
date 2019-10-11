@@ -1,8 +1,8 @@
-#ifndef VREP_ROS_PLUGIN__CALLBACKS__H
-#define VREP_ROS_PLUGIN__CALLBACKS__H
+#ifndef SIM_ROS2_PLUGIN__CALLBACKS__H
+#define SIM_ROS2_PLUGIN__CALLBACKS__H
 
 #include <ros_msg_builtin_io.h>
-#include <vrep_ros_interface.h>
+#include <sim_ros2_interface.h>
 
 #py import parse_messages_and_services as p
 #py msgs, srvs, msgssrvs = p.load_cache(pycpp.params['cache_file'])
@@ -24,4 +24,4 @@ void ros_callback__`info.typespec.normalized()`(const `info.typespec.cpp_type()`
 bool ros_srv_callback__`info.typespec.normalized()`(const std::shared_ptr<rmw_request_id_t> request_header, const `info.typespec.cpp_type()`::Request::SharedPtr req, `info.typespec.cpp_type()`::Response::SharedPtr res, ServiceServerProxy *proxy);
 #py endfor
 
-#endif // VREP_ROS_PLUGIN__CALLBACKS__H
+#endif // SIM_ROS2_PLUGIN__CALLBACKS__H

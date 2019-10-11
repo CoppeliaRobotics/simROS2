@@ -1,13 +1,13 @@
-# ROS Interface plugin for V-REP
+# ROS2 Interface plugin for CoppeliaSim
 
 ### Compiling
 
-_NOTE:_ the directory containing all files (i.e. package.xml etc) must be called vrep_ros_interface, otherwise build will fail.
+_NOTE:_ the directory containing all files (i.e. package.xml etc) must be called sim_ros2_interface, otherwise build will fail.
 
-1. Install required packages for [v_repStubsGen](https://github.com/CoppeliaRobotics/v_repStubsGen): see v_repStubsGen's [README](external/v_repStubsGen/README.md)
+1. Install required packages for [simStubsGen](https://github.com/CoppeliaRobotics/simStubsGen): see simStubsGen's [README](external/simStubsGen/README.md)
 2. Checkout
 ```
-$ git clone --recursive https://github.com/CoppeliaRobotics/simExtRosInterface.git vrep_ros_interface
+$ git clone --recursive https://github.com/CoppeliaRobotics/simExtRos2Interface.git sim_ros2_interface
 ```
 3. Edit `meta/messages.txt` and `meta/services.txt` if you need to include more ROS messages/services. You need to specify the full message/service type, i.e. geometry_msgs/Twist rather than Twist.
 4. Compile
