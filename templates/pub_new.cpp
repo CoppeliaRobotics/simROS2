@@ -3,6 +3,7 @@
 #py for msg, info in msgs.items():
     else if(in->topicType == "`info.typespec.fullname`")
     {
-        publisherProxy->publisher = node->create_publisher<`info.typespec.cpp_type()`>(in->topicName);
+        rclcpp::QoS qos = 10;
+        publisherProxy->publisher = node->create_publisher<`info.typespec.cpp_type()`>(in->topicName, qos);
     }
 #py endfor

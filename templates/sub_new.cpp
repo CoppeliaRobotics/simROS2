@@ -4,6 +4,7 @@
     else if(in->topicType == "`info.typespec.fullname`")
     {
         auto cb = [=](const `info.typespec.cpp_type()`::SharedPtr msg) { ros_callback__`info.typespec.normalized()`(msg, subscriberProxy); };
-        subscriberProxy->subscription = node->create_subscription<`info.typespec.cpp_type()`>(in->topicName, cb);
+        rclcpp::QoS qos = 10;
+        subscriberProxy->subscription = node->create_subscription<`info.typespec.cpp_type()`>(in->topicName, qos, cb);
     }
 #py endfor

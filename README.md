@@ -12,5 +12,5 @@ $ git clone --recursive https://github.com/CoppeliaRobotics/simExtROS2Interface.
 3. Edit `meta/messages.txt` and `meta/services.txt` if you need to include more ROS messages/services. You need to specify the full message/service type, i.e. geometry_msgs/Twist rather than Twist.
 4. Compile
 ```
-$ catkin build
+$ colcon build --symlink-install
 ```
