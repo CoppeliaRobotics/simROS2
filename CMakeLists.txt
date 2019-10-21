@@ -38,10 +38,13 @@ find_package(trajectory_msgs REQUIRED)
 find_package(unique_identifier_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
+if(NOT LIBPLUGIN_DIR)
+    set(LIBPLUGIN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libPlugin)
+endif()
 set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
-    ${CMAKE_CURRENT_SOURCE_DIR}/external/libPlugin/cmake)
+    ${LIBPLUGIN_DIR}/cmake)
 find_package(CoppeliaSim 3.6.1.2 REQUIRED)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated)
