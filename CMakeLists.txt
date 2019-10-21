@@ -39,7 +39,7 @@ find_package(unique_identifier_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
 if(NOT LIBPLUGIN_DIR)
-    set(LIBPLUGIN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../libPlugin)
+    set(LIBPLUGIN_DIR $ENV{COPPELIASIM_ROOT_DIR}/programming/libPlugin)
 endif()
 set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
