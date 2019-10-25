@@ -99,13 +99,20 @@ class Fields:
                 # ignore expansions of nested types
                 continue
 
+            ln_orig1 = ln
+
+            # strip comments
             ln = re.sub('#.*$', '', ln).strip()
+
+            # strip bounded arrays
+            ln = re.sub(r'\[<=\d+\]', '[]', ln)
+
+            # strip bounded strings
+            ln = re.sub(r'string<=\d+', 'string', ln)
 
             if not ln:
                 # ignore empty lines
                 continue
-
-            ln_orig1 = ln
 
             ln = ln.replace('=',' = ')
 
