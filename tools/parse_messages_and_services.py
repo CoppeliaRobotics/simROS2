@@ -11,7 +11,7 @@ class TypeSpec:
     fast_write_types = {'int32': 'Int32', 'float32': 'Float', 'float64': 'Double'}
 
     ctype_builtin = {
-            'bool':         'uint8_t',
+            'bool':         'bool',
             'int8':         'int8_t',
             'uint8':        'uint8_t',
             'int16':        'int16_t',
