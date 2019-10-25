@@ -1,9 +1,3 @@
-actionlib_msgs/GoalID
-actionlib_msgs/GoalStatus
-actionlib_msgs/GoalStatusArray
-action_msgs/GoalInfo
-action_msgs/GoalStatus
-action_msgs/GoalStatusArray
 builtin_interfaces/Duration
 builtin_interfaces/Time
 diagnostic_msgs/DiagnosticArray
@@ -54,18 +48,6 @@ nav_msgs/Path
 pendulum_msgs/JointCommand
 pendulum_msgs/JointState
 pendulum_msgs/RttestResults
-rcl_interfaces/FloatingPointRange
-rcl_interfaces/IntegerRange
-rcl_interfaces/IntraProcessMessage
-rcl_interfaces/ListParametersResult
-rcl_interfaces/Log
-rcl_interfaces/Parameter
-rcl_interfaces/ParameterDescriptor
-rcl_interfaces/ParameterEvent
-rcl_interfaces/ParameterEventDescriptors
-rcl_interfaces/ParameterType
-rcl_interfaces/ParameterValue
-rcl_interfaces/SetParametersResult
 rosgraph_msgs/Clock
 sensor_msgs/BatteryState
 sensor_msgs/CameraInfo
@@ -128,7 +110,6 @@ std_msgs/UInt64
 std_msgs/UInt64MultiArray
 std_msgs/UInt8
 std_msgs/UInt8MultiArray
-stereo_msgs/DisparityImage
 tf2_msgs/TF2Error
 tf2_msgs/TFMessage
 trajectory_msgs/JointTrajectory
