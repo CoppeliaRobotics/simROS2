@@ -115,7 +115,8 @@ class Fields:
                 # it's a constant definition: ignore
                 continue
 
-            if len(tokens) == 2:
+            if len(tokens) in (2, 3):
+                # 3rd token is the default value, unused for now
                 t = TypeSpec(tokens[0], 'msg', parent=ts)
                 n = tokens[1]
                 self.fields[n] = t
