@@ -4,6 +4,7 @@
 #include <cstring>
 
 #py import parse_messages_and_services as p
+#py TypeSpec = p.TypeSpec
 #py msgs, srvs, msgssrvs = p.load_cache(pycpp.params['cache_file'])
 #py for msg, info in msgssrvs.items():
 void write__`info.typespec.normalized()`(const `info.typespec.cpp_type()`& msg, int stack, const WriteOptions *opt)
