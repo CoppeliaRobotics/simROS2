@@ -15,7 +15,9 @@ struct WriteOptions
     WriteOptions();
 };
 
-void read__bool(int stack, uint8_t *value, const ReadOptions *opt = NULL);
+void read__bool(int stack, bool *value, const ReadOptions *opt = NULL);
+void read__byte(int stack, uint8_t *value, const ReadOptions *opt = NULL);
+void read__char(int stack, unsigned char *value, const ReadOptions *opt = NULL);
 void read__int8(int stack, int8_t *value, const ReadOptions *opt = NULL);
 void read__uint8(int stack, uint8_t *value, const ReadOptions *opt = NULL);
 void read__int16(int stack, int16_t *value, const ReadOptions *opt = NULL);
@@ -29,7 +31,9 @@ void read__float64(int stack, double *value, const ReadOptions *opt = NULL);
 void read__string(int stack, std::string *value, const ReadOptions *opt = NULL);
 void read__time(int stack, rclcpp::Time *value, const ReadOptions *opt = NULL);
 void read__duration(int stack, rclcpp::Duration *value, const ReadOptions *opt = NULL);
-void write__bool(uint8_t value, int stack, const WriteOptions *opt = NULL);
+void write__bool(bool value, int stack, const WriteOptions *opt = NULL);
+void write__byte(uint8_t value, int stack, const WriteOptions *opt = NULL);
+void write__char(unsigned char value, int stack, const WriteOptions *opt = NULL);
 void write__int8(int8_t value, int stack, const WriteOptions *opt = NULL);
 void write__uint8(uint8_t value, int stack, const WriteOptions *opt = NULL);
 void write__int16(int16_t value, int stack, const WriteOptions *opt = NULL);

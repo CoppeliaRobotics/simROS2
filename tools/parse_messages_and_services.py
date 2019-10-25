@@ -24,12 +24,12 @@ class TypeSpec:
             'float64':      'double',
             'string':       'std::string',
             'time':         'ros::Time',
-            'duration':     'ros::Duration'
+            'duration':     'ros::Duration',
+            'byte':         'uint8_t',
+            'char':         'int8_t'
     }
 
     deprecated_builtins = {
-            'byte':         'int8',
-            'char':         'uint8'
     }
 
     def __init__(self, s, tag, parent=None):

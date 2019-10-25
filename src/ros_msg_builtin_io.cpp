@@ -13,12 +13,40 @@ WriteOptions::WriteOptions()
 {
 }
 
-void read__bool(int stack, uint8_t *value, const ReadOptions *opt)
+void read__bool(int stack, bool *value, const ReadOptions *opt)
 {
     simBool v;
     if(simGetStackBoolValueE(stack, &v) == 1)
     {
         *value = v;
+        simPopStackItemE(stack, 1);
+    }
+    else
+    {
+        throw exception("expected bool");
+    }
+}
+
+void read__byte(int stack, uint8_t *value, const ReadOptions *opt)
+{
+    simInt v;
+    if(simGetStackInt32ValueE(stack, &v) == 1)
+    {
+        *value = (uint8_t)v;
+        simPopStackItemE(stack, 1);
+    }
+    else
+    {
+        throw exception("expected bool");
+    }
+}
+
+void read__char(int stack, unsigned char *value, const ReadOptions *opt)
+{
+    simInt v;
+    if(simGetStackInt32ValueE(stack, &v) == 1)
+    {
+        *value = (char)v;
         simPopStackItemE(stack, 1);
     }
     else
@@ -213,10 +241,22 @@ void read__duration(int stack, rclcpp::Duration *value, const ReadOptions *opt)
     }
 }
 
-void write__bool(uint8_t value, int stack, const WriteOptions *opt)
+void write__bool(bool value, int stack, const WriteOptions *opt)
 {
     simBool v = value;
     simPushBoolOntoStackE(stack, v);
+}
+
+void write__byte(uint8_t value, int stack, const WriteOptions *opt)
+{
+    simInt v = value;
+    simPushInt32OntoStackE(stack, v);
+}
+
+void write__char(unsigned char value, int stack, const WriteOptions *opt)
+{
+    simInt v = value;
+    simPushInt32OntoStackE(stack, v);
 }
 
 void write__int8(int8_t value, int stack, const WriteOptions *opt)
