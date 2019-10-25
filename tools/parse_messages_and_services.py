@@ -99,7 +99,9 @@ class Fields:
                 # ignore expansions of nested types
                 continue
 
-            if ln == '':
+            ln = re.sub('#.*$', '', ln).strip()
+
+            if not ln:
                 # ignore empty lines
                 continue
 
@@ -119,11 +121,7 @@ class Fields:
                 self.fields[n] = t
                 continue
 
-            if tokens[0][0] == '#':
-                # ignore comment
-                continue
-
-            raise ValueError('unrecognized line: ' + ln_orig1)
+            raise ValueError('unrecognized line: "%s"' % ln_orig1)
 
 def camel_case_to_snake_case(x):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', x)
@@ -172,7 +170,7 @@ def get_msgs_info(messages_file):
     msg_list = set()
     with open(messages_file) as f:
         for l in f.readlines():
-            l = l.strip()
+            l = re.sub('#.*$', '', l).strip()
             if not l: continue
             msg_list.add(l)
 
@@ -192,7 +190,7 @@ def get_srvs_info(services_file):
     srv_list = set()
     with open(services_file) as f:
         for l in f.readlines():
-            l = l.strip()
+            l = re.sub('#.*$', '', l).strip()
             if not l: continue
             srv_list.add(l)
 
