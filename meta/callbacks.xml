@@ -428,18 +428,18 @@
         </return>
     </command>
     <command name="getTime">
-        <description>Return the current ROS time (i.e. the time returned by ros::Time::now()).</description>
+        <description>Return the current time according to the specified clock.</description>
         <categories>
             <category name="time" />
         </categories>
         <params>
-            <param name="flag" type="int" default="0">
-                <description>unused: set to zero</description>
+            <param name="clock_type" type="int" default="sim_ros2_clock_ros">
+                <description>type of clock. see <enum-ref name="clock_type" />.</description>
             </param>
         </params>
         <return>
-            <param name="time" type="double" default="0">
-                <description>ROS time expressed in seconds</description>
+            <param name="time" type="sim_ros2_time">
+                <description>ROS time</description>
             </param>
         </return>
     </command>
@@ -669,4 +669,18 @@
         <return>
         </return>
     </script-function>
+    <struct name="sim_ros2_time">
+        <description>Time data structure, equivalent of builtin_interfaces/Time</description>
+        <param name="sec" type="int">
+            <description>seconds</description>
+        </param>
+        <param name="nanosec" type="int">
+            <description>nanoseconds</description>
+        </param>
+    </struct>
+    <enum name="clock_type" item-prefix="clock_" base="4872">
+        <item name="ros" />
+        <item name="system" />
+        <item name="steady" />
+    </enum>
 </plugin>

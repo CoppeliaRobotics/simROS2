@@ -466,12 +466,17 @@ void imageTransportPublish(SScriptCallBack *p, const char *cmd, imageTransportPu
 
 void getTime(SScriptCallBack *p, const char *cmd, getTime_in *in, getTime_out *out)
 {
-    if(in->flag == 0)
+    rcl_clock_type_t t = RCL_ROS_TIME;
+    switch(in->clock_type)
     {
-        auto now = std::chrono::steady_clock::now();
-        auto d = std::chrono::duration<double>(now.time_since_epoch());
-        out->time = d.count();
+    case sim_ros2_clock_ros:    t = RCL_ROS_TIME;    break;
+    case sim_ros2_clock_system: t = RCL_SYSTEM_TIME; break;
+    case sim_ros2_clock_steady: t = RCL_STEADY_TIME; break;
     }
+    rclcpp::Clock ros_clock(t);
+    builtin_interfaces::msg::Time ros_now = ros_clock.now();
+    out->time.sec = ros_now.sec;
+    out->time.nanosec = ros_now.nanosec;
 }
 
 void getParamString(SScriptCallBack *p, const char *cmd, getParamString_in *in, getParamString_out *out)
