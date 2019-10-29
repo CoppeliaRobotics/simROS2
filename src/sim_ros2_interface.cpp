@@ -27,6 +27,19 @@ std::map<int, PublisherProxy *> publisherProxies;
 std::map<int, ServiceClientProxy *> serviceClientProxies;
 std::map<int, ServiceServerProxy *> serviceServerProxies;
 
+struct unsupported_type : public std::exception
+{
+    std::string message;
+    unsupported_type(const std::string &w, const std::string &t)
+    {
+        std::stringstream ss;
+        ss << "Unsupported " << w << " type '" << t << "'. Please edit and recompile ROS2Interface plugin.";
+        message = ss.str();
+    }
+    ~unsupported_type() throw() {}
+    const char * what() const throw() {return message.c_str();}
+};
+
 bool shouldProxyBeDestroyedAfterSimulationStop(SScriptCallBack *p)
 {
     if(simGetSimulationState() == sim_simulation_stopped)
@@ -93,7 +106,7 @@ void subscribe(SScriptCallBack * p, const char * cmd, subscribe_in * in, subscri
 #include <sub_new.cpp>
     else
     {
-        throw exception("unsupported message type. please edit and recompile ROS plugin");
+        throw unsupported_type("message", subscriberProxy->topicType);
     }
 
     out->subscriberHandle = subscriberProxy->handle;
@@ -112,7 +125,7 @@ void shutdownSubscriber(SScriptCallBack * p, const char * cmd, shutdownSubscribe
 #include <sub_del.cpp>
     else
     {
-        throw exception("unsupported message type. please edit and recompile ROS plugin");
+        throw unsupported_type("message", subscriberProxy->topicType);
     }
 
     subscriberProxies.erase(subscriberProxy->handle);
@@ -143,7 +156,7 @@ void advertise(SScriptCallBack * p, const char * cmd, advertise_in * in, adverti
 #include <pub_new.cpp>
     else
     {
-        throw exception("unsupported message type. please edit and recompile ROS plugin");
+        throw unsupported_type("message", publisherProxy->topicType);
     }
 
     out->publisherHandle = publisherProxy->handle;
@@ -162,7 +175,7 @@ void shutdownPublisher(SScriptCallBack * p, const char * cmd, shutdownPublisher_
 #include <pub_del.cpp>
     else
     {
-        throw exception("unsupported message type. please edit and recompile ROS plugin");
+        throw unsupported_type("message", publisherProxy->topicType);
     }
 
     publisherProxies.erase(publisherProxy->handle);
@@ -195,7 +208,7 @@ void publish(SScriptCallBack * p, const char * cmd, publish_in * in, publish_out
 #include <pub_publish.cpp>
     else
     {
-        throw exception("unsupported message type. please edit and recompile ROS plugin");
+        throw unsupported_type("message", publisherProxy->topicType);
     }
 }
 
@@ -212,7 +225,7 @@ void serviceClient(SScriptCallBack * p, const char * cmd, serviceClient_in * in,
 #include <cli_new.cpp>
     else
     {
-        throw exception("unsupported service type. please edit and recompile ROS plugin");
+        throw unsupported_type("service", serviceClientProxy->serviceType);
     }
 
     out->serviceClientHandle = serviceClientProxy->handle;
@@ -231,7 +244,7 @@ void shutdownServiceClient(SScriptCallBack * p, const char * cmd, shutdownServic
 #include <cli_del.cpp>
     else
     {
-        throw exception("unsupported service type. please edit and recompile ROS plugin");
+        throw unsupported_type("service", serviceClientProxy->serviceType);
     }
 
     serviceClientProxies.erase(serviceClientProxy->handle);
@@ -265,7 +278,7 @@ void call(SScriptCallBack * p, const char * cmd, call_in * in, call_out * out)
 #include <cli_call.cpp>
     else
     {
-        throw exception("unsupported service type. please edit and recompile ROS plugin");
+        throw unsupported_type("service", serviceClientProxy->serviceType);
     }
 }
 
@@ -284,7 +297,7 @@ void advertiseService(SScriptCallBack * p, const char * cmd, advertiseService_in
 #include <srv_new.cpp>
     else
     {
-        throw exception("unsupported service type. please edit and recompile ROS plugin");
+        throw unsupported_type("service", serviceServerProxy->serviceType);
     }
 
     out->serviceServerHandle = serviceServerProxy->handle;
@@ -303,7 +316,7 @@ void shutdownServiceServer(SScriptCallBack * p, const char * cmd, shutdownServic
 #include <srv_del.cpp>
     else
     {
-        throw exception("unsupported service type. please edit and recompile ROS plugin");
+        throw unsupported_type("service", serviceServerProxy->serviceType);
     }
 
     serviceServerProxies.erase(serviceServerProxy->handle);
