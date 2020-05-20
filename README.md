@@ -1,5 +1,9 @@
 # ROS2 Interface plugin for CoppeliaSim
 
+Supported ROS2 versions:
+
+ - Foxy Fitzroy
+
 ### Compiling
 
 _NOTE:_ the directory containing all files (i.e. package.xml etc) must be called sim_ros2_interface, otherwise build will fail.

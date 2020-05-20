@@ -89,6 +89,9 @@ class TypeSpec:
             t += '[]'
         return t
 
+    def interface_file(self):
+        return '{}/{}/{}.{}'.format(self.package, self.tag, self.mtype, self.tag)
+
 class Fields:
     def __init__(self, ts, lines, subtype=''):
         # parse msg / srv definition
@@ -144,7 +147,7 @@ class MsgInfo:
         if fields is None:
             print('Reading definition of msg {}...'.format(msg_name))
             # parse msg definition
-            cmd = ['ros2', 'msg', 'show', msg_name]
+            cmd = ['ros2', 'interface', 'show', self.typespec.interface_file()]
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
             if p.wait() != 0:
                 raise Exception('execution of %s failed' % cmd)
@@ -157,9 +160,10 @@ class MsgInfo:
 
 class SrvInfo:
     def __init__(self, srv_name):
+        self.typespec = TypeSpec(srv_name, 'srv')
         print('Reading definition of srv {}...'.format(srv_name))
         # parse srv definition
-        cmd = ['ros2', 'srv', 'show', srv_name]
+        cmd = ['ros2', 'interface', 'show', self.typespec.interface_file()]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         if p.wait() != 0:
             raise Exception('execution of %s failed' % cmd)
@@ -169,7 +173,6 @@ class SrvInfo:
         if sep not in lines:
             raise ValueError('bad srv definition')
         i = lines.index(sep)
-        self.typespec = TypeSpec(srv_name, 'srv')
         self.req = Fields(self.typespec, lines[:i], 'Request')
         self.resp = Fields(self.typespec, lines[i+1:], 'Response')
 

@@ -18,10 +18,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
-find_package(actionlib_msgs REQUIRED)
-find_package(action_msgs REQUIRED)
 find_package(diagnostic_msgs REQUIRED)
-find_package(gazebo_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(lifecycle_msgs REQUIRED)
 find_package(map_msgs REQUIRED)
@@ -37,6 +34,8 @@ find_package(tf2_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 find_package(unique_identifier_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
+find_package(example_interfaces REQUIRED)
 
 if(NOT LIBPLUGIN_DIR)
     if(DEFINED ENV{COPPELIASIM_ROOT_DIR})
@@ -92,10 +91,7 @@ target_link_libraries(simExtROS2Interface ${COPPELIASIM_LIBRARIES})
 #ament_target_dependencies(simExtROS2Interface rclcpp)
 ament_target_dependencies(
     simExtROS2Interface
-    "actionlib_msgs"
-    "action_msgs"
     "diagnostic_msgs"
-    "gazebo_msgs"
     "geometry_msgs"
     "lifecycle_msgs"
     "map_msgs"
@@ -111,6 +107,8 @@ ament_target_dependencies(
     "trajectory_msgs"
     "unique_identifier_msgs"
     "visualization_msgs"
+    "std_srvs"
+    "example_interfaces"
 )
 
 # Causes the visibility macros to use dllexport rather than dllimport,
