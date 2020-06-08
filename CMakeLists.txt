@@ -49,6 +49,7 @@ set(CMAKE_MODULE_PATH
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
     ${LIBPLUGIN_DIR}/cmake)
 find_package(CoppeliaSim 4.0.0.0 REQUIRED)
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc)
@@ -62,13 +63,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/generated)
 include_directories(${COPPELIASIM_INCLUDE_DIR})
 include_directories(${COPPELIASIM_COMMON_DIR})
 
-set(ROS_MSG_SRV_CACHE "${CMAKE_CURRENT_BINARY_DIR}/ros-msg-srv-defs.pickle")
-add_custom_command(OUTPUT "${ROS_MSG_SRV_CACHE}" COMMAND python "${CMAKE_CURRENT_SOURCE_DIR}/tools/parse_messages_and_services.py" "${CMAKE_CURRENT_SOURCE_DIR}/meta/messages.txt" "${CMAKE_CURRENT_SOURCE_DIR}/meta/services.txt" "${ROS_MSG_SRV_CACHE}" DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/meta/messages.txt" "${CMAKE_CURRENT_SOURCE_DIR}/meta/services.txt" "${CMAKE_CURRENT_SOURCE_DIR}/tools/parse_messages_and_services.py")
-
 set(generatedFiles)
 file(GLOB templateFiles RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/templates/ ${CMAKE_CURRENT_SOURCE_DIR}/templates/*)
 foreach(templateFile ${templateFiles})
-    add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}" COMMAND python "${LIBPLUGIN_DIR}/simStubsGen/external/pycpp/pycpp.py" -p "cache_file=${ROS_MSG_SRV_CACHE}" -i "${CMAKE_CURRENT_SOURCE_DIR}/templates/${templateFile}" -o "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tools" DEPENDS "${ROS_MSG_SRV_CACHE}" "${CMAKE_CURRENT_SOURCE_DIR}/templates/${templateFile}")
+    add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}" COMMAND ${Python3_EXECUTABLE} "${LIBPLUGIN_DIR}/simStubsGen/external/pycpp/pycpp.py" -p "interfaces_file=${CMAKE_CURRENT_SOURCE_DIR}/meta/interfaces.txt" -i "${CMAKE_CURRENT_SOURCE_DIR}/templates/${templateFile}" -o "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}" -P "${CMAKE_CURRENT_SOURCE_DIR}/tools" DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tools/parse_interfaces.py" "${CMAKE_CURRENT_SOURCE_DIR}/meta/interfaces.txt" "${CMAKE_CURRENT_SOURCE_DIR}/templates/${templateFile}")
     set(generatedFiles ${generatedFiles} "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}")
 endforeach()
 add_custom_target(generate_ros_code DEPENDS ${generatedFiles})

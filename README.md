@@ -13,8 +13,13 @@ _NOTE:_ the directory containing all files (i.e. package.xml etc) must be called
 ```
 $ git clone --recursive https://github.com/CoppeliaRobotics/simExtROS2Interface.git sim_ros2_interface
 ```
-3. Edit `meta/messages.txt` and `meta/services.txt` if you need to include more ROS messages/services. You need to specify the full message/service type, i.e. geometry_msgs/Twist rather than Twist.
+3. Edit `meta/interfaces.txt` if you need to include more ROS interfaces. You need to specify the fully qualified interface, e.g. geometry_msgs/msg/Twist rather than Twist.
 4. Compile
 ```
 $ colcon build --symlink-install
+```
+
+Note: if you are reporting a compile error, please use this command to build:
+```
+VERBOSE=1 MAKEFLAGS=-j1 colcon build --symlink-install --event-handlers console_direct+ --parallel-workers 1
 ```

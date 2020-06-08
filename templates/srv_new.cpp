@@ -1,9 +1,11 @@
-#py import parse_messages_and_services as p
-#py msgs, srvs, msgssrvs = p.load_cache(pycpp.params['cache_file'])
-#py for srv, info in srvs.items():
-    else if(in->serviceType == "`info.typespec.fullname`")
+#py from parse_interfaces import *
+#py interfaces = parse_interfaces(pycpp.params['interfaces_file'])
+#py for interface_name, interface in interfaces.items():
+#py if interface.tag == 'srv':
+    else if(in->serviceType == "`interface.full_name`")
     {
-        auto cb = [=](const std::shared_ptr<rmw_request_id_t> request_header, const `info.typespec.cpp_type()`::Request::SharedPtr req, `info.typespec.cpp_type()`::Response::SharedPtr res) { ros_srv_callback__`info.typespec.normalized()`(request_header, req, res, serviceServerProxy); };
-        serviceServerProxy->service = node->create_service<`info.typespec.cpp_type()`>(in->serviceName, cb);
+        auto cb = [=](const std::shared_ptr<rmw_request_id_t> request_header, const `interface.request.cpp_type`::SharedPtr req, `interface.response.cpp_type`::SharedPtr res) { ros_srv_callback__`interface.cpp_type_normalized`(request_header, req, res, serviceServerProxy); };
+        serviceServerProxy->service = node->create_service<`interface.cpp_type`>(in->serviceName, cb);
     }
+#py endif
 #py endfor

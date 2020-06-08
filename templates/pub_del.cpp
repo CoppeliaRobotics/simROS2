@@ -1,9 +1,11 @@
-#py import parse_messages_and_services as p
-#py msgs, srvs, msgssrvs = p.load_cache(pycpp.params['cache_file'])
-#py for msg, info in msgs.items():
-    else if(publisherProxy->topicType == "`info.typespec.fullname`")
+#py from parse_interfaces import *
+#py interfaces = parse_interfaces(pycpp.params['interfaces_file'])
+#py for interface_name, interface in interfaces.items():
+#py if interface.tag == 'msg':
+    else if(publisherProxy->topicType == "`interface.full_name`")
     {
-        auto pub = boost::any_cast< std::shared_ptr< rclcpp::Publisher<`info.typespec.cpp_type()`> > >(publisherProxy->publisher);
+        auto pub = boost::any_cast< std::shared_ptr< rclcpp::Publisher<`interface.cpp_type`> > >(publisherProxy->publisher);
         pub = nullptr;
     }
+#py endif
 #py endfor

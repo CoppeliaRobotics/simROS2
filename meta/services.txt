@@ -1,4 +1,0 @@
-example_interfaces/AddTwoInts
-std_srvs/Empty
-std_srvs/SetBool
-std_srvs/Trigger

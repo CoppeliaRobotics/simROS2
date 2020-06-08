@@ -4,24 +4,32 @@
 #include <ros_msg_builtin_io.h>
 #include <sim_ros2_interface.h>
 
-#py import parse_messages_and_services as p
-#py msgs, srvs, msgssrvs = p.load_cache(pycpp.params['cache_file'])
-#py for msg, info in msgs.items():
-#include <`info.typespec.cpp_include()`>
-#py endfor
-#py for srv, info in srvs.items():
-#include <`info.typespec.cpp_include()`>
+#py from parse_interfaces import *
+#py interfaces = parse_interfaces(pycpp.params['interfaces_file'])
+#py for interface_name, interface in interfaces.items():
+#include <`interface.cpp_include`>
 #py endfor
 
-#py for msg, info in msgssrvs.items():
-void write__`info.typespec.normalized()`(const `info.typespec.cpp_type()`& msg, int stack, const WriteOptions *opt = NULL);
-void read__`info.typespec.normalized()`(int stack, `info.typespec.cpp_type()` *msg, const ReadOptions *opt = NULL);
+#py for interface_name, interface in interfaces.items():
+#py for subinterface_name, subinterface in interface.subinterfaces.items():
+void write__`subinterface.cpp_type_normalized`(const `subinterface.cpp_type`& msg, int stack, const WriteOptions *opt = NULL);
+void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type` *msg, const ReadOptions *opt = NULL);
 #py endfor
-#py for msg, info in msgs.items():
-void ros_callback__`info.typespec.normalized()`(const `info.typespec.cpp_type()`::SharedPtr msg, SubscriberProxy *proxy);
 #py endfor
-#py for srv, info in srvs.items():
-bool ros_srv_callback__`info.typespec.normalized()`(const std::shared_ptr<rmw_request_id_t> request_header, const `info.typespec.cpp_type()`::Request::SharedPtr req, `info.typespec.cpp_type()`::Response::SharedPtr res, ServiceServerProxy *proxy);
+#py for interface_name, interface in interfaces.items():
+#py if interface.tag == 'msg':
+void ros_callback__`interface.cpp_type_normalized`(const `interface.cpp_type`::SharedPtr msg, SubscriberProxy *proxy);
+#py endif
+#py endfor
+#py for interface_name, interface in interfaces.items():
+#py if interface.tag == 'srv':
+bool ros_srv_callback__`interface.cpp_type_normalized`(const std::shared_ptr<rmw_request_id_t> request_header, const `interface.request.cpp_type`::SharedPtr req, `interface.response.cpp_type`::SharedPtr res, ServiceServerProxy *proxy);
+#py endif
+#py endfor
+#py for interface_name, interface in interfaces.items():
+#py if interface.tag == 'action':
+// action stuff
+#py endif
 #py endfor
 
 #endif // SIM_ROS2_PLUGIN__CALLBACKS__H

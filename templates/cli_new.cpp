@@ -1,8 +1,10 @@
-#py import parse_messages_and_services as p
-#py msgs, srvs, msgssrvs = p.load_cache(pycpp.params['cache_file'])
-#py for srv, info in srvs.items():
-    else if(in->serviceType == "`info.typespec.fullname`")
+#py from parse_interfaces import *
+#py interfaces = parse_interfaces(pycpp.params['interfaces_file'])
+#py for interface_name, interface in interfaces.items():
+#py if interface.tag == 'srv':
+    else if(in->serviceType == "`interface.full_name`")
     {
-        serviceClientProxy->client = node->create_client<`info.typespec.cpp_type()`>(in->serviceName);
+        serviceClientProxy->client = node->create_client<`interface.cpp_type`>(in->serviceName);
     }
+#py endif
 #py endfor
