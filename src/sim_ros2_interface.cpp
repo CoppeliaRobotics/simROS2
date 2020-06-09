@@ -583,6 +583,16 @@ void createInterface(SScriptCallBack *p, const char *cmd, createInterface_in *in
     }
 }
 
+void getInterfaceConstants(SScriptCallBack *p, const char *cmd, getInterfaceConstants_in *in, getInterfaceConstants_out *out)
+{
+    if(0) {}
+#include <if_const.cpp>
+    else
+    {
+        throw unsupported_type("interface", in->type);
+    }
+}
+
 void supportedInterfaces(SScriptCallBack *p, const char *cmd, supportedInterfaces_in *in, supportedInterfaces_out *out)
 {
 #include <if_list.cpp>
