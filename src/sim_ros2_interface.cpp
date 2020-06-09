@@ -580,7 +580,7 @@ bool initialize()
     int node_name_length = 0;
     char *node_name = nullptr;
 #if SIM_PROGRAM_FULL_VERSION_NB >= 3060104 // 3.6.1.rev4
-    node_name = simGetStringNamedParam("Ros2Interface.nodeName", &node_name_length);
+    node_name = simGetStringNamedParam("ROS2Interface.nodeName", &node_name_length);
 #endif
 
     node = rclcpp::Node::make_shared(node_name && node_name_length ? node_name : "sim_ros2_interface");
