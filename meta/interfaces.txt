@@ -5,6 +5,8 @@ geometry_msgs/msg/Transform
 geometry_msgs/msg/TransformStamped
 geometry_msgs/msg/Vector3
 sensor_msgs/msg/Image
+sensor_msgs/msg/PointCloud2
+sensor_msgs/msg/PointField
 std_msgs/msg/Bool
 std_msgs/msg/Byte
 std_msgs/msg/ColorRGBA

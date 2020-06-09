@@ -573,6 +573,21 @@ void searchParam(SScriptCallBack *p, const char *cmd, searchParam_in *in, search
 #endif
 }
 
+void createInterface(SScriptCallBack *p, const char *cmd, createInterface_in *in, createInterface_out *out)
+{
+    if(0) {}
+#include <if_new.cpp>
+    else
+    {
+        throw unsupported_type("interface", in->type);
+    }
+}
+
+void supportedInterfaces(SScriptCallBack *p, const char *cmd, supportedInterfaces_in *in, supportedInterfaces_out *out)
+{
+#include <if_list.cpp>
+}
+
 bool initialize()
 {
     rclcpp::init(0, nullptr);

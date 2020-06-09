@@ -643,6 +643,43 @@
             </param>
         </return>
     </command>
+    <command name="createInterface">
+        <description>Construct an interface of the specified type, initialized with the default values.</description>
+        <categories>
+            <category name="topic" />
+            <category name="service" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="type" type="string">
+                <description>type, e.g.: 'geometry_msgs/msg/Twist'</description>
+            </param>
+        </params>
+        <return>
+            <param name="result" type="table" skip="true">
+                <description>the interface object</description>
+            </param>
+        </return>
+    </command>
+    <command name="supportedInterfaces">
+        <description>Retrieve a list of supported interfaces.</description>
+        <categories>
+            <category name="topic" />
+            <category name="service" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+        </params>
+        <return>
+            <param name="result" type="table" item-type="string">
+                <description>the list of supported interfaces</description>
+            </param>
+        </return>
+    </command>
     <script-function name="subscriberCallback">
         <description>Callback for ROS subscriber.</description>
         <params>
