@@ -612,10 +612,6 @@ bool initialize()
 
     if(node_name) simReleaseBuffer(node_name);
 
-    // in ROS2 we have no such thing, so this check is not performed:
-    //if(!ros::master::check())
-    //    return false;
-
     //tfbr = new tf::TransformBroadcaster();
     //imtr = new image_transport::ImageTransport(*nh);
 
