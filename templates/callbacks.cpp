@@ -275,7 +275,7 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
 
 #py for interface_name, interface in interfaces.items():
 #py if interface.tag == 'msg':
-void ros_callback__`interface.cpp_type_normalized`(const `interface.cpp_type`::SharedPtr msg, SubscriberProxy *proxy)
+void ros_callback__`interface.cpp_type_normalized`(const `interface.cpp_type`::SharedPtr msg, SubscriptionProxy *proxy)
 {
     int stack = -1;
     try
@@ -300,7 +300,7 @@ void ros_callback__`interface.cpp_type_normalized`(const `interface.cpp_type`::S
 #py endfor
 #py for interface_name, interface in interfaces.items():
 #py if interface.tag == 'srv':
-bool ros_srv_callback__`interface.cpp_type_normalized`(const std::shared_ptr<rmw_request_id_t> request_header, const `interface.request.cpp_type`::SharedPtr req, `interface.response.cpp_type`::SharedPtr res, ServiceServerProxy *proxy)
+bool ros_srv_callback__`interface.cpp_type_normalized`(const std::shared_ptr<rmw_request_id_t> request_header, const `interface.request.cpp_type`::SharedPtr req, `interface.response.cpp_type`::SharedPtr res, ServiceProxy *proxy)
 {
     bool ret = false;
     int stack = -1;

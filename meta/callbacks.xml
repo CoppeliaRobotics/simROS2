@@ -3,8 +3,8 @@
 
 <plugin name="ROS2Interface" short-name="ROS2" author="federico.ferri.it@gmail.com">
     <description>This plugin provides an interface with the ROS2 API</description>
-    <command name="subscribe">
-        <description>Subscribe to a topic.</description>
+    <command name="createSubscription">
+        <description>Create a subscription to a topic.</description>
         <categories>
             <category name="topic" />
         </categories>
@@ -26,13 +26,13 @@
             </param>
         </params>
         <return>
-            <param name="subscriberHandle" type="int">
-                <description>a handle to the ROS subscriber</description>
+            <param name="subscriptionHandle" type="int">
+                <description>a handle to the ROS subscription</description>
             </param>
         </return>
     </command>
-    <command name="shutdownSubscriber">
-        <description>Unsubscribe the callback associated with this subscriber.</description>
+    <command name="shutdownSubscription">
+        <description>Shutdown the subscription.</description>
         <categories>
             <category name="topic" />
         </categories>
@@ -40,15 +40,15 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="subscriberHandle" type="int">
-                <description>the subscriber handle</description>
+            <param name="subscriptionHandle" type="int">
+                <description>the subscription handle</description>
             </param>
         </params>
         <return>
         </return>
     </command>
-    <command name="subscriberTreatUInt8ArrayAsString">
-        <description>After calling this function, this subscriber will treat uint8 arrays as string. Using strings should be in general much faster that using int arrays in Lua.</description>
+    <command name="subscriptionTreatUInt8ArrayAsString">
+        <description>After calling this function, this subscription will treat uint8 arrays as string. Using strings should be in general much faster that using int arrays in Lua.</description>
         <categories>
             <category name="topic" />
         </categories>
@@ -56,15 +56,15 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="subscriberHandle" type="int">
-                <description>the subscriber handle</description>
+            <param name="subscriptionHandle" type="int">
+                <description>the subscription handle</description>
             </param>
         </params>
         <return>
         </return>
     </command>
-    <command name="advertise">
-        <description>Advertise a topic and create a topic publisher.</description>
+    <command name="createPublisher">
+        <description>Create a topic publisher.</description>
         <categories>
             <category name="topic" />
         </categories>
@@ -92,7 +92,7 @@
         </return>
     </command>
     <command name="shutdownPublisher">
-        <description>Shutdown the advertisement associated with this publisher.</description>
+        <description>Shutdown the specified publisher.</description>
         <categories>
             <category name="topic" />
         </categories>
@@ -145,7 +145,7 @@
         <return>
         </return>
     </command>
-    <command name="serviceClient">
+    <command name="createClient">
         <description>Create a service client.</description>
         <categories>
             <category name="service" />
@@ -162,12 +162,12 @@
             </param>
         </params>
         <return>
-            <param name="serviceClientHandle" type="int">
+            <param name="clientHandle" type="int">
                 <description>a handle to the ROS service client</description>
             </param>
         </return>
     </command>
-    <command name="shutdownServiceClient">
+    <command name="shutdownClient">
         <description>Shutdown the service client.</description>
         <categories>
             <category name="service" />
@@ -176,14 +176,14 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="serviceClientHandle" type="int">
+            <param name="clientHandle" type="int">
                 <description>the service client handle</description>
             </param>
         </params>
         <return>
         </return>
     </command>
-    <command name="serviceClientTreatUInt8ArrayAsString">
+    <command name="clientTreatUInt8ArrayAsString">
         <description>After calling this function, this service client will treat uint8 arrays as string. Using strings should be in general much faster that using int arrays in Lua.</description>
         <categories>
             <category name="service" />
@@ -192,7 +192,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="serviceClientHandle" type="int">
+            <param name="clientHandle" type="int">
                 <description>the service client handle</description>
             </param>
         </params>
@@ -208,7 +208,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="serviceClientHandle" type="int">
+            <param name="clientHandle" type="int">
                 <description>the service client handle</description>
             </param>
             <param name="request" type="table" skip="true">
@@ -224,8 +224,8 @@
             </param>
         </return>
     </command>
-    <command name="advertiseService">
-        <description>Advertise a service and create a service server.</description>
+    <command name="createService">
+        <description>Create a service.</description>
         <categories>
             <category name="service" />
         </categories>
@@ -244,13 +244,13 @@
             </param>
         </params>
         <return>
-            <param name="serviceServerHandle" type="int">
-                <description>a handle to the ROS service server</description>
+            <param name="serviceHandle" type="int">
+                <description>a handle to the ROS service</description>
             </param>
         </return>
     </command>
-    <command name="shutdownServiceServer">
-        <description>Shutdown the service server.</description>
+    <command name="shutdownService">
+        <description>Shutdown the service.</description>
         <categories>
             <category name="service" />
         </categories>
@@ -258,15 +258,15 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="serviceServerHandle" type="int">
-                <description>the service server handle</description>
+            <param name="serviceHandle" type="int">
+                <description>the service handle</description>
             </param>
         </params>
         <return>
         </return>
     </command>
-    <command name="serviceServerTreatUInt8ArrayAsString">
-        <description>After calling this function, this service server will treat uint8 arrays as string. Using strings should be in general much faster that using int arrays in Lua.</description>
+    <command name="serviceTreatUInt8ArrayAsString">
+        <description>After calling this function, this service will treat uint8 arrays as string. Using strings should be in general much faster that using int arrays in Lua.</description>
         <categories>
             <category name="service" />
         </categories>
@@ -274,8 +274,8 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="serviceServerHandle" type="int">
-                <description>the service server handle</description>
+            <param name="serviceHandle" type="int">
+                <description>the service handle</description>
             </param>
         </params>
         <return>
@@ -315,8 +315,8 @@
         <return>
         </return>
     </command>
-    <command name="imageTransportSubscribe">
-        <description>Subscribe to a topic using ImageTransport.</description>
+    <command name="imageTransportCreateSubscription">
+        <description>Create a subscription using ImageTransport.</description>
         <categories>
             <category name="topic" />
             <category name="image" />
@@ -336,13 +336,13 @@
             </param>
         </params>
         <return>
-            <param name="subscriberHandle" type="int">
-                <description>a handle to the ROS subscriber</description>
+            <param name="subscriptionHandle" type="int">
+                <description>a handle to the ROS subscription</description>
             </param>
         </return>
     </command>
-    <command name="imageTransportShutdownSubscriber">
-        <description>Unsubscribe the callback associated with this subscriber using ImageTransport.</description>
+    <command name="imageTransportShutdownSubscription">
+        <description>Shutdown the subscription using ImageTransport.</description>
         <categories>
             <category name="topic" />
             <category name="image" />
@@ -351,15 +351,15 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="subscriberHandle" type="int">
-                <description>the subscriber handle</description>
+            <param name="subscriptionHandle" type="int">
+                <description>the subscription handle</description>
             </param>
         </params>
         <return>
         </return>
     </command>
-    <command name="imageTransportAdvertise">
-        <description>Advertise a topic and create a topic publisher using ImageTransport.</description>
+    <command name="imageTransportCreatePublisher">
+        <description>Create a publisher using ImageTransport.</description>
         <categories>
             <category name="topic" />
             <category name="image" />
@@ -382,7 +382,7 @@
         </return>
     </command>
     <command name="imageTransportShutdownPublisher">
-        <description>Shutdown the advertisement associated with this publisher using ImageTransport.</description>
+        <description>Shutdown the publisher using ImageTransport.</description>
         <categories>
             <category name="topic" />
             <category name="image" />
@@ -700,8 +700,8 @@
             </param>
         </return>
     </command>
-    <script-function name="subscriberCallback">
-        <description>Callback for ROS subscriber.</description>
+    <script-function name="subscriptionCallback">
+        <description>Callback for ROS subscription.</description>
         <params>
             <param name="message" type="table" skip="true">
                 <description>the topic payload (i.e. the message)</description>
@@ -711,7 +711,7 @@
         </return>
     </script-function>
     <script-function name="imageTransportCallback">
-        <description>Callback for ROS ImageTransport subscriber.</description>
+        <description>Callback for ROS ImageTransport subscription.</description>
         <params>
             <param name="data" type="string">
                 <description>the image data</description>

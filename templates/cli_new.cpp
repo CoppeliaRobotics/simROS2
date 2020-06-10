@@ -4,7 +4,7 @@
 #py if interface.tag == 'srv':
     else if(in->serviceType == "`interface.full_name`")
     {
-        serviceClientProxy->client = node->create_client<`interface.cpp_type`>(in->serviceName);
+        clientProxy->client = node->create_client<`interface.cpp_type`>(in->serviceName);
     }
 #py endif
 #py endfor

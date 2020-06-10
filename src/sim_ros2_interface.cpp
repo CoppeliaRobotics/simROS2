@@ -17,15 +17,15 @@ rclcpp::Node::SharedPtr node = nullptr;
 //tf::TransformBroadcaster *tfbr = NULL;
 //image_transport::ImageTransport *imtr = NULL;
 
-int subscriberProxyNextHandle = 3562;
+int subscriptionProxyNextHandle = 3562;
 int publisherProxyNextHandle = 7980;
-int serviceClientProxyNextHandle = 26856;
-int serviceServerProxyNextHandle = 53749;
+int clientProxyNextHandle = 26856;
+int serviceProxyNextHandle = 53749;
 
-std::map<int, SubscriberProxy *> subscriberProxies;
+std::map<int, SubscriptionProxy *> subscriptionProxies;
 std::map<int, PublisherProxy *> publisherProxies;
-std::map<int, ServiceClientProxy *> serviceClientProxies;
-std::map<int, ServiceServerProxy *> serviceServerProxies;
+std::map<int, ClientProxy *> clientProxies;
+std::map<int, ServiceProxy *> serviceProxies;
 
 struct unsupported_type : public std::exception
 {
@@ -56,7 +56,7 @@ bool shouldProxyBeDestroyedAfterSimulationStop(SScriptCallBack *p)
 }
 
 #if 0
-void ros_imtr_callback(const sensor_msgs::ImageConstPtr& msg, SubscriberProxy *subscriberProxy)
+void ros_imtr_callback(const sensor_msgs::ImageConstPtr& msg, SubscriptionProxy *subscriptionProxy)
 {
     if(msg->is_bigendian)
     {
@@ -83,7 +83,7 @@ void ros_imtr_callback(const sensor_msgs::ImageConstPtr& msg, SubscriberProxy *s
         }
     }
 
-    if(!imageTransportCallback(subscriberProxy->topicCallback.scriptId, subscriberProxy->topicCallback.name.c_str(), &in_args, &out_args))
+    if(!imageTransportCallback(subscriptionProxy->topicCallback.scriptId, subscriptionProxy->topicCallback.name.c_str(), &in_args, &out_args))
     {
         std::cerr << "ros_imtr_callback: error: failed to call callback" << std::endl;
         return;
@@ -91,59 +91,59 @@ void ros_imtr_callback(const sensor_msgs::ImageConstPtr& msg, SubscriberProxy *s
 }
 #endif
 
-void subscribe(SScriptCallBack * p, const char * cmd, subscribe_in * in, subscribe_out * out)
+void createSubscription(SScriptCallBack * p, const char * cmd, createSubscription_in * in, createSubscription_out * out)
 {
-    SubscriberProxy *subscriberProxy = new SubscriberProxy();
-    subscriberProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
-    subscriberProxy->handle = subscriberProxyNextHandle++;
-    subscriberProxy->topicName = in->topicName;
-    subscriberProxy->topicType = in->topicType;
-    subscriberProxy->topicCallback.scriptId = p->scriptID;
-    subscriberProxy->topicCallback.name = in->topicCallback;
-    subscriberProxies[subscriberProxy->handle] = subscriberProxy;
+    SubscriptionProxy *subscriptionProxy = new SubscriptionProxy();
+    subscriptionProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
+    subscriptionProxy->handle = subscriptionProxyNextHandle++;
+    subscriptionProxy->topicName = in->topicName;
+    subscriptionProxy->topicType = in->topicType;
+    subscriptionProxy->topicCallback.scriptId = p->scriptID;
+    subscriptionProxy->topicCallback.name = in->topicCallback;
+    subscriptionProxies[subscriptionProxy->handle] = subscriptionProxy;
 
     if(0) {}
 #include <sub_new.cpp>
     else
     {
-        throw unsupported_type("message", subscriberProxy->topicType);
+        throw unsupported_type("message", subscriptionProxy->topicType);
     }
 
-    out->subscriberHandle = subscriberProxy->handle;
+    out->subscriptionHandle = subscriptionProxy->handle;
 }
 
-void shutdownSubscriber(SScriptCallBack * p, const char * cmd, shutdownSubscriber_in * in, shutdownSubscriber_out * out)
+void shutdownSubscription(SScriptCallBack * p, const char * cmd, shutdownSubscription_in * in, shutdownSubscription_out * out)
 {
-    if(subscriberProxies.find(in->subscriberHandle) == subscriberProxies.end())
+    if(subscriptionProxies.find(in->subscriptionHandle) == subscriptionProxies.end())
     {
-        throw exception("invalid subscriber handle");
+        throw exception("invalid subscription handle");
     }
 
-    SubscriberProxy *subscriberProxy = subscriberProxies[in->subscriberHandle];
+    SubscriptionProxy *subscriptionProxy = subscriptionProxies[in->subscriptionHandle];
 
     if(0) {}
 #include <sub_del.cpp>
     else
     {
-        throw unsupported_type("message", subscriberProxy->topicType);
+        throw unsupported_type("message", subscriptionProxy->topicType);
     }
 
-    subscriberProxies.erase(subscriberProxy->handle);
-    delete subscriberProxy;
+    subscriptionProxies.erase(subscriptionProxy->handle);
+    delete subscriptionProxy;
 }
 
-void subscriberTreatUInt8ArrayAsString(SScriptCallBack * p, const char * cmd, subscriberTreatUInt8ArrayAsString_in * in, subscriberTreatUInt8ArrayAsString_out * out)
+void subscriptionTreatUInt8ArrayAsString(SScriptCallBack * p, const char * cmd, subscriptionTreatUInt8ArrayAsString_in * in, subscriptionTreatUInt8ArrayAsString_out * out)
 {
-    if(subscriberProxies.find(in->subscriberHandle) == subscriberProxies.end())
+    if(subscriptionProxies.find(in->subscriptionHandle) == subscriptionProxies.end())
     {
-        throw exception("invalid subscriber handle");
+        throw exception("invalid subscription handle");
     }
 
-    SubscriberProxy *subscriberProxy = subscriberProxies[in->subscriberHandle];
-    subscriberProxy->wr_opt.uint8array_as_string = true;
+    SubscriptionProxy *subscriptionProxy = subscriptionProxies[in->subscriptionHandle];
+    subscriptionProxy->wr_opt.uint8array_as_string = true;
 }
 
-void advertise(SScriptCallBack * p, const char * cmd, advertise_in * in, advertise_out * out)
+void createPublisher(SScriptCallBack * p, const char * cmd, createPublisher_in * in, createPublisher_out * out)
 {
     PublisherProxy *publisherProxy = new PublisherProxy();
     publisherProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
@@ -212,65 +212,65 @@ void publish(SScriptCallBack * p, const char * cmd, publish_in * in, publish_out
     }
 }
 
-void serviceClient(SScriptCallBack * p, const char * cmd, serviceClient_in * in, serviceClient_out * out)
+void createClient(SScriptCallBack * p, const char * cmd, createClient_in * in, createClient_out * out)
 {
-    ServiceClientProxy *serviceClientProxy = new ServiceClientProxy();
-    serviceClientProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
-    serviceClientProxy->handle = serviceClientProxyNextHandle++;
-    serviceClientProxy->serviceName = in->serviceName;
-    serviceClientProxy->serviceType = in->serviceType;
-    serviceClientProxies[serviceClientProxy->handle] = serviceClientProxy;
+    ClientProxy *clientProxy = new ClientProxy();
+    clientProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
+    clientProxy->handle = clientProxyNextHandle++;
+    clientProxy->serviceName = in->serviceName;
+    clientProxy->serviceType = in->serviceType;
+    clientProxies[clientProxy->handle] = clientProxy;
 
     if(0) {}
 #include <cli_new.cpp>
     else
     {
-        throw unsupported_type("service", serviceClientProxy->serviceType);
+        throw unsupported_type("service", clientProxy->serviceType);
     }
 
-    out->serviceClientHandle = serviceClientProxy->handle;
+    out->clientHandle = clientProxy->handle;
 }
 
-void shutdownServiceClient(SScriptCallBack * p, const char * cmd, shutdownServiceClient_in * in, shutdownServiceClient_out * out)
+void shutdownClient(SScriptCallBack * p, const char * cmd, shutdownClient_in * in, shutdownClient_out * out)
 {
-    if(serviceClientProxies.find(in->serviceClientHandle) == serviceClientProxies.end())
+    if(clientProxies.find(in->clientHandle) == clientProxies.end())
     {
         throw exception("invalid service client handle");
     }
 
-    ServiceClientProxy *serviceClientProxy = serviceClientProxies[in->serviceClientHandle];
+    ClientProxy *clientProxy = clientProxies[in->clientHandle];
 
     if(0) {}
 #include <cli_del.cpp>
     else
     {
-        throw unsupported_type("service", serviceClientProxy->serviceType);
+        throw unsupported_type("service", clientProxy->serviceType);
     }
 
-    serviceClientProxies.erase(serviceClientProxy->handle);
-    delete serviceClientProxy;
+    clientProxies.erase(clientProxy->handle);
+    delete clientProxy;
 }
 
-void serviceClientTreatUInt8ArrayAsString(SScriptCallBack * p, const char * cmd, serviceClientTreatUInt8ArrayAsString_in * in, serviceClientTreatUInt8ArrayAsString_out * out)
+void clientTreatUInt8ArrayAsString(SScriptCallBack * p, const char * cmd, clientTreatUInt8ArrayAsString_in * in, clientTreatUInt8ArrayAsString_out * out)
 {
-    if(serviceClientProxies.find(in->serviceClientHandle) == serviceClientProxies.end())
+    if(clientProxies.find(in->clientHandle) == clientProxies.end())
     {
         throw exception("invalid service client handle");
     }
 
-    ServiceClientProxy *serviceClientProxy = serviceClientProxies[in->serviceClientHandle];
-    serviceClientProxy->rd_opt.uint8array_as_string = true;
-    serviceClientProxy->wr_opt.uint8array_as_string = true;
+    ClientProxy *clientProxy = clientProxies[in->clientHandle];
+    clientProxy->rd_opt.uint8array_as_string = true;
+    clientProxy->wr_opt.uint8array_as_string = true;
 }
 
 void call(SScriptCallBack * p, const char * cmd, call_in * in, call_out * out)
 {
-    if(serviceClientProxies.find(in->serviceClientHandle) == serviceClientProxies.end())
+    if(clientProxies.find(in->clientHandle) == clientProxies.end())
     {
         throw exception("invalid service client handle");
     }
 
-    ServiceClientProxy *serviceClientProxy = serviceClientProxies[in->serviceClientHandle];
+    ClientProxy *clientProxy = clientProxies[in->clientHandle];
 
     simMoveStackItemToTop(p->stackID, 0);
 
@@ -278,61 +278,61 @@ void call(SScriptCallBack * p, const char * cmd, call_in * in, call_out * out)
 #include <cli_call.cpp>
     else
     {
-        throw unsupported_type("service", serviceClientProxy->serviceType);
+        throw unsupported_type("service", clientProxy->serviceType);
     }
 }
 
-void advertiseService(SScriptCallBack * p, const char * cmd, advertiseService_in * in, advertiseService_out * out)
+void createService(SScriptCallBack * p, const char * cmd, createService_in * in, createService_out * out)
 {
-    ServiceServerProxy *serviceServerProxy = new ServiceServerProxy();
-    serviceServerProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
-    serviceServerProxy->handle = serviceServerProxyNextHandle++;
-    serviceServerProxy->serviceName = in->serviceName;
-    serviceServerProxy->serviceType = in->serviceType;
-    serviceServerProxy->serviceCallback.scriptId = p->scriptID;
-    serviceServerProxy->serviceCallback.name = in->serviceCallback;
-    serviceServerProxies[serviceServerProxy->handle] = serviceServerProxy;
+    ServiceProxy *serviceProxy = new ServiceProxy();
+    serviceProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
+    serviceProxy->handle = serviceProxyNextHandle++;
+    serviceProxy->serviceName = in->serviceName;
+    serviceProxy->serviceType = in->serviceType;
+    serviceProxy->serviceCallback.scriptId = p->scriptID;
+    serviceProxy->serviceCallback.name = in->serviceCallback;
+    serviceProxies[serviceProxy->handle] = serviceProxy;
 
     if(0) {}
 #include <srv_new.cpp>
     else
     {
-        throw unsupported_type("service", serviceServerProxy->serviceType);
+        throw unsupported_type("service", serviceProxy->serviceType);
     }
 
-    out->serviceServerHandle = serviceServerProxy->handle;
+    out->serviceHandle = serviceProxy->handle;
 }
 
-void shutdownServiceServer(SScriptCallBack * p, const char * cmd, shutdownServiceServer_in * in, shutdownServiceServer_out * out)
+void shutdownService(SScriptCallBack * p, const char * cmd, shutdownService_in * in, shutdownService_out * out)
 {
-    if(serviceServerProxies.find(in->serviceServerHandle) == serviceServerProxies.end())
+    if(serviceProxies.find(in->serviceHandle) == serviceProxies.end())
     {
-        throw exception("invalid service server handle");
+        throw exception("invalid service handle");
     }
 
-    ServiceServerProxy *serviceServerProxy = serviceServerProxies[in->serviceServerHandle];
+    ServiceProxy *serviceProxy = serviceProxies[in->serviceHandle];
 
     if(0) {}
 #include <srv_del.cpp>
     else
     {
-        throw unsupported_type("service", serviceServerProxy->serviceType);
+        throw unsupported_type("service", serviceProxy->serviceType);
     }
 
-    serviceServerProxies.erase(serviceServerProxy->handle);
-    delete serviceServerProxy;
+    serviceProxies.erase(serviceProxy->handle);
+    delete serviceProxy;
 }
 
-void serviceServerTreatUInt8ArrayAsString(SScriptCallBack * p, const char * cmd, serviceServerTreatUInt8ArrayAsString_in * in, serviceServerTreatUInt8ArrayAsString_out * out)
+void serviceTreatUInt8ArrayAsString(SScriptCallBack * p, const char * cmd, serviceTreatUInt8ArrayAsString_in * in, serviceTreatUInt8ArrayAsString_out * out)
 {
-    if(serviceServerProxies.find(in->serviceServerHandle) == serviceServerProxies.end())
+    if(serviceProxies.find(in->serviceHandle) == serviceProxies.end())
     {
-        throw exception("invalid service server handle");
+        throw exception("invalid service handle");
     }
 
-    ServiceServerProxy *serviceServerProxy = serviceServerProxies[in->serviceServerHandle];
-    serviceServerProxy->rd_opt.uint8array_as_string = true;
-    serviceServerProxy->wr_opt.uint8array_as_string = true;
+    ServiceProxy *serviceProxy = serviceProxies[in->serviceHandle];
+    serviceProxy->rd_opt.uint8array_as_string = true;
+    serviceProxy->wr_opt.uint8array_as_string = true;
 }
 
 void sendTransform(SScriptCallBack * p, const char * cmd, sendTransform_in * in, sendTransform_out * out)
@@ -366,48 +366,48 @@ void sendTransforms(SScriptCallBack * p, const char * cmd, sendTransforms_in * i
         read__geometry_msgs__TransformStamped(p->stackID, &t);
         v.push_back(t);
     }
-    
+
     tfbr->sendTransform(v);
 #endif
 }
 
-void imageTransportSubscribe(SScriptCallBack *p, const char *cmd, imageTransportSubscribe_in *in, imageTransportSubscribe_out *out)
+void imageTransportCreateSubscription(SScriptCallBack *p, const char *cmd, imageTransportCreateSubscription_in *in, imageTransportCreateSubscription_out *out)
 {
-    SubscriberProxy *subscriberProxy = new SubscriberProxy();
-    subscriberProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
-    subscriberProxy->handle = subscriberProxyNextHandle++;
-    subscriberProxy->topicName = in->topicName;
-    subscriberProxy->topicType = "@image_transport";
-    subscriberProxy->topicCallback.scriptId = p->scriptID;
-    subscriberProxy->topicCallback.name = in->topicCallback;
-    subscriberProxies[subscriberProxy->handle] = subscriberProxy;
+    SubscriptionProxy *subscriptionProxy = new SubscriptionProxy();
+    subscriptionProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
+    subscriptionProxy->handle = subscriptionProxyNextHandle++;
+    subscriptionProxy->topicName = in->topicName;
+    subscriptionProxy->topicType = "@image_transport";
+    subscriptionProxy->topicCallback.scriptId = p->scriptID;
+    subscriptionProxy->topicCallback.name = in->topicCallback;
+    subscriptionProxies[subscriptionProxy->handle] = subscriptionProxy;
 
 #if 0
-    subscriberProxy->imageTransportSubscriber = imtr->subscribe(in->topicName, in->queueSize, boost::bind(ros_imtr_callback, _1, subscriberProxy));
+    subscriptionProxy->imageTransportSubscription = imtr->create_subscription(in->topicName, in->queueSize, boost::bind(ros_imtr_callback, _1, subscriptionProxy));
 
-    if(!subscriberProxy->imageTransportSubscriber)
+    if(!subscriptionProxy->imageTransportSubscription)
     {
-        throw exception("failed creation of ROS ImageTransport subscriber");
+        throw exception("failed creation of ROS ImageTransport subscription");
     }
 #endif
 
-    out->subscriberHandle = subscriberProxy->handle;
+    out->subscriptionHandle = subscriptionProxy->handle;
 }
 
-void imageTransportShutdownSubscriber(SScriptCallBack *p, const char *cmd, imageTransportShutdownSubscriber_in *in, imageTransportShutdownSubscriber_out *out)
+void imageTransportShutdownSubscription(SScriptCallBack *p, const char *cmd, imageTransportShutdownSubscription_in *in, imageTransportShutdownSubscription_out *out)
 {
-    if(subscriberProxies.find(in->subscriberHandle) == subscriberProxies.end())
+    if(subscriptionProxies.find(in->subscriptionHandle) == subscriptionProxies.end())
     {
-        throw exception("invalid subscriber handle");
+        throw exception("invalid subscription handle");
     }
 
-    SubscriberProxy *subscriberProxy = subscriberProxies[in->subscriberHandle];
-    //subscriberProxy->imageTransportSubscriber.shutdown();
-    subscriberProxies.erase(subscriberProxy->handle);
-    delete subscriberProxy;
+    SubscriptionProxy *subscriptionProxy = subscriptionProxies[in->subscriptionHandle];
+    //subscriptionProxy->imageTransportSubscription.shutdown();
+    subscriptionProxies.erase(subscriptionProxy->handle);
+    delete subscriptionProxy;
 }
 
-void imageTransportAdvertise(SScriptCallBack *p, const char *cmd, imageTransportAdvertise_in *in, imageTransportAdvertise_out *out)
+void imageTransportCreatePublisher(SScriptCallBack *p, const char *cmd, imageTransportCreatePublisher_in *in, imageTransportCreatePublisher_out *out)
 {
     PublisherProxy *publisherProxy = new PublisherProxy();
     publisherProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
@@ -417,7 +417,7 @@ void imageTransportAdvertise(SScriptCallBack *p, const char *cmd, imageTransport
     publisherProxies[publisherProxy->handle] = publisherProxy;
 
 #if 0
-    publisherProxy->imageTransportPublisher = imtr->advertise(in->topicName, in->queueSize);
+    publisherProxy->imageTransportPublisher = imtr->create_publisher(in->topicName, in->queueSize);
 
     if(!publisherProxy->imageTransportPublisher)
     {
@@ -627,11 +627,11 @@ void shutdown()
     //delete tfbr;
 }
 
-void shutdownTransientSubscribers(SScriptCallBack *p)
+void shutdownTransientSubscriptions(SScriptCallBack *p)
 {
     std::vector<int> handles;
 
-    for(std::map<int, SubscriberProxy *>::iterator it = subscriberProxies.begin(); it != subscriberProxies.end(); ++it)
+    for(std::map<int, SubscriptionProxy *>::iterator it = subscriptionProxies.begin(); it != subscriptionProxies.end(); ++it)
     {
         if(it->second->destroyAfterSimulationStop)
         {
@@ -641,11 +641,11 @@ void shutdownTransientSubscribers(SScriptCallBack *p)
 
     for(std::vector<int>::iterator it = handles.begin(); it != handles.end(); ++it)
     {
-        SubscriberProxy *subscriberProxy = subscriberProxies[*it];
+        SubscriptionProxy *subscriptionProxy = subscriptionProxies[*it];
         //if(proxy->subscription)
-            shutdownSubscriber(p, *it);
-        //if(proxy->imageTransportSubscriber)
-        //    imageTransportShutdownSubscriber(p, *it);
+            shutdownSubscription(p, *it);
+        //if(proxy->imageTransportSubscription)
+        //    imageTransportShutdownSubscription(p, *it);
     }
 }
 
@@ -671,11 +671,11 @@ void shutdownTransientPublishers(SScriptCallBack *p)
     }
 }
 
-void shutdownTransientServiceClients(SScriptCallBack *p)
+void shutdownTransientClients(SScriptCallBack *p)
 {
     std::vector<int> handles;
 
-    for(std::map<int, ServiceClientProxy *>::iterator it = serviceClientProxies.begin(); it != serviceClientProxies.end(); ++it)
+    for(std::map<int, ClientProxy *>::iterator it = clientProxies.begin(); it != clientProxies.end(); ++it)
     {
         if(it->second->destroyAfterSimulationStop)
         {
@@ -685,15 +685,15 @@ void shutdownTransientServiceClients(SScriptCallBack *p)
 
     for(std::vector<int>::iterator it = handles.begin(); it != handles.end(); ++it)
     {
-        shutdownServiceClient(p, *it);
+        shutdownClient(p, *it);
     }
 }
 
-void shutdownTransientServiceServers(SScriptCallBack *p)
+void shutdownTransientServices(SScriptCallBack *p)
 {
     std::vector<int> handles;
 
-    for(std::map<int, ServiceServerProxy *>::iterator it = serviceServerProxies.begin(); it != serviceServerProxies.end(); ++it)
+    for(std::map<int, ServiceProxy *>::iterator it = serviceProxies.begin(); it != serviceProxies.end(); ++it)
     {
         if(it->second->destroyAfterSimulationStop)
         {
@@ -703,16 +703,16 @@ void shutdownTransientServiceServers(SScriptCallBack *p)
 
     for(std::vector<int>::iterator it = handles.begin(); it != handles.end(); ++it)
     {
-        shutdownServiceServer(p, *it);
+        shutdownService(p, *it);
     }
 }
 
 void shutdownTransientProxies(SScriptCallBack *p)
 {
-    shutdownTransientSubscribers(p);
+    shutdownTransientSubscriptions(p);
     shutdownTransientPublishers(p);
-    shutdownTransientServiceClients(p);
-    shutdownTransientServiceServers(p);
+    shutdownTransientClients(p);
+    shutdownTransientServices(p);
 }
 
 class Plugin : public sim::Plugin

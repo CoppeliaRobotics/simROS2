@@ -30,14 +30,14 @@ struct Proxy
 
 #include <ros_msg_builtin_io.h>
 
-struct SubscriberProxy : Proxy
+struct SubscriptionProxy : Proxy
 {
     int handle;
     std::string topicName;
     std::string topicType;
     ScriptCallback topicCallback;
     boost::any subscription;
-    //image_transport::Subscriber imageTransportSubscriber;
+    //image_transport::Subscriber imageTransportSubscription;
     WriteOptions wr_opt;
 };
 
@@ -51,7 +51,7 @@ struct PublisherProxy : Proxy
     ReadOptions rd_opt;
 };
 
-struct ServiceClientProxy : Proxy
+struct ClientProxy : Proxy
 {
     int handle;
     std::string serviceName;
@@ -61,7 +61,7 @@ struct ServiceClientProxy : Proxy
     WriteOptions wr_opt;
 };
 
-struct ServiceServerProxy : Proxy
+struct ServiceProxy : Proxy
 {
     int handle;
     std::string serviceName;
