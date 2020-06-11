@@ -5,7 +5,7 @@
 #include <functional>
 using namespace std::placeholders;
 
-//#include <tf/transform_broadcaster.h>
+#include <tf2_ros/transform_broadcaster.h>
 //#include <sensor_msgs/image_encodings.h>
 //#include <image_transport/image_transport.h>
 //#include <cv_bridge/cv_bridge.h>
@@ -15,7 +15,7 @@ using namespace std::placeholders;
 
 rclcpp::Node::SharedPtr node = nullptr;
 
-//tf::TransformBroadcaster *tfbr = NULL;
+tf2_ros::TransformBroadcaster *tfbr = NULL;
 //image_transport::ImageTransport *imtr = NULL;
 
 int subscriptionProxyNextHandle = 3562;
@@ -463,17 +463,14 @@ void actionServerTreatUInt8ArrayAsString(SScriptCallBack * p, const char * cmd, 
 
 void sendTransform(SScriptCallBack * p, const char * cmd, sendTransform_in * in, sendTransform_out * out)
 {
-#if 0
-    geometry_msgs::TransformStamped t;
-    read__geometry_msgs__TransformStamped(p->stackID, &t);
+    geometry_msgs::msg::TransformStamped t;
+    read__geometry_msgs__msg__TransformStamped(p->stackID, &t);
     tfbr->sendTransform(t);
-#endif
 }
 
 void sendTransforms(SScriptCallBack * p, const char * cmd, sendTransforms_in * in, sendTransforms_out * out)
 {
-#if 0
-    std::vector<geometry_msgs::TransformStamped> v;
+    std::vector<geometry_msgs::msg::TransformStamped> v;
 
     simMoveStackItemToTopE(p->stackID, 0);
     int i = simGetStackTableInfoE(p->stackID, 0);
@@ -488,13 +485,12 @@ void sendTransforms(SScriptCallBack * p, const char * cmd, sendTransforms_in * i
         int j;
         read__int(p->stackID, &j);
         simMoveStackItemToTop(p->stackID, oldsz - 1);
-        geometry_msgs::TransformStamped t;
-        read__geometry_msgs__TransformStamped(p->stackID, &t);
+        geometry_msgs::msg::TransformStamped t;
+        read__geometry_msgs__msg__TransformStamped(p->stackID, &t);
         v.push_back(t);
     }
 
     tfbr->sendTransform(v);
-#endif
 }
 
 void imageTransportCreateSubscription(SScriptCallBack *p, const char *cmd, imageTransportCreateSubscription_in *in, imageTransportCreateSubscription_out *out)
@@ -738,7 +734,7 @@ bool initialize()
 
     if(node_name) simReleaseBuffer(node_name);
 
-    //tfbr = new tf::TransformBroadcaster();
+    tfbr = new tf2_ros::TransformBroadcaster(node);
     //imtr = new image_transport::ImageTransport(*nh);
 
     return true;
@@ -750,7 +746,7 @@ void shutdown()
     node = nullptr;
 
     //delete imtr;
-    //delete tfbr;
+    delete tfbr;
 }
 
 void shutdownTransientSubscriptions(SScriptCallBack *p)
