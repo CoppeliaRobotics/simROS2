@@ -6,8 +6,8 @@
 using namespace std::placeholders;
 
 #include <tf2_ros/transform_broadcaster.h>
-//#include <sensor_msgs/image_encodings.h>
-//#include <image_transport/image_transport.h>
+#include <sensor_msgs/image_encodings.hpp>
+#include <image_transport/image_transport.hpp>
 //#include <cv_bridge/cv_bridge.h>
 
 #include <rclcpp/rclcpp.hpp>
@@ -16,7 +16,7 @@ using namespace std::placeholders;
 rclcpp::Node::SharedPtr node = nullptr;
 
 tf2_ros::TransformBroadcaster *tfbr = NULL;
-//image_transport::ImageTransport *imtr = NULL;
+image_transport::ImageTransport *imtr = NULL;
 
 int subscriptionProxyNextHandle = 3562;
 int publisherProxyNextHandle = 7980;
@@ -60,8 +60,7 @@ bool shouldProxyBeDestroyedAfterSimulationStop(SScriptCallBack *p)
     return true;
 }
 
-#if 0
-void ros_imtr_callback(const sensor_msgs::ImageConstPtr& msg, SubscriptionProxy *subscriptionProxy)
+void ros_imtr_callback(const sensor_msgs::msg::Image::ConstSharedPtr &msg, SubscriptionProxy *subscriptionProxy)
 {
     if(msg->is_bigendian)
     {
@@ -94,7 +93,6 @@ void ros_imtr_callback(const sensor_msgs::ImageConstPtr& msg, SubscriptionProxy 
         return;
     }
 }
-#endif
 
 void createSubscription(SScriptCallBack * p, const char * cmd, createSubscription_in * in, createSubscription_out * out)
 {
@@ -504,14 +502,12 @@ void imageTransportCreateSubscription(SScriptCallBack *p, const char *cmd, image
     subscriptionProxy->topicCallback.name = in->topicCallback;
     subscriptionProxies[subscriptionProxy->handle] = subscriptionProxy;
 
-#if 0
-    subscriptionProxy->imageTransportSubscription = imtr->create_subscription(in->topicName, in->queueSize, boost::bind(ros_imtr_callback, _1, subscriptionProxy));
+    subscriptionProxy->imageTransportSubscription = imtr->subscribe(in->topicName, in->queueSize, std::bind(ros_imtr_callback, _1, subscriptionProxy));
 
     if(!subscriptionProxy->imageTransportSubscription)
     {
         throw exception("failed creation of ROS ImageTransport subscription");
     }
-#endif
 
     out->subscriptionHandle = subscriptionProxy->handle;
 }
@@ -538,14 +534,12 @@ void imageTransportCreatePublisher(SScriptCallBack *p, const char *cmd, imageTra
     publisherProxy->topicType = "@image_transport";
     publisherProxies[publisherProxy->handle] = publisherProxy;
 
-#if 0
-    publisherProxy->imageTransportPublisher = imtr->create_publisher(in->topicName, in->queueSize);
+    publisherProxy->imageTransportPublisher = imtr->advertise(in->topicName, in->queueSize);
 
     if(!publisherProxy->imageTransportPublisher)
     {
         throw exception("failed creation of ROS ImageTransport publisher");
     }
-#endif
 
     out->publisherHandle = publisherProxy->handle;
 }
@@ -565,7 +559,6 @@ void imageTransportShutdownPublisher(SScriptCallBack *p, const char *cmd, imageT
 
 void imageTransportPublish(SScriptCallBack *p, const char *cmd, imageTransportPublish_in *in, imageTransportPublish_out *out)
 {
-#if 0
     if(publisherProxies.find(in->publisherHandle) == publisherProxies.end())
     {
         throw exception("invalid publisher handle");
@@ -573,8 +566,9 @@ void imageTransportPublish(SScriptCallBack *p, const char *cmd, imageTransportPu
 
     PublisherProxy *publisherProxy = publisherProxies[in->publisherHandle];
 
-    sensor_msgs::Image image_msg;
-    image_msg.header.stamp = rclcpp::Time::now();
+    sensor_msgs::msg::Image image_msg;
+    rclcpp::Clock ros_clock(RCL_ROS_TIME);
+    image_msg.header.stamp = ros_clock.now();
     image_msg.header.frame_id = in->frame_id;
     image_msg.encoding = sensor_msgs::image_encodings::RGB8;
     image_msg.width = in->width;
@@ -596,7 +590,6 @@ void imageTransportPublish(SScriptCallBack *p, const char *cmd, imageTransportPu
     }
 
     publisherProxy->imageTransportPublisher.publish(image_msg);
-#endif
 }
 
 void getTime(SScriptCallBack *p, const char *cmd, getTime_in *in, getTime_out *out)
@@ -735,7 +728,7 @@ bool initialize()
     if(node_name) simReleaseBuffer(node_name);
 
     tfbr = new tf2_ros::TransformBroadcaster(node);
-    //imtr = new image_transport::ImageTransport(*nh);
+    imtr = new image_transport::ImageTransport(node);
 
     return true;
 }
@@ -745,7 +738,7 @@ void shutdown()
     rclcpp::shutdown();
     node = nullptr;
 
-    //delete imtr;
+    delete imtr;
     delete tfbr;
 }
 
@@ -764,10 +757,10 @@ void shutdownTransientSubscriptions(SScriptCallBack *p)
     for(std::vector<int>::iterator it = handles.begin(); it != handles.end(); ++it)
     {
         SubscriptionProxy *subscriptionProxy = subscriptionProxies[*it];
-        //if(proxy->subscription)
+        if(!subscriptionProxy->subscription.empty())
             shutdownSubscription(p, *it);
-        //if(proxy->imageTransportSubscription)
-        //    imageTransportShutdownSubscription(p, *it);
+        if(subscriptionProxy->imageTransportSubscription)
+            imageTransportShutdownSubscription(p, *it);
     }
 }
 
@@ -785,11 +778,11 @@ void shutdownTransientPublishers(SScriptCallBack *p)
 
     for(std::vector<int>::iterator it = handles.begin(); it != handles.end(); ++it)
     {
-        PublisherProxy *proxy = publisherProxies[*it];
-        //if(proxy->publisher)
+        PublisherProxy *publisherProxy = publisherProxies[*it];
+        if(!publisherProxy->publisher.empty())
             shutdownPublisher(p, *it);
-        //if(proxy->imageTransportPublisher)
-        //    imageTransportShutdownPublisher(p, *it);
+        if(publisherProxy->imageTransportPublisher)
+            imageTransportShutdownPublisher(p, *it);
     }
 }
 

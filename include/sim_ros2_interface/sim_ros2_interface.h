@@ -12,7 +12,7 @@
 
 #include "config.h"
 
-//#include <image_transport/image_transport.h>
+#include <image_transport/image_transport.hpp>
 
 #define PLUGIN_NAME "Ros2Interface"
 #define PLUGIN_VERSION 5
@@ -37,7 +37,7 @@ struct SubscriptionProxy : Proxy
     std::string topicType;
     ScriptCallback topicCallback;
     boost::any subscription;
-    //image_transport::Subscriber imageTransportSubscription;
+    image_transport::Subscriber imageTransportSubscription;
     WriteOptions wr_opt;
 };
 
@@ -47,7 +47,7 @@ struct PublisherProxy : Proxy
     std::string topicName;
     std::string topicType;
     boost::any publisher;
-    //image_transport::Publisher imageTransportPublisher;
+    image_transport::Publisher imageTransportPublisher;
     ReadOptions rd_opt;
 };
 
