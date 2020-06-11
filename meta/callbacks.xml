@@ -281,6 +281,154 @@
         <return>
         </return>
     </command>
+    <command name="createActionClient">
+        <description>Create a action client.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionName" type="string">
+                <description>action name, e.g.: '/fibonacci'</description>
+            </param>
+            <param name="actionType" type="string">
+                <description>action type, e.g.: 'example_interfaces/action/Fibonacci'</description>
+            </param>
+        </params>
+        <return>
+            <param name="actionClientHandle" type="int">
+                <description>a handle to the ROS action client</description>
+            </param>
+        </return>
+    </command>
+    <command name="shutdownActionClient">
+        <description>Shutdown the action client.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionClientHandle" type="int">
+                <description>the action client handle</description>
+            </param>
+        </params>
+        <return>
+        </return>
+    </command>
+    <command name="actionClientTreatUInt8ArrayAsString">
+        <description>After calling this function, this action client will treat uint8 arrays as string. Using strings should be in general much faster that using int arrays in Lua.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionClientHandle" type="int">
+                <description>the action client handle</description>
+            </param>
+        </params>
+        <return>
+        </return>
+    </command>
+    <command name="sendGoal">
+        <description>Send a goal using the specified action client.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionClientHandle" type="int">
+                <description>the action client handle</description>
+            </param>
+            <param name="goalResponseCallback" type="string">
+                <description>the goal response callback</description>
+            </param>
+            <param name="feedbackCallback" type="string">
+                <description>the feedback callback</description>
+            </param>
+            <param name="resultCallback" type="string">
+                <description>the result callback</description>
+            </param>
+            <param name="goal" type="table" skip="true">
+                <description>the goal to send</description>
+            </param>
+            <!-- don't read 'goal' param from stack, and don't clear stack
+                 after input param parsing, so that 'goal' is still on stack
+                 when calling the C++ callback -->
+        </params>
+        <return>
+        </return>
+    </command>
+    <command name="createActionServer">
+        <description>Create an action server.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionName" type="string">
+                <description>action name, e.g.: '/fibonacci'</description>
+            </param>
+            <param name="actionType" type="string">
+                <description>action type, e.g.: 'example_interfaces/action/Fibonacci'</description>
+            </param>
+            <param name="handleGoalCallback" type="string">
+                <description>name of callback function, which will be called with arguments (goal_id, goal) and must return a valid <enum-ref name="goal_response" /></description>
+            </param>
+            <param name="handleCancelCallback" type="string">
+                <description>name of callback function, which will be called with arguments (goal_id, goal) and must return a valid <enum-ref name="cancel_response" /></description>
+            </param>
+            <param name="handleAcceptedCallback" type="string">
+                <description>name of callback function, which will be called with arguments (goal_id, goal) after the goal is accepted, and is responsible of executing the goal, but must return immediately.</description>
+            </param>
+        </params>
+        <return>
+            <param name="actionServerHandle" type="int">
+                <description>a handle to the action server</description>
+            </param>
+        </return>
+    </command>
+    <command name="shutdownActionServer">
+        <description>Shutdown the action server.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionServerHandle" type="int">
+                <description>the action server handle</description>
+            </param>
+        </params>
+        <return>
+        </return>
+    </command>
+    <command name="actionServerTreatUInt8ArrayAsString">
+        <description>After calling this function, this action server will treat uint8 arrays as string. Using strings should be in general much faster that using int arrays in Lua.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionServerHandle" type="int">
+                <description>the action server handle</description>
+            </param>
+        </params>
+        <return>
+        </return>
+    </command>
     <command name="sendTransform">
         <description>Publish a TF transformation between frames.</description>
         <categories>
@@ -648,6 +796,7 @@
         <categories>
             <category name="topic" />
             <category name="service" />
+            <category name="action" />
         </categories>
         <see-also>
             <!--command name="..." /-->
@@ -668,6 +817,7 @@
         <categories>
             <category name="topic" />
             <category name="service" />
+            <category name="action" />
         </categories>
         <see-also>
             <!--command name="..." /-->
@@ -688,6 +838,7 @@
         <categories>
             <category name="topic" />
             <category name="service" />
+            <category name="action" />
         </categories>
         <see-also>
             <!--command name="..." /-->
@@ -726,6 +877,19 @@
         <return>
         </return>
     </script-function>
+    <script-function name="actionGoalResponseCallback">
+        <description>Callback for action client goal response.</description>
+        <params>
+            <param name="goalID" type="string">
+                <description>the goal id</description>
+            </param>
+            <param name="accepted" type="bool">
+                <description>true if the goal was accepted by the action server</description>
+            </param>
+        </params>
+        <return>
+        </return>
+    </script-function>
     <struct name="sim_ros2_time">
         <description>Time data structure, equivalent of builtin_interfaces/Time</description>
         <param name="sec" type="int">
@@ -739,5 +903,20 @@
         <item name="ros" />
         <item name="system" />
         <item name="steady" />
+    </enum>
+    <enum name="action_result_code" item-prefix="action_result_code_" base="8564">
+        <item name="succeeded" />
+        <item name="aborted" />
+        <item name="canceled" />
+        <item name="unknown" />
+    </enum>
+    <enum name="goal_response" item-prefix="goal_response_" base="12856">
+        <item name="reject" />
+        <item name="accept_and_execute" />
+        <item name="accept_and_defer" />
+    </enum>
+    <enum name="cancel_response" item-prefix="cancel_response_" base="16099">
+        <item name="reject" />
+        <item name="accept" />
     </enum>
 </plugin>

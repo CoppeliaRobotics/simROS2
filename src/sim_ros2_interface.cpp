@@ -11,6 +11,7 @@ using namespace std::placeholders;
 //#include <cv_bridge/cv_bridge.h>
 
 #include <rclcpp/rclcpp.hpp>
+#include <rclcpp_action/rclcpp_action.hpp>
 
 rclcpp::Node::SharedPtr node = nullptr;
 
@@ -21,11 +22,15 @@ int subscriptionProxyNextHandle = 3562;
 int publisherProxyNextHandle = 7980;
 int clientProxyNextHandle = 26856;
 int serviceProxyNextHandle = 53749;
+int actionClientProxyNextHandle = 71848;
+int actionServerProxyNextHandle = 93012;
 
 std::map<int, SubscriptionProxy *> subscriptionProxies;
 std::map<int, PublisherProxy *> publisherProxies;
 std::map<int, ClientProxy *> clientProxies;
 std::map<int, ServiceProxy *> serviceProxies;
+std::map<int, ActionClientProxy *> actionClientProxies;
+std::map<int, ActionServerProxy *> actionServerProxies;
 
 struct unsupported_type : public std::exception
 {
@@ -333,6 +338,127 @@ void serviceTreatUInt8ArrayAsString(SScriptCallBack * p, const char * cmd, servi
     ServiceProxy *serviceProxy = serviceProxies[in->serviceHandle];
     serviceProxy->rd_opt.uint8array_as_string = true;
     serviceProxy->wr_opt.uint8array_as_string = true;
+}
+
+void createActionClient(SScriptCallBack * p, const char * cmd, createActionClient_in * in, createActionClient_out * out)
+{
+    ActionClientProxy *actionClientProxy = new ActionClientProxy();
+    actionClientProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
+    actionClientProxy->handle = actionClientProxyNextHandle++;
+    actionClientProxy->actionName = in->actionName;
+    actionClientProxy->actionType = in->actionType;
+    actionClientProxies[actionClientProxy->handle] = actionClientProxy;
+
+    if(0) {}
+#include <actcli_new.cpp>
+    else
+    {
+        throw unsupported_type("action", actionClientProxy->actionType);
+    }
+
+    out->actionClientHandle = actionClientProxy->handle;
+}
+
+void shutdownActionClient(SScriptCallBack * p, const char * cmd, shutdownActionClient_in * in, shutdownActionClient_out * out)
+{
+    if(actionClientProxies.find(in->actionClientHandle) == actionClientProxies.end())
+    {
+        throw exception("invalid action client handle");
+    }
+
+    ActionClientProxy *actionClientProxy = actionClientProxies[in->actionClientHandle];
+
+    if(0) {}
+#include <actcli_del.cpp>
+    else
+    {
+        throw unsupported_type("action", actionClientProxy->actionType);
+    }
+
+    actionClientProxies.erase(actionClientProxy->handle);
+    delete actionClientProxy;
+}
+
+void actionClientTreatUInt8ArrayAsString(SScriptCallBack * p, const char * cmd, actionClientTreatUInt8ArrayAsString_in * in, actionClientTreatUInt8ArrayAsString_out * out)
+{
+    if(actionClientProxies.find(in->actionClientHandle) == actionClientProxies.end())
+    {
+        throw exception("invalid action client handle");
+    }
+
+    ActionClientProxy *actionClientProxy = actionClientProxies[in->actionClientHandle];
+    actionClientProxy->rd_opt.uint8array_as_string = true;
+    actionClientProxy->wr_opt.uint8array_as_string = true;
+}
+
+void sendGoal(SScriptCallBack * p, const char * cmd, sendGoal_in * in, sendGoal_out * out)
+{
+    if(actionClientProxies.find(in->actionClientHandle) == actionClientProxies.end())
+    {
+        throw exception("invalid action client handle");
+    }
+
+    ActionClientProxy *actionClientProxy = actionClientProxies[in->actionClientHandle];
+
+    simMoveStackItemToTop(p->stackID, 0);
+
+    if(0) {}
+#include <actcli_sendGoal.cpp>
+    else
+    {
+        throw unsupported_type("action", actionClientProxy->actionType);
+    }
+}
+
+void createActionServer(SScriptCallBack * p, const char * cmd, createActionServer_in * in, createActionServer_out * out)
+{
+    ActionServerProxy *actionServerProxy = new ActionServerProxy();
+    actionServerProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(p);
+    actionServerProxy->handle = actionServerProxyNextHandle++;
+    actionServerProxy->actionName = in->actionName;
+    actionServerProxy->actionType = in->actionType;
+    actionServerProxies[actionServerProxy->handle] = actionServerProxy;
+
+    if(0) {}
+#include <actsrv_new.cpp>
+    else
+    {
+        throw unsupported_type("action", actionServerProxy->actionType);
+    }
+
+    out->actionServerHandle = actionServerProxy->handle;
+}
+
+void shutdownActionServer(SScriptCallBack * p, const char * cmd, shutdownActionServer_in * in, shutdownActionServer_out * out)
+{
+    if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
+    {
+        throw exception("invalid action server handle");
+    }
+
+    ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
+
+    if(0) {}
+#include <actsrv_del.cpp>
+    else
+    {
+        throw unsupported_type("action", actionServerProxy->actionType);
+    }
+
+    actionServerProxies.erase(actionServerProxy->handle);
+    delete actionServerProxy;
+}
+
+void actionServerTreatUInt8ArrayAsString(SScriptCallBack * p, const char * cmd, actionServerTreatUInt8ArrayAsString_in * in, actionServerTreatUInt8ArrayAsString_out * out)
+{
+    if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
+    {
+        throw exception("invalid action server handle");
+    }
+
+    ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
+    actionServerProxy->rd_opt.uint8array_as_string = true;
+    actionServerProxy->wr_opt.uint8array_as_string = true;
 }
 
 void sendTransform(SScriptCallBack * p, const char * cmd, sendTransform_in * in, sendTransform_out * out)
@@ -694,6 +820,42 @@ void shutdownTransientServices(SScriptCallBack *p)
     std::vector<int> handles;
 
     for(std::map<int, ServiceProxy *>::iterator it = serviceProxies.begin(); it != serviceProxies.end(); ++it)
+    {
+        if(it->second->destroyAfterSimulationStop)
+        {
+            handles.push_back(it->first);
+        }
+    }
+
+    for(std::vector<int>::iterator it = handles.begin(); it != handles.end(); ++it)
+    {
+        shutdownService(p, *it);
+    }
+}
+
+void shutdownTransientActionClients(SScriptCallBack *p)
+{
+    std::vector<int> handles;
+
+    for(std::map<int, ActionClientProxy *>::iterator it = actionClientProxies.begin(); it != actionClientProxies.end(); ++it)
+    {
+        if(it->second->destroyAfterSimulationStop)
+        {
+            handles.push_back(it->first);
+        }
+    }
+
+    for(std::vector<int>::iterator it = handles.begin(); it != handles.end(); ++it)
+    {
+        shutdownClient(p, *it);
+    }
+}
+
+void shutdownTransientActionServers(SScriptCallBack *p)
+{
+    std::vector<int> handles;
+
+    for(std::map<int, ActionServerProxy *>::iterator it = actionServerProxies.begin(); it != actionServerProxies.end(); ++it)
     {
         if(it->second->destroyAfterSimulationStop)
         {

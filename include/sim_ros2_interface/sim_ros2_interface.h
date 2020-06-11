@@ -72,6 +72,26 @@ struct ServiceProxy : Proxy
     WriteOptions wr_opt;
 };
 
+struct ActionClientProxy : Proxy
+{
+    int handle;
+    std::string actionName;
+    std::string actionType;
+    boost::any action_client;
+    ReadOptions rd_opt;
+    WriteOptions wr_opt;
+};
+
+struct ActionServerProxy : Proxy
+{
+    int handle;
+    std::string actionName;
+    std::string actionType;
+    boost::any action_server;
+    ReadOptions rd_opt;
+    WriteOptions wr_opt;
+};
+
 #include <stubs.h>
 #include <callbacks.h>
 

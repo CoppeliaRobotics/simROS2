@@ -339,3 +339,11 @@ void write__duration(rclcpp::Duration value, int stack, const WriteOptions *opt)
     simPushDoubleOntoStackE(stack, v);
 }
 
+std::string goalUUIDtoString(const rclcpp_action::GoalUUID &uuid)
+{
+    std::stringstream ss;
+    for(int i = 0; i < UUID_SIZE; i++)
+        ss << std::hex << uuid[i];
+    return ss.str();
+}
+

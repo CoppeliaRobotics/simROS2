@@ -330,7 +330,140 @@ bool ros_srv_callback__`interface.cpp_type_normalized`(const std::shared_ptr<rmw
 #py endfor
 #py for interface_name, interface in interfaces.items():
 #py if interface.tag == 'action':
-// action server code
+void ros_action_callback__`interface.feedback.cpp_type_normalized`(int scriptID, const char *callback, const `interface.feedback.cpp_type` *feedback, ActionClientProxy *proxy)
+{
+    int stack = -1;
+    try
+    {
+        stack = simCreateStackE();
+        write__`interface.feedback.cpp_type_normalized`(*feedback, stack, &(proxy->wr_opt));
+        simCallScriptFunctionExE(scriptID, callback, stack);
+        simReleaseStackE(stack);
+        stack = -1;
+    }
+    catch(exception& ex)
+    {
+        if(stack != -1)
+            simReleaseStack(stack); // don't throw
+        std::string msg = "ros_action_callback__`interface.feedback.cpp_type_normalized`: ";
+        msg += ex.what();
+        simSetLastError(callback, msg.c_str());
+    }
+}
+
+void ros_action_callback__`interface.result.cpp_type_normalized`(int scriptID, const char *callback, int action_result_code, const `interface.result.cpp_type`::SharedPtr result, ActionClientProxy *proxy)
+{
+    int stack = -1;
+    try
+    {
+        stack = simCreateStackE();
+        write__int32(action_result_code, stack, &(proxy->wr_opt));
+        write__`interface.result.cpp_type_normalized`(*result, stack, &(proxy->wr_opt));
+        simCallScriptFunctionExE(scriptID, callback, stack);
+        simReleaseStackE(stack);
+        stack = -1;
+    }
+    catch(exception& ex)
+    {
+        if(stack != -1)
+            simReleaseStack(stack); // don't throw
+        std::string msg = "ros_action_callback__`interface.result.cpp_type_normalized`: ";
+        msg += ex.what();
+        simSetLastError(callback, msg.c_str());
+    }
+}
+
+rclcpp_action::GoalResponse ros_action_callback__handle_goal__`interface.goal.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, const `interface.goal.cpp_type` *goal, ActionServerProxy *proxy)
+{
+    int stack = -1;
+    int ret = sim_ros2_goal_response_reject;
+    try
+    {
+        stack = simCreateStackE();
+        write__string(goalUUIDtoString(goal_id), stack, &(proxy->wr_opt));
+        write__`interface.goal.cpp_type_normalized`(*goal, stack, &(proxy->wr_opt));
+        simCallScriptFunctionExE(scriptID, callback, stack);
+        read__int32(stack, &ret, &(proxy->rd_opt));
+        simReleaseStackE(stack);
+        stack = -1;
+    }
+    catch(exception& ex)
+    {
+        if(stack != -1)
+            simReleaseStack(stack); // don't throw
+        std::string msg = "ros_action_callback__handle_goal__`interface.goal.cpp_type_normalized`: ";
+        msg += ex.what();
+        simSetLastError(callback, msg.c_str());
+    }
+    switch(ret)
+    {
+    case sim_ros2_goal_response_reject:
+        return rclcpp_action::GoalResponse::REJECT;
+    case sim_ros2_goal_response_accept_and_execute:
+        return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+    case sim_ros2_goal_response_accept_and_defer:
+        return rclcpp_action::GoalResponse::ACCEPT_AND_DEFER;
+    default:
+        log(sim_verbosity_scripterrors, "invalid goal response");
+        return rclcpp_action::GoalResponse::REJECT;
+    }
+}
+
+rclcpp_action::CancelResponse ros_action_callback__handle_cancel__`interface.goal.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, const `interface.goal.cpp_type` *goal, ActionServerProxy *proxy)
+{
+    int stack = -1;
+    int ret = sim_ros2_cancel_response_reject;
+    try
+    {
+        stack = simCreateStackE();
+        write__string(goalUUIDtoString(goal_id), stack, &(proxy->wr_opt));
+        write__`interface.goal.cpp_type_normalized`(*goal, stack, &(proxy->wr_opt));
+        simCallScriptFunctionExE(scriptID, callback, stack);
+        read__int32(stack, &ret, &(proxy->rd_opt));
+        simReleaseStackE(stack);
+        stack = -1;
+    }
+    catch(exception& ex)
+    {
+        if(stack != -1)
+            simReleaseStack(stack); // don't throw
+        std::string msg = "ros_action_callback__handle_cancel__`interface.goal.cpp_type_normalized`: ";
+        msg += ex.what();
+        simSetLastError(callback, msg.c_str());
+    }
+    switch(ret)
+    {
+    case sim_ros2_cancel_response_reject:
+        return rclcpp_action::CancelResponse::REJECT;
+    case sim_ros2_cancel_response_accept:
+        return rclcpp_action::CancelResponse::ACCEPT;
+    default:
+        log(sim_verbosity_scripterrors, "invalid cancel response");
+        return rclcpp_action::CancelResponse::REJECT;
+    }
+}
+
+void ros_action_callback__handle_accepted__`interface.goal.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, const `interface.goal.cpp_type` *goal, ActionServerProxy *proxy)
+{
+    int stack = -1;
+    try
+    {
+        stack = simCreateStackE();
+        write__string(goalUUIDtoString(goal_id), stack, &(proxy->wr_opt));
+        write__`interface.goal.cpp_type_normalized`(*goal, stack, &(proxy->wr_opt));
+        simCallScriptFunctionExE(scriptID, callback, stack);
+        simReleaseStackE(stack);
+        stack = -1;
+    }
+    catch(exception& ex)
+    {
+        if(stack != -1)
+            simReleaseStack(stack); // don't throw
+        std::string msg = "ros_action_callback__handle_accepted__`interface.goal.cpp_type_normalized`: ";
+        msg += ex.what();
+        simSetLastError(callback, msg.c_str());
+    }
+}
 
 #py endif
 #py endfor
