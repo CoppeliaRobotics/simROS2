@@ -13,7 +13,10 @@ using namespace std::placeholders;
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 
+using namespace std::chrono_literals;
+
 rclcpp::Node::SharedPtr node = nullptr;
+rclcpp::SyncParametersClient::SharedPtr params_client = nullptr;
 
 tf2_ros::TransformBroadcaster *tfbr = NULL;
 image_transport::ImageTransport *imtr = NULL;
@@ -609,83 +612,82 @@ void getTime(SScriptCallBack *p, const char *cmd, getTime_in *in, getTime_out *o
 
 void getParamString(SScriptCallBack *p, const char *cmd, getParamString_in *in, getParamString_out *out)
 {
-#if 0
-    out->value = in->defaultValue;
-    out->exists = rclcpp::param::get(in->name, out->value);
-#endif
+    out->exists = params_client->has_parameter(in->name);
+    if(out->exists)
+    {
+        auto &param = params_client->get_parameters({in->name}).front();
+        if(param.get_type() == rclcpp::PARAMETER_STRING)
+            out->value = param.get_value<rclcpp::PARAMETER_STRING>();
+    }
 }
 
 void getParamInt(SScriptCallBack *p, const char *cmd, getParamInt_in *in, getParamInt_out *out)
 {
-#if 0
-    out->value = in->defaultValue;
-    out->exists = rclcpp::param::get(in->name, out->value);
-#endif
+    out->exists = params_client->has_parameter(in->name);
+    if(out->exists)
+    {
+        auto &param = params_client->get_parameters({in->name}).front();
+        if(param.get_type() == rclcpp::PARAMETER_INTEGER)
+            out->value = param.get_value<rclcpp::PARAMETER_INTEGER>();
+    }
 }
 
 void getParamDouble(SScriptCallBack *p, const char *cmd, getParamDouble_in *in, getParamDouble_out *out)
 {
-#if 0
-    out->value = in->defaultValue;
-    out->exists = rclcpp::param::get(in->name, out->value);
-#endif
+    out->exists = params_client->has_parameter(in->name);
+    if(out->exists)
+    {
+        auto &param = params_client->get_parameters({in->name}).front();
+        if(param.get_type() == rclcpp::PARAMETER_DOUBLE)
+            out->value = param.get_value<rclcpp::PARAMETER_DOUBLE>();
+    }
 }
 
 void getParamBool(SScriptCallBack *p, const char *cmd, getParamBool_in *in, getParamBool_out *out)
 {
-#if 0
-    out->value = in->defaultValue;
-    out->exists = rclcpp::param::get(in->name, out->value);
-#endif
+    out->exists = params_client->has_parameter(in->name);
+    if(out->exists)
+    {
+        auto &param = params_client->get_parameters({in->name}).front();
+        if(param.get_type() == rclcpp::PARAMETER_BOOL)
+            out->value = param.get_value<rclcpp::PARAMETER_BOOL>();
+    }
 }
 
 void setParamString(SScriptCallBack *p, const char *cmd, setParamString_in *in, setParamString_out *out)
 {
-#if 0
-    rclcpp::param::set(in->name, in->value);
-#endif
+    params_client->set_parameters({rclcpp::Parameter(in->name, in->value)});
 }
 
 void setParamInt(SScriptCallBack *p, const char *cmd, setParamInt_in *in, setParamInt_out *out)
 {
-#if 0
-    rclcpp::param::set(in->name, in->value);
-#endif
+    params_client->set_parameters({rclcpp::Parameter(in->name, in->value)});
 }
 
 void setParamDouble(SScriptCallBack *p, const char *cmd, setParamDouble_in *in, setParamDouble_out *out)
 {
-#if 0
-    rclcpp::param::set(in->name, in->value);
-#endif
+    params_client->set_parameters({rclcpp::Parameter(in->name, in->value)});
 }
 
 void setParamBool(SScriptCallBack *p, const char *cmd, setParamBool_in *in, setParamBool_out *out)
 {
-#if 0
-    rclcpp::param::set(in->name, in->value);
-#endif
+    params_client->set_parameters({rclcpp::Parameter(in->name, in->value)});
 }
 
 void hasParam(SScriptCallBack *p, const char *cmd, hasParam_in *in, hasParam_out *out)
 {
-#if 0
-    out->exists = rclcpp::param::has(in->name);
-#endif
+    out->exists = params_client->has_parameter(in->name);
 }
 
 void deleteParam(SScriptCallBack *p, const char *cmd, deleteParam_in *in, deleteParam_out *out)
 {
-#if 0
-    rclcpp::param::del(in->name);
-#endif
+    if(params_client->has_parameter(in->name))
+        params_client->set_parameters({rclcpp::Parameter(in->name, rclcpp::ParameterValue())});
 }
 
 void searchParam(SScriptCallBack *p, const char *cmd, searchParam_in *in, searchParam_out *out)
 {
-#if 0
-    out->found = rclcpp::param::search(in->name, out->name);
-#endif
+    out->found = params_client->has_parameter(in->name);
 }
 
 void createInterface(SScriptCallBack *p, const char *cmd, createInterface_in *in, createInterface_out *out)
@@ -730,12 +732,24 @@ bool initialize()
     tfbr = new tf2_ros::TransformBroadcaster(node);
     imtr = new image_transport::ImageTransport(node);
 
+    params_client = std::make_shared<rclcpp::SyncParametersClient>(node);
+    while(!params_client->wait_for_service(1s))
+    {
+        if(!rclcpp::ok())
+        {
+            log(sim_verbosity_errors, "Interrupted while waiting for parameters service");
+            return false;
+        }
+        log(sim_verbosity_debug, "Parameters service not available. Waiting for it...");
+    }
+
     return true;
 }
 
 void shutdown()
 {
     rclcpp::shutdown();
+    params_client = nullptr;
     node = nullptr;
 
     delete imtr;
