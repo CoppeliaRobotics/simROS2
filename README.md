@@ -23,3 +23,5 @@ Note: if you are reporting a compile error, please use this command to build:
 ```
 VERBOSE=1 MAKEFLAGS=-j1 colcon build --symlink-install --event-handlers console_direct+ --parallel-workers 1
 ```
+
+Add `--cmake-args -DCMAKE_BUILD_TYPE=Debug` if you are encountering a runtime error (e.g. crash, unexpected behavior, etc...).
