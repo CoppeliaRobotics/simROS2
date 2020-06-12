@@ -36,6 +36,7 @@ find_package(unique_identifier_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(example_interfaces REQUIRED)
+find_package(image_transport REQUIRED)
 
 if(NOT LIBPLUGIN_DIR)
     if(DEFINED ENV{COPPELIASIM_ROOT_DIR})
@@ -107,6 +108,7 @@ ament_target_dependencies(
     "visualization_msgs"
     "std_srvs"
     "example_interfaces"
+    "image_transport"
 )
 
 # Causes the visibility macros to use dllexport rather than dllimport,
