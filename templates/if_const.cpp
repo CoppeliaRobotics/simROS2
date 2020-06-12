@@ -5,11 +5,11 @@
     else if(in->type == "`interface.full_name + (subinterface_name if subinterface_name != 'Message' else '')`")
     {
         WriteOptions wo;
-        simPushTableOntoStackE(p->stackID);
+        simPushTableOntoStackE(in->_stackID);
 #py for constant in subinterface.constants:
-        simPushStringOntoStackE(p->stackID, "`constant.name`", 0);
-        write__`constant.type`(`constant.value`, p->stackID, &wo);
-        simInsertDataIntoStackTableE(p->stackID);
+        simPushStringOntoStackE(in->_stackID, "`constant.name`", 0);
+        write__`constant.type`(`constant.value`, in->_stackID, &wo);
+        simInsertDataIntoStackTableE(in->_stackID);
 #py endfor
     }
 #py endfor

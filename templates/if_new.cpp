@@ -6,7 +6,7 @@
     {
         `subinterface.cpp_type` x;
         WriteOptions wo;
-        write__`subinterface.cpp_type_normalized`(x, p->stackID, &wo);
+        write__`subinterface.cpp_type_normalized`(x, in->_stackID, &wo);
     }
 #py endfor
 #py endfor
