@@ -341,9 +341,36 @@ void write__duration(rclcpp::Duration value, int stack, const WriteOptions *opt)
 
 std::string goalUUIDtoString(const rclcpp_action::GoalUUID &uuid)
 {
+    static char n[17] = "0123456789abcdef";
     std::stringstream ss;
-    for(int i = 0; i < UUID_SIZE; i++)
-        ss << std::hex << uuid[i];
+    for(size_t i = 0; i < UUID_SIZE; i++)
+    {
+        int h = (uuid[i] >> 4) & 0x0F;
+        int l = (uuid[i] >> 0) & 0x0F;
+        ss << n[h] << n[l];
+    }
     return ss.str();
+}
+
+rclcpp_action::GoalUUID goalUUIDfromString(const std::string &uuidStr)
+{
+    static int val[256] = {
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,0,0,0,0,0,0,
+        0,10,11,12,13,14,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,10,11,12,13,14,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    };
+
+    if(uuidStr.size() != UUID_SIZE * 2)
+        log(sim_verbosity_warnings, boost::format("uuid '%s' has not the correct length (%d bytes)") % uuidStr % UUID_SIZE);
+
+    rclcpp_action::GoalUUID ret;
+    for(size_t i = 0, j = 0; i < (uuidStr.size() & ~1); i += 2, j++)
+        ret[j] = (val[uuidStr[i]] << 4) | val[uuidStr[i+1]];
+    return ret;
 }
 

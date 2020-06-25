@@ -49,5 +49,6 @@ void write__string(std::string value, int stack, const WriteOptions *opt = NULL)
 void write__time(rclcpp::Time value, int stack, const WriteOptions *opt = NULL);
 void write__duration(rclcpp::Duration value, int stack, const WriteOptions *opt = NULL);
 std::string goalUUIDtoString(const rclcpp_action::GoalUUID &uuid);
+rclcpp_action::GoalUUID goalUUIDfromString(const std::string &uuidStr);
 
 #endif // SIM_ROS2_PLUGIN__ROS_MSG_BUILTIN_IO__H

@@ -450,6 +450,12 @@ public:
         actionServerProxy->handle = actionServerProxyNextHandle++;
         actionServerProxy->actionName = in->actionName;
         actionServerProxy->actionType = in->actionType;
+        actionServerProxy->handleGoalCallback.scriptId = in->_scriptID;
+        actionServerProxy->handleGoalCallback.name = in->handleGoalCallback;
+        actionServerProxy->handleCancelCallback.scriptId = in->_scriptID;
+        actionServerProxy->handleCancelCallback.name = in->handleCancelCallback;
+        actionServerProxy->handleAcceptedCallback.scriptId = in->_scriptID;
+        actionServerProxy->handleAcceptedCallback.name = in->handleAcceptedCallback;
         actionServerProxies[actionServerProxy->handle] = actionServerProxy;
 
         if(0) {}
@@ -492,6 +498,142 @@ public:
         ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
         actionServerProxy->rd_opt.uint8array_as_string = true;
         actionServerProxy->wr_opt.uint8array_as_string = true;
+    }
+
+    void actionServerPublishFeedback(actionServerPublishFeedback_in *in, actionServerPublishFeedback_out *out)
+    {
+        if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
+        {
+            throw exception("invalid action server handle");
+        }
+
+        ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
+
+        if(0) {}
+#include <actsrv_action_publish_feedback.cpp>
+        else
+        {
+            throw unsupported_type("action", actionServerProxy->actionType);
+        }
+    }
+
+    void actionServerActionAbort(actionServerActionAbort_in *in, actionServerActionAbort_out *out)
+    {
+        if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
+        {
+            throw exception("invalid action server handle");
+        }
+
+        ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
+
+        if(0) {}
+#include <actsrv_action_abort.cpp>
+        else
+        {
+            throw unsupported_type("action", actionServerProxy->actionType);
+        }
+    }
+
+    void actionServerActionSucceed(actionServerActionSucceed_in *in, actionServerActionSucceed_out *out)
+    {
+        if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
+        {
+            throw exception("invalid action server handle");
+        }
+
+        ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
+
+        if(0) {}
+#include <actsrv_action_succeed.cpp>
+        else
+        {
+            throw unsupported_type("action", actionServerProxy->actionType);
+        }
+    }
+
+    void actionServerActionCanceled(actionServerActionCanceled_in *in, actionServerActionCanceled_out *out)
+    {
+        if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
+        {
+            throw exception("invalid action server handle");
+        }
+
+        ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
+
+        if(0) {}
+#include <actsrv_action_canceled.cpp>
+        else
+        {
+            throw unsupported_type("action", actionServerProxy->actionType);
+        }
+    }
+
+    void actionServerActionExecute(actionServerActionExecute_in *in, actionServerActionExecute_out *out)
+    {
+        if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
+        {
+            throw exception("invalid action server handle");
+        }
+
+        ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
+
+        if(0) {}
+#include <actsrv_action_execute.cpp>
+        else
+        {
+            throw unsupported_type("action", actionServerProxy->actionType);
+        }
+    }
+
+    void actionServerActionIsCanceling(actionServerActionIsCanceling_in *in, actionServerActionIsCanceling_out *out)
+    {
+        if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
+        {
+            throw exception("invalid action server handle");
+        }
+
+        ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
+
+        if(0) {}
+#include <actsrv_action_is_canceling.cpp>
+        else
+        {
+            throw unsupported_type("action", actionServerProxy->actionType);
+        }
+    }
+
+    void actionServerActionIsActive(actionServerActionIsActive_in *in, actionServerActionIsActive_out *out)
+    {
+        if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
+        {
+            throw exception("invalid action server handle");
+        }
+
+        ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
+
+        if(0) {}
+#include <actsrv_action_is_active.cpp>
+        else
+        {
+            throw unsupported_type("action", actionServerProxy->actionType);
+        }
+    }
+
+    void actionServerActionIsExecuting(actionServerActionIsExecuting_in *in, actionServerActionIsExecuting_out *out)
+    {
+        if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
+        {
+            throw exception("invalid action server handle");
+        }
+
+        ActionServerProxy *actionServerProxy = actionServerProxies[in->actionServerHandle];
+
+        if(0) {}
+#include <actsrv_action_is_executing.cpp>
+        else
+        {
+            throw unsupported_type("action", actionServerProxy->actionType);
+        }
     }
 
     void sendTransform(sendTransform_in *in, sendTransform_out *out)

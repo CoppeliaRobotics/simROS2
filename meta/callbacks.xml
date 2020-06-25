@@ -429,6 +429,179 @@
         <return>
         </return>
     </command>
+    <command name="actionServerPublishFeedback">
+        <description>Send an update about the progress of this goal. This must be only called when the goal is executing. If execution of a goal is deferred then <cmd-ref name="actionServerActionExecute" /> must be called first.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionServerHandle" type="int">
+                <description>the action server handle</description>
+            </param>
+            <param name="goalUUID" type="string">
+                <description>the goal unique identifier</description>
+            </param>
+            <param name="feedback" type="table" skip="true">
+                <description>the feedback message</description>
+            </param>
+        </params>
+        <return>
+        </return>
+    </command>
+    <command name="actionServerActionAbort">
+        <description>Indicate that a goal could not be reached and has been aborted. Only call this if the goal was executing but cannot be completed. This is a terminal state, no more methods should be called on a goal after this is called.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionServerHandle" type="int">
+                <description>the action server handle</description>
+            </param>
+            <param name="goalUUID" type="string">
+                <description>the goal unique identifier</description>
+            </param>
+            <param name="result" type="table" skip="true">
+                <description>the result message</description>
+            </param>
+        </params>
+        <return>
+        </return>
+    </command>
+    <command name="actionServerActionSucceed">
+        <description>Indicate that a goal has succeeded. Only call this if the goal is executing and has reached the desired final state. This is a terminal state, no more methods should be called on a goal after this is called.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionServerHandle" type="int">
+                <description>the action server handle</description>
+            </param>
+            <param name="goalUUID" type="string">
+                <description>the goal unique identifier</description>
+            </param>
+            <param name="result" type="table" skip="true">
+                <description>the result message</description>
+            </param>
+        </params>
+        <return>
+        </return>
+    </command>
+    <command name="actionServerActionCanceled">
+        <description>Indicate that a goal has been canceled. Only call this if the goal is executing or pending, but has been canceled. This is a terminal state, no more methods should be called on a goal after this is called.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionServerHandle" type="int">
+                <description>the action server handle</description>
+            </param>
+            <param name="goalUUID" type="string">
+                <description>the goal unique identifier</description>
+            </param>
+            <param name="result" type="table" skip="true">
+                <description>the result message</description>
+            </param>
+        </params>
+        <return>
+        </return>
+    </command>
+    <command name="actionServerActionExecute">
+        <description>Indicate that the server is starting to execute a goal. Only call this if the goal is pending.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionServerHandle" type="int">
+                <description>the action server handle</description>
+            </param>
+            <param name="goalUUID" type="string">
+                <description>the goal unique identifier</description>
+            </param>
+        </params>
+        <return>
+        </return>
+    </command>
+    <command name="actionServerActionIsCanceling">
+        <description>Check if there is a cancel request</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionServerHandle" type="int">
+                <description>the action server handle</description>
+            </param>
+            <param name="goalUUID" type="string">
+                <description>the goal unique identifier</description>
+            </param>
+        </params>
+        <return>
+            <param name="result" type="bool">
+                <description>true if a cancelation request has been accepted for this goal</description>
+            </param>
+        </return>
+    </command>
+    <command name="actionServerActionIsActive">
+        <description>Check if goal is pending or executing</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionServerHandle" type="int">
+                <description>the action server handle</description>
+            </param>
+            <param name="goalUUID" type="string">
+                <description>the goal unique identifier</description>
+            </param>
+        </params>
+        <return>
+            <param name="result" type="bool">
+                <description>false if the goal has reached a terminal state</description>
+            </param>
+        </return>
+    </command>
+    <command name="actionServerActionIsExecuting">
+        <description>Check if the goal is executing</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionServerHandle" type="int">
+                <description>the action server handle</description>
+            </param>
+            <param name="goalUUID" type="string">
+                <description>the goal unique identifier</description>
+            </param>
+        </params>
+        <return>
+            <param name="result" type="bool">
+                <description>true if the goal is in an executing state</description>
+            </param>
+        </return>
+    </command>
     <command name="sendTransform">
         <description>Publish a TF transformation between frames.</description>
         <categories>
