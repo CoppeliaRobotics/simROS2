@@ -19,7 +19,7 @@
         auto handle_accepted_cb = [=] (const std::shared_ptr< rclcpp_action::ServerGoalHandle<`interface.cpp_type`> > goal_handle)
         {
             log(sim_verbosity_trace, "Calling handle accepted callback...");
-            actionServerProxy->goalHandles[goal_handle->get_goal_id()] = goal_handle.get();
+            actionServerProxy->goalHandles[goal_handle->get_goal_id()] = goal_handle;
             const auto &cb = actionServerProxy->handleAcceptedCallback;
             ros_action_callback__handle_accepted__`interface.goal.cpp_type_normalized`(cb.scriptId, cb.name.c_str(), goal_handle->get_goal_id(), goal_handle->get_goal().get(), actionServerProxy);
         };

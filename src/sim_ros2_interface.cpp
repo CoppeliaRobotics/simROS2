@@ -500,6 +500,20 @@ public:
         actionServerProxy->wr_opt.uint8array_as_string = true;
     }
 
+    template<typename Action>
+    rclcpp_action::ServerGoalHandle<Action> * getGoalHandle(ActionServerProxy *actionServerProxy, const std::string &goalUUIDstr)
+    {
+        return getGoalHandle<Action>(actionServerProxy, goalUUIDfromString(goalUUIDstr));
+    }
+
+    template<typename Action>
+    rclcpp_action::ServerGoalHandle<Action> * getGoalHandle(ActionServerProxy *actionServerProxy, const rclcpp_action::GoalUUID &goalUUID)
+    {
+        auto actsrv = boost::any_cast< std::shared_ptr< rclcpp_action::Server< Action > > >(actionServerProxy->action_server);
+        auto goalHandleBase = actionServerProxy->goalHandles.at(goalUUID).get();
+        return dynamic_cast< rclcpp_action::ServerGoalHandle<Action>* >(goalHandleBase);
+    }
+
     void actionServerPublishFeedback(actionServerPublishFeedback_in *in, actionServerPublishFeedback_out *out)
     {
         if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())

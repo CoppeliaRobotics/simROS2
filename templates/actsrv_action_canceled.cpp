@@ -4,9 +4,7 @@
 #py if interface.tag == 'action':
     else if(actionServerProxy->actionType == "`interface.full_name`")
     {
-        auto actsrv = boost::any_cast< std::shared_ptr< rclcpp_action::Server<`interface.cpp_type`> > >(actionServerProxy->action_server);
-        auto uuid = goalUUIDfromString(in->goalUUID);
-        auto gh = dynamic_cast< rclcpp_action::ServerGoalHandle<`interface.cpp_type`>* >(actionServerProxy->goalHandles[uuid]);
+        auto gh = getGoalHandle<`interface.cpp_type`>(actionServerProxy, in->goalUUID);
         auto result = std::make_shared<`interface.result.cpp_type`>();
         read__`interface.result.cpp_type_normalized`(in->_stackID, result.get(), &(actionServerProxy->rd_opt));
         gh->canceled(result);

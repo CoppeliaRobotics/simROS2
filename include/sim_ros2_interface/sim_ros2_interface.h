@@ -90,7 +90,7 @@ struct ActionServerProxy : Proxy
     ScriptCallback handleGoalCallback;
     ScriptCallback handleCancelCallback;
     ScriptCallback handleAcceptedCallback;
-    std::unordered_map<rclcpp_action::GoalUUID, rclcpp_action::ServerGoalHandleBase*> goalHandles;
+    std::unordered_map<rclcpp_action::GoalUUID, std::shared_ptr<rclcpp_action::ServerGoalHandleBase> > goalHandles;
     boost::any action_server;
     ReadOptions rd_opt;
     WriteOptions wr_opt;
