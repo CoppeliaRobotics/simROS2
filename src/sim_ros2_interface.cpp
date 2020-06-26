@@ -380,6 +380,12 @@ public:
         actionClientProxy->handle = actionClientProxyNextHandle++;
         actionClientProxy->actionName = in->actionName;
         actionClientProxy->actionType = in->actionType;
+        actionClientProxy->goalResponseCallback.scriptId = in->_scriptID;
+        actionClientProxy->goalResponseCallback.name = in->goalResponseCallback;
+        actionClientProxy->feedbackCallback.scriptId = in->_scriptID;
+        actionClientProxy->feedbackCallback.name = in->feedbackCallback;
+        actionClientProxy->resultCallback.scriptId = in->_scriptID;
+        actionClientProxy->resultCallback.name = in->resultCallback;
         actionClientProxies[actionClientProxy->handle] = actionClientProxy;
 
         if(0) {}

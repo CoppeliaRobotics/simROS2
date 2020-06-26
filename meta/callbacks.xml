@@ -296,6 +296,15 @@
             <param name="actionType" type="string">
                 <description>action type, e.g.: 'example_interfaces/action/Fibonacci'</description>
             </param>
+            <param name="goalResponseCallback" type="string">
+                <description>the goal response callback</description>
+            </param>
+            <param name="feedbackCallback" type="string">
+                <description>the feedback callback</description>
+            </param>
+            <param name="resultCallback" type="string">
+                <description>the result callback</description>
+            </param>
         </params>
         <return>
             <param name="actionClientHandle" type="int">
@@ -346,15 +355,6 @@
         <params>
             <param name="actionClientHandle" type="int">
                 <description>the action client handle</description>
-            </param>
-            <param name="goalResponseCallback" type="string">
-                <description>the goal response callback</description>
-            </param>
-            <param name="feedbackCallback" type="string">
-                <description>the feedback callback</description>
-            </param>
-            <param name="resultCallback" type="string">
-                <description>the result callback</description>
             </param>
             <param name="goal" type="table" skip="true">
                 <description>the goal to send</description>

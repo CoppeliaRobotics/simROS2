@@ -77,6 +77,9 @@ struct ActionClientProxy : Proxy
     int handle;
     std::string actionName;
     std::string actionType;
+    ScriptCallback goalResponseCallback;
+    ScriptCallback feedbackCallback;
+    ScriptCallback resultCallback;
     boost::any action_client;
     ReadOptions rd_opt;
     WriteOptions wr_opt;
