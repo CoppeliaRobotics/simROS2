@@ -35,10 +35,10 @@
                 lua_code = sim_ros2_action_result_code_aborted;
                 break;
             case rclcpp_action::ResultCode::CANCELED:
-                lua_code = sim_ros2_action_result_code_succeeded;
+                lua_code = sim_ros2_action_result_code_canceled;
                 break;
             default:
-                lua_code = sim_ros2_action_result_code_succeeded;
+                lua_code = sim_ros2_action_result_code_unknown;
                 break;
             }
             ros_action_callback__`interface.result.cpp_type_normalized`(actionClientProxy->resultCallback.scriptId, actionClientProxy->resultCallback.name.c_str(), result.goal_id, lua_code, result.result, actionClientProxy);
