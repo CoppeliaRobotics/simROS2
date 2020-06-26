@@ -21,7 +21,7 @@ struct unsupported_type : public std::exception
     unsupported_type(const std::string &w, const std::string &t)
     {
         std::stringstream ss;
-        ss << "Unsupported " << w << " type '" << t << "'. Please edit and recompile ROS2Interface plugin.";
+        ss << "Unsupported " << w << " type '" << t << "'. You may want to add it to meta/interfaces.txt and recompile the ROS2Interface plugin.";
         message = ss.str();
     }
     ~unsupported_type() throw() {}
