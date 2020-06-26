@@ -517,6 +517,17 @@ public:
         return dynamic_cast< rclcpp_action::ServerGoalHandle<Action>* >(goalHandleBase);
     }
 
+    void cleanupTerminalGoalHandles(ActionServerProxy *actionServerProxy)
+    {
+        for(auto it = actionServerProxy->goalHandles.begin(); it != actionServerProxy->goalHandles.end(); )
+        {
+            if(it->second->is_active())
+                ++it;
+            else
+                actionServerProxy->goalHandles.erase(it);
+        }
+    }
+
     void actionServerPublishFeedback(actionServerPublishFeedback_in *in, actionServerPublishFeedback_out *out)
     {
         if(actionServerProxies.find(in->actionServerHandle) == actionServerProxies.end())
@@ -549,6 +560,8 @@ public:
         {
             throw unsupported_type("action", actionServerProxy->actionType);
         }
+
+        cleanupTerminalGoalHandles(actionServerProxy);
     }
 
     void actionServerActionSucceed(actionServerActionSucceed_in *in, actionServerActionSucceed_out *out)
@@ -566,6 +579,8 @@ public:
         {
             throw unsupported_type("action", actionServerProxy->actionType);
         }
+
+        cleanupTerminalGoalHandles(actionServerProxy);
     }
 
     void actionServerActionCanceled(actionServerActionCanceled_in *in, actionServerActionCanceled_out *out)
@@ -583,6 +598,8 @@ public:
         {
             throw unsupported_type("action", actionServerProxy->actionType);
         }
+
+        cleanupTerminalGoalHandles(actionServerProxy);
     }
 
     void actionServerActionExecute(actionServerActionExecute_in *in, actionServerActionExecute_out *out)
@@ -600,6 +617,8 @@ public:
         {
             throw unsupported_type("action", actionServerProxy->actionType);
         }
+
+        cleanupTerminalGoalHandles(actionServerProxy);
     }
 
     void actionServerActionIsCanceling(actionServerActionIsCanceling_in *in, actionServerActionIsCanceling_out *out)
