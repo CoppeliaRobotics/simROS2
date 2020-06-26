@@ -45,6 +45,8 @@
         };
         auto goal_handle_future = cli->async_send_goal(goal_msg, send_goal_options);
         out->success = rclcpp::spin_until_future_complete(node, goal_handle_future) == rclcpp::executor::FutureReturnCode::SUCCESS;
+        rclcpp_action::ClientGoalHandle<`interface.cpp_type`>::SharedPtr goal_handle = goal_handle_future.get();
+        actionClientProxy->last_goal_handle = goal_handle;
     }
 #py endif
 #py endfor

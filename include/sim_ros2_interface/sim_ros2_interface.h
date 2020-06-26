@@ -81,6 +81,7 @@ struct ActionClientProxy : Proxy
     ScriptCallback feedbackCallback;
     ScriptCallback resultCallback;
     boost::any action_client;
+    boost::any last_goal_handle;
     ReadOptions rd_opt;
     WriteOptions wr_opt;
 };

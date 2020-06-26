@@ -449,6 +449,23 @@ public:
         }
     }
 
+    void cancelLastGoal(cancelLastGoal_in *in, cancelLastGoal_out *out)
+    {
+        if(actionClientProxies.find(in->actionClientHandle) == actionClientProxies.end())
+        {
+            throw exception("invalid action client handle");
+        }
+
+        ActionClientProxy *actionClientProxy = actionClientProxies[in->actionClientHandle];
+
+        if(0) {}
+#include <actcli_cancelLastGoal.cpp>
+        else
+        {
+            throw unsupported_type("action", actionClientProxy->actionType);
+        }
+    }
+
     void createActionServer(createActionServer_in *in, createActionServer_out *out)
     {
         ActionServerProxy *actionServerProxy = new ActionServerProxy();

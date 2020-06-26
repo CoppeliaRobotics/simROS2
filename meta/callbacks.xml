@@ -369,6 +369,25 @@
             </param>
         </return>
     </command>
+    <command name="cancelLastGoal">
+        <description>Cancel last submitted goal on the specified action client.</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+            <param name="actionClientHandle" type="int">
+                <description>the action client handle</description>
+            </param>
+        </params>
+        <return>
+            <param name="success" type="bool">
+                <description>false if canceling the goal to the action server has failed</description>
+            </param>
+        </return>
+    </command>
     <command name="createActionServer">
         <description>Create an action server.</description>
         <categories>
