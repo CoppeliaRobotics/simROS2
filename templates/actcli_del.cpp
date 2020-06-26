@@ -4,7 +4,7 @@
 #py if interface.tag == 'action':
     else if(actionClientProxy->actionType == "`interface.full_name`")
     {
-        auto cli = boost::any_cast< std::shared_ptr< rclcpp::Client<`interface.cpp_type`> > >(actionClientProxy->action_client);
+        auto cli = boost::any_cast< std::shared_ptr< rclcpp_action::Client<`interface.cpp_type`> > >(actionClientProxy->action_client);
         cli = nullptr;
     }
 #py endif
