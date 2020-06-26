@@ -297,13 +297,13 @@
                 <description>action type, e.g.: 'example_interfaces/action/Fibonacci'</description>
             </param>
             <param name="goalResponseCallback" type="string">
-                <description>the goal response callback</description>
+                <description>the goal response callback, will be called with arguments (goal_id,accepted) where accepted is a boolean value</description>
             </param>
             <param name="feedbackCallback" type="string">
-                <description>the feedback callback</description>
+                <description>the feedback callback, will be called with arguments (goal_id,feedback) where feedback is a table representing the Feedback message of the action type</description>
             </param>
             <param name="resultCallback" type="string">
-                <description>the result callback</description>
+                <description>the result callback, will be called with arguments (goal_id,code,result) where code is a value from <enum-ref name="action_result_code" />, and result is a table representing the Result message of the action type</description>
             </param>
         </params>
         <return>
@@ -385,13 +385,13 @@
                 <description>action type, e.g.: 'example_interfaces/action/Fibonacci'</description>
             </param>
             <param name="handleGoalCallback" type="string">
-                <description>name of callback function, which will be called with arguments (goal_id, goal) and must return a valid <enum-ref name="goal_response" /></description>
+                <description>name of callback function, which will be called with arguments (goal_id, goal) where goal is a table representing the Goal message of the action type. the callback must return a valid <enum-ref name="goal_response" /></description>
             </param>
             <param name="handleCancelCallback" type="string">
-                <description>name of callback function, which will be called with arguments (goal_id, goal) and must return a valid <enum-ref name="cancel_response" /></description>
+                <description>name of callback function, which will be called with arguments (goal_id, goal) where goal is a table representing the Goal message of the action type. the callback must return a valid <enum-ref name="cancel_response" /></description>
             </param>
             <param name="handleAcceptedCallback" type="string">
-                <description>name of callback function, which will be called with arguments (goal_id, goal) after the goal is accepted, and is responsible of executing the goal, but must return immediately.</description>
+                <description>name of callback function, which will be called with arguments (goal_id, goal) where goal is a table representing the Goal message of the action type. it will be called after the goal is accepted, and is responsible of executing the goal, but must return immediately.</description>
             </param>
         </params>
         <return>
