@@ -364,6 +364,9 @@
                  when calling the C++ callback -->
         </params>
         <return>
+            <param name="success" type="bool">
+                <description>false if sending the goal to the action server has failed</description>
+            </param>
         </return>
     </command>
     <command name="createActionServer">
