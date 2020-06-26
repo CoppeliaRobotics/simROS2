@@ -19,9 +19,9 @@
             in1.accepted = !!goal_handle;
             actionGoalResponseCallback(actionClientProxy->goalResponseCallback.scriptId, actionClientProxy->goalResponseCallback.name.c_str(), &in1, &out1);
         };
-        send_goal_options.feedback_callback = [=] (rclcpp_action::ClientGoalHandle<`interface.cpp_type`>::SharedPtr, const std::shared_ptr<const `interface.feedback.cpp_type`> feedback) -> void
+        send_goal_options.feedback_callback = [=] (rclcpp_action::ClientGoalHandle<`interface.cpp_type`>::SharedPtr goal_handle, const std::shared_ptr<const `interface.feedback.cpp_type`> feedback) -> void
         {
-            ros_action_callback__`interface.feedback.cpp_type_normalized`(actionClientProxy->feedbackCallback.scriptId, actionClientProxy->feedbackCallback.name.c_str(), feedback.get(), actionClientProxy);
+            ros_action_callback__`interface.feedback.cpp_type_normalized`(actionClientProxy->feedbackCallback.scriptId, actionClientProxy->feedbackCallback.name.c_str(), goal_handle->get_goal_id(), feedback.get(), actionClientProxy);
         };
         send_goal_options.result_callback = [=] (const rclcpp_action::ClientGoalHandle<`interface.cpp_type`>::WrappedResult &result) -> void
         {
@@ -41,7 +41,7 @@
                 lua_code = sim_ros2_action_result_code_succeeded;
                 break;
             }
-            ros_action_callback__`interface.result.cpp_type_normalized`(actionClientProxy->resultCallback.scriptId, actionClientProxy->resultCallback.name.c_str(), lua_code, result.result, actionClientProxy);
+            ros_action_callback__`interface.result.cpp_type_normalized`(actionClientProxy->resultCallback.scriptId, actionClientProxy->resultCallback.name.c_str(), result.goal_id, lua_code, result.result, actionClientProxy);
         };
         auto goal_handle_future = cli->async_send_goal(goal_msg, send_goal_options);
         out->success = rclcpp::spin_until_future_complete(node, goal_handle_future) == rclcpp::executor::FutureReturnCode::SUCCESS;

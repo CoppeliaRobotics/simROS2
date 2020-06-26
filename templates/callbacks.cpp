@@ -330,12 +330,13 @@ bool ros_srv_callback__`interface.cpp_type_normalized`(const std::shared_ptr<rmw
 #py endfor
 #py for interface_name, interface in interfaces.items():
 #py if interface.tag == 'action':
-void ros_action_callback__`interface.feedback.cpp_type_normalized`(int scriptID, const char *callback, const `interface.feedback.cpp_type` *feedback, ActionClientProxy *proxy)
+void ros_action_callback__`interface.feedback.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, const `interface.feedback.cpp_type` *feedback, ActionClientProxy *proxy)
 {
     int stack = -1;
     try
     {
         stack = simCreateStackE();
+        write__string(goalUUIDtoString(goal_id), stack, &(proxy->wr_opt));
         write__`interface.feedback.cpp_type_normalized`(*feedback, stack, &(proxy->wr_opt));
         simCallScriptFunctionExE(scriptID, callback, stack);
         simReleaseStackE(stack);
@@ -351,12 +352,13 @@ void ros_action_callback__`interface.feedback.cpp_type_normalized`(int scriptID,
     }
 }
 
-void ros_action_callback__`interface.result.cpp_type_normalized`(int scriptID, const char *callback, int action_result_code, const `interface.result.cpp_type`::SharedPtr result, ActionClientProxy *proxy)
+void ros_action_callback__`interface.result.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, int action_result_code, const `interface.result.cpp_type`::SharedPtr result, ActionClientProxy *proxy)
 {
     int stack = -1;
     try
     {
         stack = simCreateStackE();
+        write__string(goalUUIDtoString(goal_id), stack, &(proxy->wr_opt));
         write__int32(action_result_code, stack, &(proxy->wr_opt));
         write__`interface.result.cpp_type_normalized`(*result, stack, &(proxy->wr_opt));
         simCallScriptFunctionExE(scriptID, callback, stack);

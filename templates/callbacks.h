@@ -28,8 +28,8 @@ bool ros_srv_callback__`interface.cpp_type_normalized`(const std::shared_ptr<rmw
 #py endfor
 #py for interface_name, interface in interfaces.items():
 #py if interface.tag == 'action':
-void ros_action_callback__`interface.feedback.cpp_type_normalized`(int scriptID, const char *callback, const `interface.feedback.cpp_type` *feedback, ActionClientProxy *proxy);
-void ros_action_callback__`interface.result.cpp_type_normalized`(int scriptID, const char *callback, int action_result_code, const `interface.result.cpp_type`::SharedPtr result, ActionClientProxy *proxy);
+void ros_action_callback__`interface.feedback.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, const `interface.feedback.cpp_type` *feedback, ActionClientProxy *proxy);
+void ros_action_callback__`interface.result.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, int action_result_code, const `interface.result.cpp_type`::SharedPtr result, ActionClientProxy *proxy);
 rclcpp_action::GoalResponse ros_action_callback__handle_goal__`interface.goal.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, const `interface.goal.cpp_type` *goal, ActionServerProxy *proxy);
 rclcpp_action::CancelResponse ros_action_callback__handle_cancel__`interface.goal.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, const `interface.goal.cpp_type` *goal, ActionServerProxy *proxy);
 void ros_action_callback__handle_accepted__`interface.goal.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, const `interface.goal.cpp_type` *goal, ActionServerProxy *proxy);
