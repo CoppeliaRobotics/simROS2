@@ -559,6 +559,8 @@ public:
 
     void cleanupTerminalGoalHandles(ActionServerProxy *actionServerProxy)
     {
+        /* FIXME: crash when actionServerActionSucceed is called */ return;
+
         for(auto it = actionServerProxy->goalHandles.begin(); it != actionServerProxy->goalHandles.end(); )
         {
             if(it->second->is_active())
