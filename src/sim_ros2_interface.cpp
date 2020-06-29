@@ -301,6 +301,23 @@ public:
         clientProxy->wr_opt.uint8array_as_string = true;
     }
 
+    void waitForService(waitForService_in *in, waitForService_out *out)
+    {
+        if(clientProxies.find(in->clientHandle) == clientProxies.end())
+        {
+            throw exception("invalid service client handle");
+        }
+
+        ClientProxy *clientProxy = clientProxies[in->clientHandle];
+
+        if(0) {}
+#include <cli_wait.cpp>
+        else
+        {
+            throw unsupported_type("service", clientProxy->serviceType);
+        }
+    }
+
     void call(call_in *in, call_out *out)
     {
         if(clientProxies.find(in->clientHandle) == clientProxies.end())
