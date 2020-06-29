@@ -26,4 +26,5 @@ std_msgs/msg/UInt64
 std_srvs/srv/Empty
 std_srvs/srv/SetBool
 std_srvs/srv/Trigger
+example_interfaces/srv/AddTwoInts
 example_interfaces/action/Fibonacci
