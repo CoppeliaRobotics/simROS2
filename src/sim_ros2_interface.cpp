@@ -937,11 +937,6 @@ public:
             params_client->set_parameters({rclcpp::Parameter(in->name, rclcpp::ParameterValue())});
     }
 
-    void searchParam(searchParam_in *in, searchParam_out *out)
-    {
-        out->found = params_client->has_parameter(in->name);
-    }
-
     void createInterface(createInterface_in *in, createInterface_out *out)
     {
         if(0) {}

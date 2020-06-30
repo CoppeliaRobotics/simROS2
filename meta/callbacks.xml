@@ -989,25 +989,6 @@
         <return>
         </return>
     </command>
-    <command name="searchParam">
-        <description>Search a parameter in the ROS Parameter Server, looking in the closest namespace.</description>
-        <categories>
-            <category name="param" />
-        </categories>
-        <params>
-            <param name="name" type="string">
-                <description>name of the parameter</description>
-            </param>
-        </params>
-        <return>
-            <param name="found" type="bool">
-                <description>true if the parameter has been found</description>
-            </param>
-            <param name="name" type="string">
-                <description>name of the parameter which has been found</description>
-            </param>
-        </return>
-    </command>
     <command name="createInterface">
         <description>Construct an interface of the specified type, initialized with the default values.</description>
         <categories>
