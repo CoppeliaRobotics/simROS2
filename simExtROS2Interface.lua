@@ -1,5 +1,30 @@
 local simROS2 ={}
 
+--@fun timeFromFloat
+--@arg t the time as a floating point number
+function simROS2.timeFromFloat(t)
+    local r={}
+    r.sec=math.floor(t)
+    r.nanosec=math.floor(1e9*(t-r.sec))
+    return r
+end
+
+--@fun timeToFloat
+--@arg t the time as a table with integer sec and nanosec fields
+function simROS2.timeToFloat(t)
+    return t.sec+1e-9*t.nanosec
+end
+
+--@fun getSystemTime
+function simROS2.getSystemTime()
+    return simROS2.timeFromFloat(sim.getSystemTime())
+end
+
+--@fun getSimulationTime
+function simROS2.getSimulationTime()
+    return simROS2.timeFromFloat(sim.getSimulationTime())
+end
+
 --@fun importInterface
 --@arg string name the name of the interface to import, e.g.: geometry_msgs/msg/Vector3
 function simROS2.importInterface(name)
