@@ -1,7 +1,7 @@
 local simROS2 ={}
 
 --@fun timeFromFloat
---@arg t the time as a floating point number
+--@arg float t the time as a floating point number
 function simROS2.timeFromFloat(t)
     local r={}
     r.sec=math.floor(t)
@@ -10,7 +10,7 @@ function simROS2.timeFromFloat(t)
 end
 
 --@fun timeToFloat
---@arg t the time as a table with integer sec and nanosec fields
+--@arg table t the time as a table with integer sec and nanosec fields
 function simROS2.timeToFloat(t)
     return t.sec+1e-9*t.nanosec
 end
