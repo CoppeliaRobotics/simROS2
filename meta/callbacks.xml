@@ -657,7 +657,7 @@
         </see-also>
         <params>
             <param name="transform" type="table" skip="true">
-                <description>the transformation expressed as a geometry_msgs/TransformStamped message, i.e. {header={stamp=timeStamp, frame_id='...'}, child_frame_id='...', transform={translation={x=..., y=..., z=...}, rotation={x=..., y=..., z=..., w=...}}}</description>
+                <description>the transformation expressed as a geometry_msgs/msg/TransformStamped message, i.e. {header={stamp=timeStamp, frame_id='...'}, child_frame_id='...', transform={translation={x=..., y=..., z=...}, rotation={x=..., y=..., z=..., w=...}}}</description>
             </param>
         </params>
         <return>
@@ -674,7 +674,7 @@
         </see-also>
         <params>
             <param name="transforms" type="table" skip="true">
-                <description>an array of geometry_msgs/TransformStamped messages</description>
+                <description>an array of geometry_msgs/msg/TransformStamped messages</description>
             </param>
         </params>
         <return>
@@ -1089,7 +1089,7 @@
         </return>
     </script-function>
     <struct name="sim_ros2_time">
-        <description>Time data structure, equivalent of builtin_interfaces/Time</description>
+        <description>Time data structure, equivalent of builtin_interfaces/msg/Time</description>
         <param name="sec" type="int">
             <description>seconds</description>
         </param>
