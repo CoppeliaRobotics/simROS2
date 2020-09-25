@@ -474,7 +474,7 @@
         </return>
     </command>
     <command name="actionServerPublishFeedback">
-        <description>Send an update about the progress of this goal. This must be only called when the goal is executing. If execution of a goal is deferred then <cmd-ref name="actionServerActionExecute" /> must be called first.</description>
+        <description>Send an update about the progress of this goal. This must be only called when the goal is executing. If execution of a goal is deferred then <command-ref name="actionServerActionExecute" /> must be called first.</description>
         <categories>
             <category name="action" />
         </categories>
