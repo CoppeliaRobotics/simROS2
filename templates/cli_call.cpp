@@ -16,7 +16,7 @@
         }
         else
         {
-            throw exception("failed to call service `interface.full_name`");
+            throw sim::exception("failed to call service `interface.full_name`");
         }
     }
 #py endif

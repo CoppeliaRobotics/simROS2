@@ -6,7 +6,7 @@
     {
         auto cli = boost::any_cast< std::shared_ptr< rclcpp_action::Client<`interface.cpp_type`> > >(actionClientProxy->action_client);
         if(!cli->wait_for_action_server(std::chrono::seconds(5)))
-            throw exception("action server not available after wait");
+            throw sim::exception("action server not available after wait");
         `interface.goal.cpp_type` goal_msg;
         read__`interface.goal.cpp_type_normalized`(in->_stackID, &goal_msg, &(actionClientProxy->rd_opt));
         auto send_goal_options = rclcpp_action::Client<`interface.cpp_type`>::SendGoalOptions();

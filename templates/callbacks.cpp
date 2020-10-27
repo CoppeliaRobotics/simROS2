@@ -11,83 +11,83 @@ void write__`subinterface.cpp_type_normalized`(const `subinterface.cpp_type`& ms
 {
     try
     {
-        simPushTableOntoStackE(stack);
+        sim::pushTableOntoStack(stack);
 #py for field in subinterface.fields:
 #py if field.type.is_array:
 #py if field.type.is_primitive_type() and field.type.type in fast_write_types:
         try
         {
             // write field '`field.name`' (using fast specialized function)
-            simPushStringOntoStackE(stack, "`field.name`", 0);
-            simPush`fast_write_types[field.type.type]`TableOntoStackE(stack, &(msg.`field.name`[0]), msg.`field.name`.size());
-            simInsertDataIntoStackTableE(stack);
+            sim::pushStringOntoStack(stack, "`field.name`", 0);
+            sim::push`fast_write_types[field.type.type]`TableOntoStack(stack, &(msg.`field.name`[0]), msg.`field.name`.size());
+            sim::insertDataIntoStackTable(stack);
         }
-        catch(exception& ex)
+        catch(std::exception &ex)
         {
             std::string msg = "field '`field.name`': ";
             msg += ex.what();
-            throw exception(msg);
+            throw sim::exception(msg);
         }
 #py elif field.type.is_primitive_type() and field.type.type == 'uint8':
         try
         {
             // write field '`field.name`' (using fast specialized function)
-            simPushStringOntoStackE(stack, "`field.name`", 0);
+            sim::pushStringOntoStack(stack, "`field.name`", 0);
             if(opt && opt->uint8array_as_string)
-                simPushStringOntoStackE(stack, (simChar*)&(msg.`field.name`[0]), msg.`field.name`.size());
+                sim::pushStringOntoStack(stack, (simChar*)&(msg.`field.name`[0]), msg.`field.name`.size());
             else
-                simPushUInt8TableOntoStackE(stack, &(msg.`field.name`[0]), msg.`field.name`.size());
-            simInsertDataIntoStackTableE(stack);
+                sim::pushUInt8TableOntoStack(stack, &(msg.`field.name`[0]), msg.`field.name`.size());
+            sim::insertDataIntoStackTable(stack);
         }
-        catch(exception& ex)
+        catch(std::exception &ex)
         {
             std::string msg = "field '`field.name`': ";
             msg += ex.what();
-            throw exception(msg);
+            throw sim::exception(msg);
         }
 #py else:
         try
         {
             // write field '`field.name`'
-            simPushStringOntoStackE(stack, "`field.name`", 0);
-            simPushTableOntoStackE(stack);
+            sim::pushStringOntoStack(stack, "`field.name`", 0);
+            sim::pushTableOntoStack(stack);
             for(int i = 0; i < msg.`field.name`.size(); i++)
             {
                 write__int32(i + 1, stack, opt);
                 write__`field.cpp_type_normalized`(msg.`field.name`[i], stack, opt);
-                simInsertDataIntoStackTableE(stack);
+                sim::insertDataIntoStackTable(stack);
             }
-            simInsertDataIntoStackTableE(stack);
+            sim::insertDataIntoStackTable(stack);
         }
-        catch(exception& ex)
+        catch(std::exception &ex)
         {
             std::string msg = "field '`field.name`': ";
             msg += ex.what();
-            throw exception(msg);
+            throw sim::exception(msg);
         }
 #py endif
 #py else:
         try
         {
             // write field '`field.name`'
-            simPushStringOntoStackE(stack, "`field.name`", 0);
+            sim::pushStringOntoStack(stack, "`field.name`", 0);
             write__`field.cpp_type_normalized`(msg.`field.name`, stack, opt);
-            simInsertDataIntoStackTableE(stack);
+            sim::insertDataIntoStackTable(stack);
         }
-        catch(exception& ex)
+        catch(std::exception &ex)
         {
             std::string msg = "field '`field.name`': ";
             msg += ex.what();
-            throw exception(msg);
+            throw sim::exception(msg);
         }
 #py endif
 #py endfor
     }
-    catch(exception& ex)
+    catch(std::exception &ex)
     {
         std::string msg = "write__`subinterface.cpp_type_normalized`: ";
         msg += ex.what();
-        throw exception(msg);
+        throw sim::exception(msg);
     }
 }
 
@@ -95,25 +95,25 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
 {
     try
     {
-        int r = simGetStackTableInfoE(stack, 0);
+        int r = sim::getStackTableInfo(stack, 0);
         if(r != sim_stack_table_map && r != sim_stack_table_empty)
-            throw exception("expected a table");
+            throw sim::exception("expected a table");
 
-        int oldsz = simGetStackSizeE(stack);
-        simUnfoldStackTableE(stack);
-        int numItems = (simGetStackSizeE(stack) - oldsz + 1) / 2;
+        int oldsz = sim::getStackSize(stack);
+        sim::unfoldStackTable(stack);
+        int numItems = (sim::getStackSize(stack) - oldsz + 1) / 2;
 
         char *str;
         int strSz;
 
         while(numItems >= 1)
         {
-            simMoveStackItemToTopE(stack, oldsz - 1); // move key to top
-            if((str = simGetStackStringValueE(stack, &strSz)) != NULL && strSz > 0)
+            sim::moveStackItemToTop(stack, oldsz - 1); // move key to top
+            if((str = sim::getStackStringValue(stack, &strSz)) != NULL && strSz > 0)
             {
-                simPopStackItemE(stack, 1);
+                sim::popStackItem(stack, 1);
 
-                simMoveStackItemToTopE(stack, oldsz - 1); // move value to top
+                sim::moveStackItemToTop(stack, oldsz - 1); // move value to top
 
                 if(0) {}
 #py for field in subinterface.fields:
@@ -124,24 +124,24 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
                     try
                     {
                         // read field '`field.name`' (using fast specialized function)
-                        int sz = simGetStackTableInfoE(stack, 0);
+                        int sz = sim::getStackTableInfo(stack, 0);
                         if(sz < 0)
-                            throw exception("expected array");
-                        if(simGetStackTableInfoE(stack, 2) != 1)
-                            throw exception("fast_write_type reader exception #1");
+                            throw sim::exception("expected array");
+                        if(sim::getStackTableInfo(stack, 2) != 1)
+                            throw sim::exception("fast_write_type reader exception #1");
 #py if field.type.array_size:
                         // field has fixed size -> no need to reserve space into vector
 #py else:
                         msg->`field.name`.resize(sz);
 #py endif
-                        simGetStack`fast_write_types[field.type.type]`TableE(stack, &(msg->`field.name`[0]), sz);
-                        simPopStackItemE(stack, 1);
+                        sim::getStack`fast_write_types[field.type.type]`Table(stack, &(msg->`field.name`[0]), sz);
+                        sim::popStackItem(stack, 1);
                     }
-                    catch(exception& ex)
+                    catch(std::exception &ex)
                     {
                         std::string msg = "field `field.name`: ";
                         msg += ex.what();
-                        throw exception(msg);
+                        throw sim::exception(msg);
                     }
                 }
 #py elif field.type.is_primitive_type() and field.type.type == 'uint8':
@@ -154,7 +154,7 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
                             // read field '`field.name`' (uint8[]) as string
                             simChar *str;
                             simInt sz;
-                            if((str = simGetStackStringValueE(stack, &sz)) != NULL && sz > 0)
+                            if((str = sim::getStackStringValue(stack, &sz)) != NULL && sz > 0)
                             {
                                 /*
                                  * XXX: if an alternative version of simGetStackStringValue woudl exist
@@ -166,32 +166,32 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
                                 msg->`field.name`.resize(sz);
 #py endif
                                 std::memcpy(&(msg->`field.name`[0]), str, sz);
-                                simReleaseBufferE(str);
+                                sim::releaseBuffer(str);
                             }
-                            else throw exception("string read error when trying to read uint8[]");
+                            else throw sim::exception("string read error when trying to read uint8[]");
                         }
                         else
 			{
                             // read field '`field.name`' (using fast specialized function)
-                            int sz = simGetStackTableInfoE(stack, 0);
+                            int sz = sim::getStackTableInfo(stack, 0);
                             if(sz < 0)
-                                throw exception("expected uint8 array");
-                            if(simGetStackTableInfoE(stack, 2) != 1)
-                                throw exception("fast_write_type uint8[] reader exception #1");
+                                throw sim::exception("expected uint8 array");
+                            if(sim::getStackTableInfo(stack, 2) != 1)
+                                throw sim::exception("fast_write_type uint8[] reader exception #1");
 #py if field.type.array_size:
                             // field has fixed size -> no need to reserve space into vector
 #py else:
                             msg->`field.name`.resize(sz);
 #py endif
-                            simGetStackUInt8TableE(stack, &(msg->`field.name`[0]), sz);
-                            simPopStackItemE(stack, 1);
+                            sim::getStackUInt8Table(stack, &(msg->`field.name`[0]), sz);
+                            sim::popStackItem(stack, 1);
 			}
                     }
-                    catch(exception& ex)
+                    catch(std::exception &ex)
                     {
                         std::string msg = "field `field.name`: ";
                         msg += ex.what();
-                        throw exception(msg);
+                        throw sim::exception(msg);
                     }
                 }
 #py else:
@@ -200,17 +200,17 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
                     try
                     {
                         // read field '`field.name`'
-                        if(simGetStackTableInfoE(stack, 0) < 0)
-                            throw exception("expected array");
-                        int oldsz1 = simGetStackSizeE(stack);
-                        simUnfoldStackTableE(stack);
-                        int numItems1 = (simGetStackSizeE(stack) - oldsz1 + 1) / 2;
+                        if(sim::getStackTableInfo(stack, 0) < 0)
+                            throw sim::exception("expected array");
+                        int oldsz1 = sim::getStackSize(stack);
+                        sim::unfoldStackTable(stack);
+                        int numItems1 = (sim::getStackSize(stack) - oldsz1 + 1) / 2;
                         for(int i = 0; i < numItems1; i++)
                         {
-                            simMoveStackItemToTopE(stack, oldsz1 - 1); // move key to top
+                            sim::moveStackItemToTop(stack, oldsz1 - 1); // move key to top
                             int j;
                             read__int32(stack, &j, opt);
-                            simMoveStackItemToTopE(stack, oldsz1 - 1); // move value to top
+                            sim::moveStackItemToTop(stack, oldsz1 - 1); // move value to top
                             `field.cpp_type` v;
                             read__`field.cpp_type_normalized`(stack, &v, opt);
 #py if field.type.array_size:
@@ -220,11 +220,11 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
 #py endif
                         }
                     }
-                    catch(exception& ex)
+                    catch(std::exception &ex)
                     {
                         std::string msg = "field `field.name`: ";
                         msg += ex.what();
-                        throw exception(msg);
+                        throw sim::exception(msg);
                     }
                 }
 #py endif
@@ -236,11 +236,11 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
                         // read field '`field.name`'
                         read__`field.cpp_type_normalized`(stack, &(msg->`field.name`), opt);
                     }
-                    catch(exception& ex)
+                    catch(std::exception &ex)
                     {
                         std::string msg = "field `field.name`: ";
                         msg += ex.what();
-                        throw exception(msg);
+                        throw sim::exception(msg);
                     }
                 }
 #py endif
@@ -249,24 +249,24 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
                 {
                     std::string msg = "unexpected key: ";
                     msg += str;
-                    throw exception(msg);
+                    throw sim::exception(msg);
                 }
 
                 simReleaseBuffer(str);
             }
             else
             {
-                throw exception("malformed table (bad key type)");
+                throw sim::exception("malformed table (bad key type)");
             }
 
-            numItems = (simGetStackSizeE(stack) - oldsz + 1) / 2;
+            numItems = (sim::getStackSize(stack) - oldsz + 1) / 2;
         }
     }
-    catch(exception& ex)
+    catch(std::exception &ex)
     {
         std::string msg = "read__`subinterface.cpp_type_normalized`: ";
         msg += ex.what();
-        throw exception(msg);
+        throw sim::exception(msg);
     }
 }
 
@@ -280,13 +280,13 @@ void ros_callback__`interface.cpp_type_normalized`(const `interface.cpp_type`::S
     int stack = -1;
     try
     {
-        stack = simCreateStackE();
+        stack = sim::createStack();
         write__`interface.cpp_type_normalized`(*msg, stack, &(proxy->wr_opt));
-        simCallScriptFunctionExE(proxy->topicCallback.scriptId, proxy->topicCallback.name.c_str(), stack);
-        simReleaseStackE(stack);
+        sim::callScriptFunctionEx(proxy->topicCallback.scriptId, proxy->topicCallback.name.c_str(), stack);
+        sim::releaseStack(stack);
         stack = -1;
     }
-    catch(exception& ex)
+    catch(std::exception &ex)
     {
         if(stack != -1)
             simReleaseStack(stack); // don't throw
@@ -307,15 +307,15 @@ bool ros_srv_callback__`interface.cpp_type_normalized`(const std::shared_ptr<rmw
 
     try
     {
-        stack = simCreateStackE();
+        stack = sim::createStack();
         write__`interface.request.cpp_type_normalized`(*req, stack, &(proxy->wr_opt));
-        simCallScriptFunctionExE(proxy->serviceCallback.scriptId, proxy->serviceCallback.name.c_str(), stack);
+        sim::callScriptFunctionEx(proxy->serviceCallback.scriptId, proxy->serviceCallback.name.c_str(), stack);
         read__`interface.response.cpp_type_normalized`(stack, res.get(), &(proxy->rd_opt));
-        simReleaseStackE(stack);
+        sim::releaseStack(stack);
         stack = -1;
         return true;
     }
-    catch(exception& ex)
+    catch(std::exception &ex)
     {
         if(stack != -1)
             simReleaseStack(stack); // don't throw
@@ -335,14 +335,14 @@ void ros_action_callback__`interface.feedback.cpp_type_normalized`(int scriptID,
     int stack = -1;
     try
     {
-        stack = simCreateStackE();
+        stack = sim::createStack();
         write__string(goalUUIDtoString(goal_id), stack, &(proxy->wr_opt));
         write__`interface.feedback.cpp_type_normalized`(*feedback, stack, &(proxy->wr_opt));
-        simCallScriptFunctionExE(scriptID, callback, stack);
-        simReleaseStackE(stack);
+        sim::callScriptFunctionEx(scriptID, callback, stack);
+        sim::releaseStack(stack);
         stack = -1;
     }
-    catch(exception& ex)
+    catch(std::exception &ex)
     {
         if(stack != -1)
             simReleaseStack(stack); // don't throw
@@ -357,15 +357,15 @@ void ros_action_callback__`interface.result.cpp_type_normalized`(int scriptID, c
     int stack = -1;
     try
     {
-        stack = simCreateStackE();
+        stack = sim::createStack();
         write__string(goalUUIDtoString(goal_id), stack, &(proxy->wr_opt));
         write__int32(action_result_code, stack, &(proxy->wr_opt));
         write__`interface.result.cpp_type_normalized`(*result, stack, &(proxy->wr_opt));
-        simCallScriptFunctionExE(scriptID, callback, stack);
-        simReleaseStackE(stack);
+        sim::callScriptFunctionEx(scriptID, callback, stack);
+        sim::releaseStack(stack);
         stack = -1;
     }
-    catch(exception& ex)
+    catch(std::exception &ex)
     {
         if(stack != -1)
             simReleaseStack(stack); // don't throw
@@ -381,15 +381,15 @@ rclcpp_action::GoalResponse ros_action_callback__handle_goal__`interface.goal.cp
     int ret = sim_ros2_goal_response_reject;
     try
     {
-        stack = simCreateStackE();
+        stack = sim::createStack();
         write__string(goalUUIDtoString(goal_id), stack, &(proxy->wr_opt));
         write__`interface.goal.cpp_type_normalized`(*goal, stack, &(proxy->wr_opt));
-        simCallScriptFunctionExE(scriptID, callback, stack);
+        sim::callScriptFunctionEx(scriptID, callback, stack);
         read__int32(stack, &ret, &(proxy->rd_opt));
-        simReleaseStackE(stack);
+        sim::releaseStack(stack);
         stack = -1;
     }
-    catch(exception& ex)
+    catch(std::exception &ex)
     {
         if(stack != -1)
             simReleaseStack(stack); // don't throw
@@ -406,7 +406,7 @@ rclcpp_action::GoalResponse ros_action_callback__handle_goal__`interface.goal.cp
     case sim_ros2_goal_response_accept_and_defer:
         return rclcpp_action::GoalResponse::ACCEPT_AND_DEFER;
     default:
-        log(sim_verbosity_scripterrors, "invalid goal response");
+        sim::addLog(sim_verbosity_scripterrors, "invalid goal response");
         return rclcpp_action::GoalResponse::REJECT;
     }
 }
@@ -417,15 +417,15 @@ rclcpp_action::CancelResponse ros_action_callback__handle_cancel__`interface.goa
     int ret = sim_ros2_cancel_response_reject;
     try
     {
-        stack = simCreateStackE();
+        stack = sim::createStack();
         write__string(goalUUIDtoString(goal_id), stack, &(proxy->wr_opt));
         write__`interface.goal.cpp_type_normalized`(*goal, stack, &(proxy->wr_opt));
-        simCallScriptFunctionExE(scriptID, callback, stack);
+        sim::callScriptFunctionEx(scriptID, callback, stack);
         read__int32(stack, &ret, &(proxy->rd_opt));
-        simReleaseStackE(stack);
+        sim::releaseStack(stack);
         stack = -1;
     }
-    catch(exception& ex)
+    catch(std::exception &ex)
     {
         if(stack != -1)
             simReleaseStack(stack); // don't throw
@@ -440,7 +440,7 @@ rclcpp_action::CancelResponse ros_action_callback__handle_cancel__`interface.goa
     case sim_ros2_cancel_response_accept:
         return rclcpp_action::CancelResponse::ACCEPT;
     default:
-        log(sim_verbosity_scripterrors, "invalid cancel response");
+        sim::addLog(sim_verbosity_scripterrors, "invalid cancel response");
         return rclcpp_action::CancelResponse::REJECT;
     }
 }
@@ -450,14 +450,14 @@ void ros_action_callback__handle_accepted__`interface.goal.cpp_type_normalized`(
     int stack = -1;
     try
     {
-        stack = simCreateStackE();
+        stack = sim::createStack();
         write__string(goalUUIDtoString(goal_id), stack, &(proxy->wr_opt));
         write__`interface.goal.cpp_type_normalized`(*goal, stack, &(proxy->wr_opt));
-        simCallScriptFunctionExE(scriptID, callback, stack);
-        simReleaseStackE(stack);
+        sim::callScriptFunctionEx(scriptID, callback, stack);
+        sim::releaseStack(stack);
         stack = -1;
     }
-    catch(exception& ex)
+    catch(std::exception &ex)
     {
         if(stack != -1)
             simReleaseStack(stack); // don't throw
