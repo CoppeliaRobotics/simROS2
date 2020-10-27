@@ -88,8 +88,13 @@ public:
         int associatedObject;
         if(simGetScriptProperty(scriptID, &property, &associatedObject) == -1)
             return false;
+#if SIM_PROGRAM_FULL_VERSION_NB <= 4010003
         if(property & sim_scripttype_threaded)
             property -= sim_scripttype_threaded;
+#else
+        if(property & sim_scripttype_threaded_old)
+            property -= sim_scripttype_threaded_old;
+#endif
         if(property == sim_scripttype_addonscript || property == sim_scripttype_addonfunction || property == sim_scripttype_customizationscript)
             return false;
         return true;
