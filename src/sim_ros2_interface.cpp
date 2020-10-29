@@ -7,7 +7,9 @@ using namespace std::placeholders;
 
 #include <tf2_ros/transform_broadcaster.h>
 #include <sensor_msgs/image_encodings.hpp>
+#if image_transport_FOUND
 #include <image_transport/image_transport.hpp>
+#endif
 //#include <cv_bridge/cv_bridge.h>
 
 #include <rclcpp/rclcpp.hpp>
@@ -753,6 +755,7 @@ public:
 
     void imageTransportCreateSubscription(imageTransportCreateSubscription_in *in, imageTransportCreateSubscription_out *out)
     {
+#if image_transport_FOUND
         SubscriptionProxy *subscriptionProxy = new SubscriptionProxy();
         subscriptionProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(in->_scriptID);
         subscriptionProxy->handle = subscriptionProxyNextHandle++;
@@ -770,6 +773,9 @@ public:
         }
 
         out->subscriptionHandle = subscriptionProxy->handle;
+#else
+        throw sim::exception("image_transport not available. please rebuild this plugin.");
+#endif
     }
 
     void imageTransportShutdownSubscription(imageTransportShutdownSubscription_in *in, imageTransportShutdownSubscription_out *out)
@@ -787,6 +793,7 @@ public:
 
     void imageTransportCreatePublisher(imageTransportCreatePublisher_in *in, imageTransportCreatePublisher_out *out)
     {
+#if image_transport_FOUND
         PublisherProxy *publisherProxy = new PublisherProxy();
         publisherProxy->destroyAfterSimulationStop = shouldProxyBeDestroyedAfterSimulationStop(in->_scriptID);
         publisherProxy->handle = publisherProxyNextHandle++;
@@ -802,10 +809,14 @@ public:
         }
 
         out->publisherHandle = publisherProxy->handle;
+#else
+        throw sim::exception("image_transport not available. please rebuild this plugin.");
+#endif
     }
 
     void imageTransportShutdownPublisher(imageTransportShutdownPublisher_in *in, imageTransportShutdownPublisher_out *out)
     {
+#if image_transport_FOUND
         if(publisherProxies.find(in->publisherHandle) == publisherProxies.end())
         {
             throw sim::exception("invalid publisher handle");
@@ -815,10 +826,14 @@ public:
         //publisherProxy->imageTransportPublisher.shutdown();
         publisherProxies.erase(publisherProxy->handle);
         delete publisherProxy;
+#else
+        throw sim::exception("image_transport not available. please rebuild this plugin.");
+#endif
     }
 
     void imageTransportPublish(imageTransportPublish_in *in, imageTransportPublish_out *out)
     {
+#if image_transport_FOUND
         if(publisherProxies.find(in->publisherHandle) == publisherProxies.end())
         {
             throw sim::exception("invalid publisher handle");
@@ -850,6 +865,9 @@ public:
         }
 
         publisherProxy->imageTransportPublisher.publish(image_msg);
+#else
+        throw sim::exception("image_transport not available. please rebuild this plugin.");
+#endif
     }
 
     void getTime(getTime_in *in, getTime_out *out)
@@ -980,7 +998,9 @@ public:
         if(node_name) simReleaseBuffer(node_name);
 
         tfbr = new tf2_ros::TransformBroadcaster(node);
+#if image_transport_FOUND
         imtr = new image_transport::ImageTransport(node);
+#endif
 
         params_client = std::make_shared<rclcpp::SyncParametersClient>(node);
         while(!params_client->wait_for_service(1s))
@@ -1002,7 +1022,9 @@ public:
         params_client = nullptr;
         node = nullptr;
 
+#if image_transport_FOUND
         delete imtr;
+#endif
         delete tfbr;
     }
 
@@ -1028,6 +1050,7 @@ public:
                 shutdownSubscription_out out1;
                 shutdownSubscription(&in1, &out1);
             }
+#if image_transport_FOUND
             if(subscriptionProxy->imageTransportSubscription)
             {
                 imageTransportShutdownSubscription_in in1;
@@ -1035,6 +1058,7 @@ public:
                 imageTransportShutdownSubscription_out out1;
                 imageTransportShutdownSubscription(&in1, &out1);
             }
+#endif
         }
     }
 
@@ -1060,6 +1084,7 @@ public:
                 shutdownPublisher_out out1;
                 shutdownPublisher(&in1, &out1);
             }
+#if image_transport_FOUND
             if(publisherProxy->imageTransportPublisher)
             {
                 imageTransportShutdownPublisher_in in1;
@@ -1067,6 +1092,7 @@ public:
                 imageTransportShutdownPublisher_out out1;
                 imageTransportShutdownPublisher(&in1, &out1);
             }
+#endif
         }
     }
 
@@ -1171,7 +1197,9 @@ private:
     rclcpp::SyncParametersClient::SharedPtr params_client = nullptr;
 
     tf2_ros::TransformBroadcaster *tfbr = nullptr;
+#if image_transport_FOUND
     image_transport::ImageTransport *imtr = nullptr;
+#endif
 
     int subscriptionProxyNextHandle = 3562;
     int publisherProxyNextHandle = 7980;
