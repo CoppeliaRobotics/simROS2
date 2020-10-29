@@ -56,6 +56,7 @@ set(CMAKE_MODULE_PATH
     ${LIBPLUGIN_DIR}/cmake)
 find_package(CoppeliaSim 4.1.0.0 REQUIRED)
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
+find_package(Boost REQUIRED)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc)
@@ -91,6 +92,7 @@ add_dependencies(simExtROS2Interface generate_ros_code)
 target_include_directories(simExtROS2Interface PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
+target_link_libraries(simExtROS2Interface Boost::headers)
 target_link_libraries(simExtROS2Interface ${COPPELIASIM_LIBRARIES})
 #ament_target_dependencies(simExtROS2Interface rclcpp)
 ament_target_dependencies(
