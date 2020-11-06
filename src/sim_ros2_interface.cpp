@@ -743,7 +743,7 @@ public:
         {
             sim::moveStackItemToTop(in->_stackID, oldsz - 1);
             int j;
-            read__int(in->_stackID, &j);
+            read__int32(in->_stackID, &j);
             simMoveStackItemToTop(in->_stackID, oldsz - 1);
             geometry_msgs::msg::TransformStamped t;
             read__geometry_msgs__msg__TransformStamped(in->_stackID, &t);

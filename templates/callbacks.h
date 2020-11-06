@@ -12,8 +12,8 @@
 
 #py for interface_name, interface in interfaces.items():
 #py for subinterface_name, subinterface in interface.subinterfaces.items():
-void write__`subinterface.cpp_type_normalized`(const `subinterface.cpp_type`& msg, int stack, const WriteOptions *opt = NULL);
-void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type` *msg, const ReadOptions *opt = NULL);
+void write__`subinterface.cpp_type_normalized`(const `subinterface.cpp_type`& msg, int stack, const ROS2WriteOptions *opt = NULL);
+void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type` *msg, const ROS2ReadOptions *opt = NULL);
 #py endfor
 #py endfor
 #py for interface_name, interface in interfaces.items():

@@ -7,7 +7,7 @@
 #py interfaces = parse_interfaces(pycpp.params['interfaces_file'])
 #py for interface_name, interface in interfaces.items():
 #py for subinterface_name, subinterface in interface.subinterfaces.items():
-void write__`subinterface.cpp_type_normalized`(const `subinterface.cpp_type`& msg, int stack, const WriteOptions *opt)
+void write__`subinterface.cpp_type_normalized`(const `subinterface.cpp_type`& msg, int stack, const ROS2WriteOptions *opt)
 {
     try
     {
@@ -91,7 +91,7 @@ void write__`subinterface.cpp_type_normalized`(const `subinterface.cpp_type`& ms
     }
 }
 
-void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type` *msg, const ReadOptions *opt)
+void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type` *msg, const ROS2ReadOptions *opt)
 {
     try
     {

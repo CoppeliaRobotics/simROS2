@@ -4,7 +4,7 @@
 #py for subinterface_name, subinterface in interface.subinterfaces.items():
     else if(in->type == "`interface.full_name + (subinterface_name if subinterface_name != 'Message' else '')`")
     {
-        WriteOptions wo;
+        ROS2WriteOptions wo;
         sim::pushTableOntoStack(in->_stackID);
 #py for constant in subinterface.constants:
         sim::pushStringOntoStack(in->_stackID, "`constant.name`", 0);

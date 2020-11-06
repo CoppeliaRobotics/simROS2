@@ -5,7 +5,7 @@
     else if(in->type == "`interface.full_name + (subinterface_name if subinterface_name != 'Message' else '')`")
     {
         `subinterface.cpp_type` x;
-        WriteOptions wo;
+        ROS2WriteOptions wo;
         write__`subinterface.cpp_type_normalized`(x, in->_stackID, &wo);
     }
 #py endfor

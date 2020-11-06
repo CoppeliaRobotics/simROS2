@@ -817,7 +817,7 @@
             <param name="name" type="string">
                 <description>name of the parameter</description>
             </param>
-            <param name="defaultValue" type="string" default="">
+            <param name="defaultValue" type="string" default='""'>
                 <description>default value returned when parameter does not exist</description>
             </param>
         </params>
@@ -825,7 +825,7 @@
             <param name="exists" type="bool">
                 <description>true if the param exists otherwise false</description>
             </param>
-            <param name="value" type="string" default="">
+            <param name="value" type="string" default='""'>
                 <description>the value of the requested parameter</description>
             </param>
         </return>
