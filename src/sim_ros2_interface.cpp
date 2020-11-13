@@ -560,7 +560,7 @@ public:
         auto actsrv = boost::any_cast< std::shared_ptr< rclcpp_action::Server< Action > > >(actionServerProxy->action_server);
         auto it = actionServerProxy->goalHandles.find(goalUUID);
         if(it == actionServerProxy->goalHandles.end())
-            throw std::runtime_error((boost::format("goal handle '%s' does not exist") % goalUUIDtoString(goalUUID)).str());
+            throw sim::exception("goal handle '%s' does not exist", goalUUIDtoString(goalUUID));
         auto goalHandleBase = it->second.get();
         return dynamic_cast< rclcpp_action::ServerGoalHandle<Action>* >(goalHandleBase);
     }
