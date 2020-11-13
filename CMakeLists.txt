@@ -50,8 +50,7 @@ if(NOT LIBPLUGIN_DIR)
         message(FATAL_ERROR "Environment variable COPPELIASIM_ROOT_DIR is not set")
     endif()
 endif()
-set(CMAKE_MODULE_PATH
-    ${CMAKE_MODULE_PATH}
+list(APPEND CMAKE_MODULE_PATH
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
     ${LIBPLUGIN_DIR}/cmake)
 find_package(CoppeliaSim 4.1.0.0 REQUIRED)
