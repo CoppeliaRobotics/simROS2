@@ -5,6 +5,7 @@
 #include <functional>
 using namespace std::placeholders;
 
+#include <boost/type_erasure/any_cast.hpp>
 #include <tf2_ros/transform_broadcaster.h>
 #include <sensor_msgs/image_encodings.hpp>
 #if image_transport_FOUND
