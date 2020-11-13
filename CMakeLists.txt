@@ -66,8 +66,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include/sim_ros2_interface)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/generated)
-include_directories(${COPPELIASIM_INCLUDE_DIR})
-include_directories(${COPPELIASIM_COMMON_DIR})
 
 set(generatedFiles)
 file(GLOB templateFiles RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/templates/ ${CMAKE_CURRENT_SOURCE_DIR}/templates/*)
@@ -83,16 +81,14 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/sim_ros2_interface/config.h.i
 set(SOURCES
     src/sim_ros2_interface.cpp
     src/ros_msg_builtin_io.cpp
-    ${COPPELIASIM_EXPORTED_SOURCES}
     ${CMAKE_CURRENT_BINARY_DIR}/generated/callbacks.cpp
 )
-add_library(simExtROS2Interface ${SOURCES})
+coppeliasim_add_plugin(simExtROS2Interface ${SOURCES})
 add_dependencies(simExtROS2Interface generate_ros_code)
 target_include_directories(simExtROS2Interface PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
-target_link_libraries(simExtROS2Interface Boost::headers)
-target_link_libraries(simExtROS2Interface ${COPPELIASIM_LIBRARIES})
+target_link_libraries(simExtROS2Interface Boost::boost)
 #ament_target_dependencies(simExtROS2Interface rclcpp)
 ament_target_dependencies(
     simExtROS2Interface
@@ -125,27 +121,5 @@ endif()
 # Causes the visibility macros to use dllexport rather than dllimport,
 # which is appropriate when building the dll but not consuming it.
 target_compile_definitions(simExtROS2Interface PRIVATE "SIM_ROS2_INTERFACE_BUILDING_LIBRARY")
-
-install(
-    DIRECTORY include/
-    DESTINATION include
-)
-install(
-    TARGETS simExtROS2Interface
-    EXPORT export_${PROJECT_NAME}
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION ${COPPELIASIM_PLUGINS_DIR}
-    RUNTIME DESTINATION bin
-)
-
-ament_export_include_directories(
-    include
-)
-ament_export_targets(
-    export_${PROJECT_NAME}
-)
-ament_export_libraries(
-    simExtROS2Interface
-)
 
 ament_package()
