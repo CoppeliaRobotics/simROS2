@@ -83,7 +83,7 @@ set(SOURCES
     src/ros_msg_builtin_io.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/generated/callbacks.cpp
 )
-coppeliasim_add_plugin(simExtROS2Interface ${SOURCES})
+coppeliasim_add_plugin(simExtROS2Interface SOURCES ${SOURCES})
 add_dependencies(simExtROS2Interface generate_ros_code)
 target_include_directories(simExtROS2Interface PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
