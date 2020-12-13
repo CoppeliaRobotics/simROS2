@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <?xml-stylesheet type="text/xsl" href="callbacks.xsl"?>
 
-<plugin name="ROS2Interface" short-name="ROS2" author="federico.ferri.it@gmail.com">
+<plugin name="ROS2" author="federico.ferri.it@gmail.com">
     <description>This plugin provides an interface with the ROS2 API</description>
     <command name="createSubscription">
         <description>Create a subscription to a topic.</description>

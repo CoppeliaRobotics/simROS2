@@ -74,7 +74,7 @@ foreach(templateFile ${templateFiles})
     set(generatedFiles ${generatedFiles} "${CMAKE_CURRENT_BINARY_DIR}/generated/${templateFile}")
 endforeach()
 add_custom_target(generate_ros_code DEPENDS ${generatedFiles})
-coppeliasim_generate_stubs(${CMAKE_CURRENT_BINARY_DIR}/generated XML_FILE ${CMAKE_CURRENT_SOURCE_DIR}/meta/callbacks.xml LUA_FILE ${CMAKE_CURRENT_SOURCE_DIR}/simExtROS2Interface.lua)
+coppeliasim_generate_stubs(${CMAKE_CURRENT_BINARY_DIR}/generated XML_FILE ${CMAKE_CURRENT_SOURCE_DIR}/meta/callbacks.xml LUA_FILE ${CMAKE_CURRENT_SOURCE_DIR}/simROS2.lua)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/sim_ros2_interface/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/sim_ros2_interface/config.h)
 
@@ -83,15 +83,15 @@ set(SOURCES
     src/ros_msg_builtin_io.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/generated/callbacks.cpp
 )
-coppeliasim_add_plugin(simExtROS2Interface SOURCES ${SOURCES})
-add_dependencies(simExtROS2Interface generate_ros_code)
-target_include_directories(simExtROS2Interface PUBLIC
+coppeliasim_add_plugin(simExtROS2 SOURCES ${SOURCES})
+add_dependencies(simExtROS2 generate_ros_code)
+target_include_directories(simExtROS2 PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
-target_link_libraries(simExtROS2Interface Boost::boost)
-#ament_target_dependencies(simExtROS2Interface rclcpp)
+target_link_libraries(simExtROS2 Boost::boost)
+#ament_target_dependencies(simExtROS2 rclcpp)
 ament_target_dependencies(
-    simExtROS2Interface
+    simExtROS2
     "diagnostic_msgs"
     "geometry_msgs"
     "lifecycle_msgs"
@@ -113,13 +113,13 @@ ament_target_dependencies(
 )
 if(image_transport_FOUND)
     ament_target_dependencies(
-        simExtROS2Interface
+        simExtROS2
         "image_transport"
     )
 endif()
 
 # Causes the visibility macros to use dllexport rather than dllimport,
 # which is appropriate when building the dll but not consuming it.
-target_compile_definitions(simExtROS2Interface PRIVATE "SIM_ROS2_INTERFACE_BUILDING_LIBRARY")
+target_compile_definitions(simExtROS2 PRIVATE "SIM_ROS2_INTERFACE_BUILDING_LIBRARY")
 
 ament_package()
