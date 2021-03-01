@@ -26,7 +26,7 @@
             </param>
         </params>
         <return>
-            <param name="subscriptionHandle" type="int">
+            <param name="subscriptionHandle" type="string">
                 <description>a handle to the ROS subscription</description>
             </param>
         </return>
@@ -40,7 +40,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="subscriptionHandle" type="int">
+            <param name="subscriptionHandle" type="string">
                 <description>the subscription handle</description>
             </param>
         </params>
@@ -56,7 +56,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="subscriptionHandle" type="int">
+            <param name="subscriptionHandle" type="string">
                 <description>the subscription handle</description>
             </param>
         </params>
@@ -86,7 +86,7 @@
             </param>
         </params>
         <return>
-            <param name="publisherHandle" type="int">
+            <param name="publisherHandle" type="string">
                 <description>a handle to the ROS publisher</description>
             </param>
         </return>
@@ -100,7 +100,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="publisherHandle" type="int">
+            <param name="publisherHandle" type="string">
                 <description>the publisher handle</description>
             </param>
         </params>
@@ -116,7 +116,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="publisherHandle" type="int">
+            <param name="publisherHandle" type="string">
                 <description>the publisher handle</description>
             </param>
         </params>
@@ -132,7 +132,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="publisherHandle" type="int">
+            <param name="publisherHandle" type="string">
                 <description>the publisher handle</description>
             </param>
             <param name="message" type="table" skip="true">
@@ -162,7 +162,7 @@
             </param>
         </params>
         <return>
-            <param name="clientHandle" type="int">
+            <param name="clientHandle" type="string">
                 <description>a handle to the ROS service client</description>
             </param>
         </return>
@@ -176,7 +176,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="clientHandle" type="int">
+            <param name="clientHandle" type="string">
                 <description>the service client handle</description>
             </param>
         </params>
@@ -192,7 +192,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="clientHandle" type="int">
+            <param name="clientHandle" type="string">
                 <description>the service client handle</description>
             </param>
         </params>
@@ -208,7 +208,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="clientHandle" type="int">
+            <param name="clientHandle" type="string">
                 <description>the service client handle</description>
             </param>
             <param name="timeout" type="float">
@@ -230,7 +230,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="clientHandle" type="int">
+            <param name="clientHandle" type="string">
                 <description>the service client handle</description>
             </param>
             <param name="request" type="table" skip="true">
@@ -266,7 +266,7 @@
             </param>
         </params>
         <return>
-            <param name="serviceHandle" type="int">
+            <param name="serviceHandle" type="string">
                 <description>a handle to the ROS service</description>
             </param>
         </return>
@@ -280,7 +280,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="serviceHandle" type="int">
+            <param name="serviceHandle" type="string">
                 <description>the service handle</description>
             </param>
         </params>
@@ -296,7 +296,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="serviceHandle" type="int">
+            <param name="serviceHandle" type="string">
                 <description>the service handle</description>
             </param>
         </params>
@@ -329,7 +329,7 @@
             </param>
         </params>
         <return>
-            <param name="actionClientHandle" type="int">
+            <param name="actionClientHandle" type="string">
                 <description>a handle to the ROS action client</description>
             </param>
         </return>
@@ -343,7 +343,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionClientHandle" type="int">
+            <param name="actionClientHandle" type="string">
                 <description>the action client handle</description>
             </param>
         </params>
@@ -359,7 +359,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionClientHandle" type="int">
+            <param name="actionClientHandle" type="string">
                 <description>the action client handle</description>
             </param>
         </params>
@@ -375,7 +375,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionClientHandle" type="int">
+            <param name="actionClientHandle" type="string">
                 <description>the action client handle</description>
             </param>
             <param name="goal" type="table" skip="true">
@@ -400,7 +400,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionClientHandle" type="int">
+            <param name="actionClientHandle" type="string">
                 <description>the action client handle</description>
             </param>
         </params>
@@ -436,7 +436,7 @@
             </param>
         </params>
         <return>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>a handle to the action server</description>
             </param>
         </return>
@@ -450,7 +450,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>the action server handle</description>
             </param>
         </params>
@@ -466,7 +466,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>the action server handle</description>
             </param>
         </params>
@@ -482,7 +482,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>the action server handle</description>
             </param>
             <param name="goalUUID" type="string">
@@ -504,7 +504,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>the action server handle</description>
             </param>
             <param name="goalUUID" type="string">
@@ -526,7 +526,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>the action server handle</description>
             </param>
             <param name="goalUUID" type="string">
@@ -548,7 +548,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>the action server handle</description>
             </param>
             <param name="goalUUID" type="string">
@@ -570,7 +570,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>the action server handle</description>
             </param>
             <param name="goalUUID" type="string">
@@ -589,7 +589,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>the action server handle</description>
             </param>
             <param name="goalUUID" type="string">
@@ -611,7 +611,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>the action server handle</description>
             </param>
             <param name="goalUUID" type="string">
@@ -633,7 +633,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="actionServerHandle" type="int">
+            <param name="actionServerHandle" type="string">
                 <description>the action server handle</description>
             </param>
             <param name="goalUUID" type="string">
@@ -701,7 +701,7 @@
             </param>
         </params>
         <return>
-            <param name="subscriptionHandle" type="int">
+            <param name="subscriptionHandle" type="string">
                 <description>a handle to the ROS subscription</description>
             </param>
         </return>
@@ -716,7 +716,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="subscriptionHandle" type="int">
+            <param name="subscriptionHandle" type="string">
                 <description>the subscription handle</description>
             </param>
         </params>
@@ -741,7 +741,7 @@
             </param>
         </params>
         <return>
-            <param name="publisherHandle" type="int">
+            <param name="publisherHandle" type="string">
                 <description>a handle to the ROS publisher</description>
             </param>
         </return>
@@ -756,7 +756,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="publisherHandle" type="int">
+            <param name="publisherHandle" type="string">
                 <description>the publisher handle</description>
             </param>
         </params>
@@ -773,7 +773,7 @@
             <!--command name="..." /-->
         </see-also>
         <params>
-            <param name="publisherHandle" type="int">
+            <param name="publisherHandle" type="string">
                 <description>the publisher handle</description>
             </param>
             <param name="data" type="string">

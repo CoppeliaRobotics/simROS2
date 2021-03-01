@@ -27,14 +27,13 @@ struct ScriptCallback
 
 struct Proxy
 {
-    bool destroyAfterSimulationStop;
+    std::string handle;
 };
 
 #include <ros_msg_builtin_io.h>
 
 struct SubscriptionProxy : Proxy
 {
-    int handle;
     std::string topicName;
     std::string topicType;
     ScriptCallback topicCallback;
@@ -47,7 +46,6 @@ struct SubscriptionProxy : Proxy
 
 struct PublisherProxy : Proxy
 {
-    int handle;
     std::string topicName;
     std::string topicType;
     boost::any publisher;
@@ -59,7 +57,6 @@ struct PublisherProxy : Proxy
 
 struct ClientProxy : Proxy
 {
-    int handle;
     std::string serviceName;
     std::string serviceType;
     boost::any client;
@@ -69,7 +66,6 @@ struct ClientProxy : Proxy
 
 struct ServiceProxy : Proxy
 {
-    int handle;
     std::string serviceName;
     std::string serviceType;
     ScriptCallback serviceCallback;
@@ -80,7 +76,6 @@ struct ServiceProxy : Proxy
 
 struct ActionClientProxy : Proxy
 {
-    int handle;
     std::string actionName;
     std::string actionType;
     ScriptCallback goalResponseCallback;
@@ -94,7 +89,6 @@ struct ActionClientProxy : Proxy
 
 struct ActionServerProxy : Proxy
 {
-    int handle;
     std::string actionName;
     std::string actionType;
     ScriptCallback handleGoalCallback;
