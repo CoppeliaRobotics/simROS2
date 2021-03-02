@@ -6,13 +6,13 @@
     {
         auto cli = boost::any_cast< std::shared_ptr< rclcpp::Client<`interface.cpp_type`> > >(clientProxy->client);
         auto req = std::make_shared<`interface.request.cpp_type`>();
-        read__`interface.request.cpp_type_normalized`(in->_stackID, req.get(), &(clientProxy->rd_opt));
+        read__`interface.request.cpp_type_normalized`(in->_.stackID, req.get(), &(clientProxy->rd_opt));
         auto result = cli->async_send_request(req);
         if(rclcpp::spin_until_future_complete(node, result) ==
                 rclcpp::executor::FutureReturnCode::SUCCESS)
         {
             auto resp = result.get();
-            write__`interface.response.cpp_type_normalized`(*resp, in->_stackID, &(clientProxy->wr_opt));
+            write__`interface.response.cpp_type_normalized`(*resp, in->_.stackID, &(clientProxy->wr_opt));
         }
         else
         {

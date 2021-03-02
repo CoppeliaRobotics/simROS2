@@ -6,7 +6,7 @@
     {
         `subinterface.cpp_type` x;
         ROS2WriteOptions wo;
-        write__`subinterface.cpp_type_normalized`(x, in->_stackID, &wo);
+        write__`subinterface.cpp_type_normalized`(x, in->_.stackID, &wo);
     }
 #py endfor
 #py endfor

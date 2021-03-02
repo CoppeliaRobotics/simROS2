@@ -5,11 +5,11 @@
     else if(in->type == "`interface.full_name + (subinterface_name if subinterface_name != 'Message' else '')`")
     {
         ROS2WriteOptions wo;
-        sim::pushTableOntoStack(in->_stackID);
+        sim::pushTableOntoStack(in->_.stackID);
 #py for constant in subinterface.constants:
-        sim::pushStringOntoStack(in->_stackID, "`constant.name`", 0);
-        write__`constant.type`(`constant.value`, in->_stackID, &wo);
-        sim::insertDataIntoStackTable(in->_stackID);
+        sim::pushStringOntoStack(in->_.stackID, "`constant.name`", 0);
+        write__`constant.type`(`constant.value`, in->_.stackID, &wo);
+        sim::insertDataIntoStackTable(in->_.stackID);
 #py endfor
     }
 #py endfor

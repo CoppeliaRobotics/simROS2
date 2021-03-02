@@ -6,7 +6,7 @@
     {
         auto pub = boost::any_cast< std::shared_ptr< rclcpp::Publisher<`interface.cpp_type`> > >(publisherProxy->publisher);
         `interface.cpp_type` msg;
-        read__`interface.cpp_type_normalized`(in->_stackID, &msg, &(publisherProxy->rd_opt));
+        read__`interface.cpp_type_normalized`(in->_.stackID, &msg, &(publisherProxy->rd_opt));
         pub->publish(msg);
     }
 #py endif

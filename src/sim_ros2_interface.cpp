@@ -208,7 +208,7 @@ public:
         SubscriptionProxy *subscriptionProxy = new SubscriptionProxy();
         subscriptionProxy->topicName = in->topicName;
         subscriptionProxy->topicType = in->topicType;
-        subscriptionProxy->topicCallback.scriptId = in->_scriptID;
+        subscriptionProxy->topicCallback.scriptId = in->_.scriptID;
         subscriptionProxy->topicCallback.name = in->topicCallback;
 
         if(0) {}
@@ -218,7 +218,7 @@ public:
             throw unsupported_type("message", subscriptionProxy->topicType);
         }
 
-        out->subscriptionHandle = subscriptionProxy->handle = subscriptionHandles.add(subscriptionProxy, in->_scriptID);
+        out->subscriptionHandle = subscriptionProxy->handle = subscriptionHandles.add(subscriptionProxy, in->_.scriptID);
     }
 
     void shutdownSubscription(shutdownSubscription_in *in, shutdownSubscription_out *out)
@@ -254,7 +254,7 @@ public:
             throw unsupported_type("message", publisherProxy->topicType);
         }
 
-        out->publisherHandle = publisherProxy->handle = publisherHandles.add(publisherProxy, in->_scriptID);
+        out->publisherHandle = publisherProxy->handle = publisherHandles.add(publisherProxy, in->_.scriptID);
     }
 
     void shutdownPublisher(shutdownPublisher_in *in, shutdownPublisher_out *out)
@@ -281,7 +281,7 @@ public:
     {
         PublisherProxy *publisherProxy = publisherHandles.get(in->publisherHandle);
 
-        simMoveStackItemToTop(in->_stackID, 0);
+        simMoveStackItemToTop(in->_.stackID, 0);
 
         if(0) {}
 #include <pub_publish.cpp>
@@ -304,7 +304,7 @@ public:
             throw unsupported_type("service", clientProxy->serviceType);
         }
 
-        out->clientHandle = clientProxy->handle = clientHandles.add(clientProxy, in->_scriptID);
+        out->clientHandle = clientProxy->handle = clientHandles.add(clientProxy, in->_.scriptID);
     }
 
     void shutdownClient(shutdownClient_in *in, shutdownClient_out *out)
@@ -344,7 +344,7 @@ public:
     {
         ClientProxy *clientProxy = clientHandles.get(in->clientHandle);
 
-        simMoveStackItemToTop(in->_stackID, 0);
+        simMoveStackItemToTop(in->_.stackID, 0);
 
         if(0) {}
 #include <cli_call.cpp>
@@ -359,7 +359,7 @@ public:
         ServiceProxy *serviceProxy = new ServiceProxy();
         serviceProxy->serviceName = in->serviceName;
         serviceProxy->serviceType = in->serviceType;
-        serviceProxy->serviceCallback.scriptId = in->_scriptID;
+        serviceProxy->serviceCallback.scriptId = in->_.scriptID;
         serviceProxy->serviceCallback.name = in->serviceCallback;
 
         if(0) {}
@@ -369,7 +369,7 @@ public:
             throw unsupported_type("service", serviceProxy->serviceType);
         }
 
-        out->serviceHandle = serviceProxy->handle = serviceHandles.add(serviceProxy, in->_scriptID);
+        out->serviceHandle = serviceProxy->handle = serviceHandles.add(serviceProxy, in->_.scriptID);
     }
 
     void shutdownService(shutdownService_in *in, shutdownService_out *out)
@@ -398,11 +398,11 @@ public:
         ActionClientProxy *actionClientProxy = new ActionClientProxy();
         actionClientProxy->actionName = in->actionName;
         actionClientProxy->actionType = in->actionType;
-        actionClientProxy->goalResponseCallback.scriptId = in->_scriptID;
+        actionClientProxy->goalResponseCallback.scriptId = in->_.scriptID;
         actionClientProxy->goalResponseCallback.name = in->goalResponseCallback;
-        actionClientProxy->feedbackCallback.scriptId = in->_scriptID;
+        actionClientProxy->feedbackCallback.scriptId = in->_.scriptID;
         actionClientProxy->feedbackCallback.name = in->feedbackCallback;
-        actionClientProxy->resultCallback.scriptId = in->_scriptID;
+        actionClientProxy->resultCallback.scriptId = in->_.scriptID;
         actionClientProxy->resultCallback.name = in->resultCallback;
 
         if(0) {}
@@ -412,7 +412,7 @@ public:
             throw unsupported_type("action", actionClientProxy->actionType);
         }
 
-        out->actionClientHandle = actionClientProxy->handle = actionClientHandles.add(actionClientProxy, in->_scriptID);
+        out->actionClientHandle = actionClientProxy->handle = actionClientHandles.add(actionClientProxy, in->_.scriptID);
     }
 
     void shutdownActionClient(shutdownActionClient_in *in, shutdownActionClient_out *out)
@@ -440,7 +440,7 @@ public:
     {
         ActionClientProxy *actionClientProxy = actionClientHandles.get(in->actionClientHandle);
 
-        simMoveStackItemToTop(in->_stackID, 0);
+        simMoveStackItemToTop(in->_.stackID, 0);
 
         if(0) {}
 #include <actcli_sendGoal.cpp>
@@ -467,11 +467,11 @@ public:
         ActionServerProxy *actionServerProxy = new ActionServerProxy();
         actionServerProxy->actionName = in->actionName;
         actionServerProxy->actionType = in->actionType;
-        actionServerProxy->handleGoalCallback.scriptId = in->_scriptID;
+        actionServerProxy->handleGoalCallback.scriptId = in->_.scriptID;
         actionServerProxy->handleGoalCallback.name = in->handleGoalCallback;
-        actionServerProxy->handleCancelCallback.scriptId = in->_scriptID;
+        actionServerProxy->handleCancelCallback.scriptId = in->_.scriptID;
         actionServerProxy->handleCancelCallback.name = in->handleCancelCallback;
-        actionServerProxy->handleAcceptedCallback.scriptId = in->_scriptID;
+        actionServerProxy->handleAcceptedCallback.scriptId = in->_.scriptID;
         actionServerProxy->handleAcceptedCallback.name = in->handleAcceptedCallback;
 
         if(0) {}
@@ -481,7 +481,7 @@ public:
             throw unsupported_type("action", actionServerProxy->actionType);
         }
 
-        out->actionServerHandle = actionServerProxy->handle = actionServerHandles.add(actionServerProxy, in->_scriptID);
+        out->actionServerHandle = actionServerProxy->handle = actionServerHandles.add(actionServerProxy, in->_.scriptID);
     }
 
     void shutdownActionServer(shutdownActionServer_in *in, shutdownActionServer_out *out)
@@ -642,7 +642,7 @@ public:
     void sendTransform(sendTransform_in *in, sendTransform_out *out)
     {
         geometry_msgs::msg::TransformStamped t;
-        read__geometry_msgs__msg__TransformStamped(in->_stackID, &t);
+        read__geometry_msgs__msg__TransformStamped(in->_.stackID, &t);
         tfbr->sendTransform(t);
     }
 
@@ -650,21 +650,21 @@ public:
     {
         std::vector<geometry_msgs::msg::TransformStamped> v;
 
-        sim::moveStackItemToTop(in->_stackID, 0);
-        int i = sim::getStackTableInfo(in->_stackID, 0);
+        sim::moveStackItemToTop(in->_.stackID, 0);
+        int i = sim::getStackTableInfo(in->_.stackID, 0);
         if(i < 0)
             throw sim::exception("error reading input argument 1 (origin): expected array");
-        int oldsz = sim::getStackSize(in->_stackID);
-        sim::unfoldStackTable(in->_stackID);
-        int sz = (sim::getStackSize(in->_stackID) - oldsz + 1) / 2;
+        int oldsz = sim::getStackSize(in->_.stackID);
+        sim::unfoldStackTable(in->_.stackID);
+        int sz = (sim::getStackSize(in->_.stackID) - oldsz + 1) / 2;
         for(int i = 0; i < sz; i++)
         {
-            sim::moveStackItemToTop(in->_stackID, oldsz - 1);
+            sim::moveStackItemToTop(in->_.stackID, oldsz - 1);
             int j;
-            read__int32(in->_stackID, &j);
-            simMoveStackItemToTop(in->_stackID, oldsz - 1);
+            read__int32(in->_.stackID, &j);
+            simMoveStackItemToTop(in->_.stackID, oldsz - 1);
             geometry_msgs::msg::TransformStamped t;
-            read__geometry_msgs__msg__TransformStamped(in->_stackID, &t);
+            read__geometry_msgs__msg__TransformStamped(in->_.stackID, &t);
             v.push_back(t);
         }
 
@@ -677,7 +677,7 @@ public:
         SubscriptionProxy *subscriptionProxy = new SubscriptionProxy();
         subscriptionProxy->topicName = in->topicName;
         subscriptionProxy->topicType = "@image_transport";
-        subscriptionProxy->topicCallback.scriptId = in->_scriptID;
+        subscriptionProxy->topicCallback.scriptId = in->_.scriptID;
         subscriptionProxy->topicCallback.name = in->topicCallback;
 
         subscriptionProxy->imageTransportSubscription = imtr->subscribe(in->topicName, in->queueSize, std::bind(ros_imtr_callback, _1, subscriptionProxy, this));
@@ -687,7 +687,7 @@ public:
             throw sim::exception("failed creation of ROS ImageTransport subscription");
         }
 
-        out->subscriptionHandle = subscriptionProxy->handle = subscriptionHandles.add(subscriptionProxy, in->_scriptID);
+        out->subscriptionHandle = subscriptionProxy->handle = subscriptionHandles.add(subscriptionProxy, in->_.scriptID);
 #else
         throw sim::exception("image_transport not available. please rebuild this plugin.");
 #endif
@@ -714,7 +714,7 @@ public:
             throw sim::exception("failed creation of ROS ImageTransport publisher");
         }
 
-        out->publisherHandle = publisherProxy->handle = publisherHandles.add(publisherProxy, in->_scriptID);
+        out->publisherHandle = publisherProxy->handle = publisherHandles.add(publisherProxy, in->_.scriptID);
 #else
         throw sim::exception("image_transport not available. please rebuild this plugin.");
 #endif

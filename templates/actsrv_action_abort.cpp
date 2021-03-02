@@ -6,7 +6,7 @@
     {
         auto gh = getGoalHandle<`interface.cpp_type`>(actionServerProxy, in->goalUUID);
         auto result = std::make_shared<`interface.result.cpp_type`>();
-        read__`interface.result.cpp_type_normalized`(in->_stackID, result.get(), &(actionServerProxy->rd_opt));
+        read__`interface.result.cpp_type_normalized`(in->_.stackID, result.get(), &(actionServerProxy->rd_opt));
         gh->abort(result);
     }
 #py endif

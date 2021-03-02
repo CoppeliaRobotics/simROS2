@@ -6,7 +6,7 @@
     {
         auto gh = getGoalHandle<`interface.cpp_type`>(actionServerProxy, in->goalUUID);
         auto feedback = std::make_shared<`interface.feedback.cpp_type`>();
-        read__`interface.feedback.cpp_type_normalized`(in->_stackID, feedback.get(), &(actionServerProxy->rd_opt));
+        read__`interface.feedback.cpp_type_normalized`(in->_.stackID, feedback.get(), &(actionServerProxy->rd_opt));
         gh->publish_feedback(feedback);
     }
 #py endif

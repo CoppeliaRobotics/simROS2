@@ -8,7 +8,7 @@
         if(!cli->wait_for_action_server(std::chrono::seconds(5)))
             throw sim::exception("action server not available after wait");
         `interface.goal.cpp_type` goal_msg;
-        read__`interface.goal.cpp_type_normalized`(in->_stackID, &goal_msg, &(actionClientProxy->rd_opt));
+        read__`interface.goal.cpp_type_normalized`(in->_.stackID, &goal_msg, &(actionClientProxy->rd_opt));
         auto send_goal_options = rclcpp_action::Client<`interface.cpp_type`>::SendGoalOptions();
         send_goal_options.goal_response_callback = [=] (std::shared_future< std::shared_ptr< rclcpp_action::ClientGoalHandle<`interface.cpp_type`> > > future) -> void
         {
