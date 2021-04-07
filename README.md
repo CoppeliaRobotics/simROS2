@@ -8,7 +8,7 @@ Supported ROS2 versions:
 
 _NOTE:_ the directory containing all files (i.e. package.xml etc) must be called sim_ros2_interface, otherwise build will fail.
 
-1. Install required packages for [libPlugin](https://github.com/CoppeliaRobotics/libPlugin): see libPlugin's [README](external/libPlugin/README.md)
+1. Install required packages for [libPlugin](https://github.com/CoppeliaRobotics/libPlugin): see libPlugin's README
 2. Checkout
 ```
 $ git clone --recursive https://github.com/CoppeliaRobotics/simExtROS2Interface.git sim_ros2_interface
