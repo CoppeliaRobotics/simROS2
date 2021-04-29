@@ -20,6 +20,8 @@ if(MSVC)
     add_compile_options(/bigobj)
 endif()
 
+set(Boost_USE_STATIC_LIBS ON)
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
