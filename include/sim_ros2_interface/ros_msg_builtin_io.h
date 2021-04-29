@@ -19,6 +19,7 @@ struct ROS2WriteOptions
 void read__bool(int stack, bool *value, const ROS2ReadOptions *opt = NULL);
 void read__byte(int stack, uint8_t *value, const ROS2ReadOptions *opt = NULL);
 void read__char(int stack, unsigned char *value, const ROS2ReadOptions *opt = NULL);
+void read__char(int stack, signed char *value, const ROS2ReadOptions *opt = NULL);
 void read__int8(int stack, int8_t *value, const ROS2ReadOptions *opt = NULL);
 void read__uint8(int stack, uint8_t *value, const ROS2ReadOptions *opt = NULL);
 void read__int16(int stack, int16_t *value, const ROS2ReadOptions *opt = NULL);
@@ -35,6 +36,7 @@ void read__duration(int stack, rclcpp::Duration *value, const ROS2ReadOptions *o
 void write__bool(bool value, int stack, const ROS2WriteOptions *opt = NULL);
 void write__byte(uint8_t value, int stack, const ROS2WriteOptions *opt = NULL);
 void write__char(unsigned char value, int stack, const ROS2WriteOptions *opt = NULL);
+void write__char(signed char value, int stack, const ROS2WriteOptions *opt = NULL);
 void write__int8(int8_t value, int stack, const ROS2WriteOptions *opt = NULL);
 void write__uint8(uint8_t value, int stack, const ROS2WriteOptions *opt = NULL);
 void write__int16(int16_t value, int stack, const ROS2WriteOptions *opt = NULL);

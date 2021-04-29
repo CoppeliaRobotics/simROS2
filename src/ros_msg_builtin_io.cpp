@@ -55,6 +55,20 @@ void read__char(int stack, unsigned char *value, const ROS2ReadOptions *opt)
     }
 }
 
+void read__char(int stack, signed char *value, const ROS2ReadOptions *opt)
+{
+    simInt v;
+    if(sim::getStackInt32Value(stack, &v) == 1)
+    {
+        *value = (signed char)v;
+        sim::popStackItem(stack, 1);
+    }
+    else
+    {
+        throw sim::exception("expected bool");
+    }
+}
+
 void read__int8(int stack, int8_t *value, const ROS2ReadOptions *opt)
 {
     simInt v;
@@ -254,6 +268,12 @@ void write__byte(uint8_t value, int stack, const ROS2WriteOptions *opt)
 }
 
 void write__char(unsigned char value, int stack, const ROS2WriteOptions *opt)
+{
+    simInt v = value;
+    sim::pushInt32OntoStack(stack, v);
+}
+
+void write__char(signed char value, int stack, const ROS2WriteOptions *opt)
 {
     simInt v = value;
     sim::pushInt32OntoStack(stack, v);
