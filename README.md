@@ -25,3 +25,11 @@ VERBOSE=1 MAKEFLAGS=-j1 colcon build --symlink-install --event-handlers console_
 ```
 
 Add `--cmake-args -DCMAKE_BUILD_TYPE=Debug` if you are encountering a runtime error (e.g. crash, unexpected behavior, etc...).
+
+Note: *gcc* is known to fail compile the plugin when a large number of interfaces is compiled in. Use *clang* in that case, i.e.:
+
+ ```
+ sudo apt install clang
+ export CXX=clang++
+ colcon build ...
+ ```
