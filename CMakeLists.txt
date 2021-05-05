@@ -20,6 +20,11 @@ if(MSVC)
     add_compile_options(/bigobj)
 endif()
 
+if(WIN32)
+    # fix LNK1104: cannot open file 'libboost_regex-vc142-mt-x64-1_74.lib'
+    set(Boost_USE_STATIC_LIBS ON)
+endif()
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
