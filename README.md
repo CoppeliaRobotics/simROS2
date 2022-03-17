@@ -3,6 +3,7 @@
 Supported ROS2 versions:
 
  - Foxy Fitzroy
+ - Galactic Geochelone
 
 ### Compiling
 
