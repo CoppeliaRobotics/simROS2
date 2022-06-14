@@ -246,7 +246,7 @@ void read__duration(int stack, rclcpp::Duration *value, const ROS2ReadOptions *o
     simDouble v;
     if(sim::getStackDoubleValue(stack, &v) == 1)
     {
-        *value = rclcpp::Duration(v);
+        *value = rclcpp::Duration::from_seconds(v);
         sim::popStackItem(stack, 1);
     }
     else
