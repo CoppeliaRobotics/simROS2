@@ -2,8 +2,8 @@
 
 Supported ROS2 versions:
 
- - Foxy Fitzroy
- - Galactic Geochelone
+ - Humble Hawksbill
+ - Foxy Fitzroy (in the 'foxy' branch)
 
 ### Compiling
 
