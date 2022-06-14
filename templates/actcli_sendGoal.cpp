@@ -10,11 +10,11 @@
         `interface.goal.cpp_type` goal_msg;
         read__`interface.goal.cpp_type_normalized`(in->_.stackID, &goal_msg, &(actionClientProxy->rd_opt));
         auto send_goal_options = rclcpp_action::Client<`interface.cpp_type`>::SendGoalOptions();
-        send_goal_options.goal_response_callback = [=] (std::shared_future< std::shared_ptr< rclcpp_action::ClientGoalHandle<`interface.cpp_type`> > > future) -> void
+        send_goal_options.goal_response_callback = [=] (std::shared_ptr< rclcpp_action::ClientGoalHandle<`interface.cpp_type`> > handle) -> void
         {
             actionGoalResponseCallback_in in1;
             actionGoalResponseCallback_out out1;
-            auto goal_handle = future.get();
+            auto goal_handle = handle.get();
             in1.goalID = goal_handle ? goalUUIDtoString(goal_handle->get_goal_id()) : "";
             in1.accepted = !!goal_handle;
             actionGoalResponseCallback(actionClientProxy->goalResponseCallback.scriptId, actionClientProxy->goalResponseCallback.name.c_str(), &in1, &out1);
