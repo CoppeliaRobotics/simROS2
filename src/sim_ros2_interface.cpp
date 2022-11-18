@@ -62,7 +62,7 @@ public:
 
         int stopSimulationRequestCounter;
         simGetIntegerParameter(sim_intparam_stop_request_counter, &stopSimulationRequestCounter);
-        simBool doNotRun = simGetBoolParameter(sim_boolparam_rosinterface_donotrunmainscript);
+        bool doNotRun = simGetBoolParameter(sim_boolparam_rosinterface_donotrunmainscript);
         if(doNotRun > 0)
         {
             if(previousStopSimulationRequestCounter == -1)
