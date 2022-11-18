@@ -34,7 +34,7 @@ void write__`subinterface.cpp_type_normalized`(const `subinterface.cpp_type`& ms
             // write field '`field.name`' (using fast specialized function)
             sim::pushStringOntoStack(stack, "`field.name`", 0);
             if(opt && opt->uint8array_as_string)
-                sim::pushStringOntoStack(stack, (simChar*)&(msg.`field.name`[0]), msg.`field.name`.size());
+                sim::pushStringOntoStack(stack, (char*)&(msg.`field.name`[0]), msg.`field.name`.size());
             else
                 sim::pushUInt8TableOntoStack(stack, &(msg.`field.name`[0]), msg.`field.name`.size());
             sim::insertDataIntoStackTable(stack);
@@ -152,8 +152,8 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
                         if(opt && opt->uint8array_as_string)
                         {
                             // read field '`field.name`' (uint8[]) as string
-                            simChar *str;
-                            simInt sz;
+                            char *str;
+                            int sz;
                             if((str = sim::getStackStringValue(stack, &sz)) != NULL && sz > 0)
                             {
                                 /*
