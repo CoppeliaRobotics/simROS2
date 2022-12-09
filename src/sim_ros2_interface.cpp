@@ -1,6 +1,6 @@
 #include <sim_ros2_interface.h>
 #include <simPlusPlus/Plugin.h>
-#include <simPlusPlus/Handle.h>
+#include <simPlusPlus/Handles.h>
 
 #include <cstdlib>
 #include <functional>
@@ -934,12 +934,12 @@ private:
     image_transport::ImageTransport *imtr = nullptr;
 #endif
 
-    sim::Handles<SubscriptionProxy> subscriptionHandles;
-    sim::Handles<PublisherProxy> publisherHandles;
-    sim::Handles<ClientProxy> clientHandles;
-    sim::Handles<ServiceProxy> serviceHandles;
-    sim::Handles<ActionClientProxy> actionClientHandles;
-    sim::Handles<ActionServerProxy> actionServerHandles;
+    sim::Handles<SubscriptionProxy*> subscriptionHandles;
+    sim::Handles<PublisherProxy*> publisherHandles;
+    sim::Handles<ClientProxy*> clientHandles;
+    sim::Handles<ServiceProxy*> serviceHandles;
+    sim::Handles<ActionClientProxy*> actionClientHandles;
+    sim::Handles<ActionServerProxy*> actionServerHandles;
 };
 
 SIM_PLUGIN(PLUGIN_NAME, PLUGIN_VERSION, Plugin)
