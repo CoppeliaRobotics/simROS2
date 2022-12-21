@@ -61,8 +61,8 @@ public:
     {
 
         int stopSimulationRequestCounter;
-        simGetIntegerParameter(sim_intparam_stop_request_counter, &stopSimulationRequestCounter);
-        bool doNotRun = simGetBoolParameter(sim_boolparam_rosinterface_donotrunmainscript);
+        simGetInt32Param(sim_intparam_stop_request_counter, &stopSimulationRequestCounter);
+        bool doNotRun = simGetBoolParam(sim_boolparam_rosinterface_donotrunmainscript);
         if(doNotRun > 0)
         {
             if(previousStopSimulationRequestCounter == -1)
@@ -154,8 +154,7 @@ public:
         if(simGetSimulationState() == sim_simulation_stopped)
             return false;
         int property;
-        int associatedObject;
-        if(simGetScriptProperty(scriptID, &property, &associatedObject) == -1)
+        if (simGetScriptInt32Param(scriptID,sim_scriptintparam_type,&property) != 1)
             return false;
 #if SIM_PROGRAM_FULL_VERSION_NB <= 4010003
         if(property & sim_scripttype_threaded)
@@ -886,7 +885,7 @@ public:
 
         int node_name_length = 0;
         char *node_name = nullptr;
-        node_name = simGetStringNamedParam("ROS2Interface.nodeName", &node_name_length);
+        node_name = simGetNamedStringParam("ROS2Interface.nodeName", &node_name_length);
 
         node = rclcpp::Node::make_shared(node_name && node_name_length ? node_name : "sim_ros2_interface");
 
