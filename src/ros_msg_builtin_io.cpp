@@ -1,5 +1,5 @@
 #include <ros_msg_builtin_io.h>
-#include <simLib.h>
+#include <simLib/simLib.h>
 #include <iostream>
 #include <stubs.h>
 
