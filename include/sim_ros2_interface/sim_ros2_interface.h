@@ -11,13 +11,11 @@
 #include <boost/any.hpp>
 
 #include "config.h"
+#include "plugin.h"
 
 #if image_transport_FOUND
 #include <image_transport/image_transport.hpp>
 #endif
-
-#define PLUGIN_NAME "Ros2Interface"
-#define PLUGIN_VERSION 5
 
 struct ScriptCallback
 {
