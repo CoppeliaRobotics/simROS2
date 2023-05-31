@@ -12,7 +12,7 @@ _NOTE:_ the directory containing all files (i.e. package.xml etc) must be called
 1. Install required packages for simStubsGen: see simStubsGen's [README](https://github.com/CoppeliaRobotics/include/blob/master/simStubsGen/README.md)
 2. Checkout
 ```
-$ git clone --recursive https://github.com/CoppeliaRobotics/simExtROS2.git sim_ros2_interface
+$ git clone --recursive https://github.com/CoppeliaRobotics/simROS2.git sim_ros2_interface
 ```
 3. Edit `meta/interfaces.txt` if you need to include more ROS interfaces. You need to specify the fully qualified interface, e.g. geometry_msgs/msg/Twist rather than Twist.
 4. Compile

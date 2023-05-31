@@ -1,4 +1,4 @@
-local simROS2 ={}
+local simROS2=loadPlugin'simROS2'
 
 --@fun timeFromFloat
 --@arg float t the time as a floating point number
@@ -102,5 +102,7 @@ end
 function simROS2.imageTransportAdvertise(serviceName,serviceType,callback)
     simROS2.__renamed('imageTransportAdvertise','imageTransportCreatePublisher')
 end
+
+(require'simROS2-typecheck')(simROS2)
 
 return simROS2

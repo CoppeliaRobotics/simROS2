@@ -88,15 +88,15 @@ set(SOURCES
     src/ros_msg_builtin_io.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/generated/callbacks.cpp
 )
-coppeliasim_add_plugin(simExtROS2 SOURCES ${SOURCES})
-add_dependencies(simExtROS2 generate_ros_code)
-target_include_directories(simExtROS2 PUBLIC
+coppeliasim_add_plugin(simROS2 SOURCES ${SOURCES})
+add_dependencies(simROS2 generate_ros_code)
+target_include_directories(simROS2 PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
-target_link_libraries(simExtROS2 Boost::boost)
-#ament_target_dependencies(simExtROS2 rclcpp)
+target_link_libraries(simROS2 Boost::boost)
+#ament_target_dependencies(simROS2 rclcpp)
 ament_target_dependencies(
-    simExtROS2
+    simROS2
     "diagnostic_msgs"
     "geometry_msgs"
     "lifecycle_msgs"
@@ -118,13 +118,13 @@ ament_target_dependencies(
 )
 if(image_transport_FOUND)
     ament_target_dependencies(
-        simExtROS2
+        simROS2
         "image_transport"
     )
 endif()
 
 # Causes the visibility macros to use dllexport rather than dllimport,
 # which is appropriate when building the dll but not consuming it.
-target_compile_definitions(simExtROS2 PRIVATE "SIM_ROS2_INTERFACE_BUILDING_LIBRARY")
+target_compile_definitions(simROS2 PRIVATE "SIM_ROS2_INTERFACE_BUILDING_LIBRARY")
 
 ament_package()

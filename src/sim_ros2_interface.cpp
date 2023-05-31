@@ -35,7 +35,7 @@ struct unsupported_type : public std::exception
 class Plugin : public sim::Plugin
 {
 public:
-    void onStart()
+    void onInit()
     {
         if(!initialize())
             throw std::runtime_error("failed to initialize ROS2 node");
@@ -47,12 +47,12 @@ public:
         setBuildDate(BUILD_DATE);
     }
 
-    void onEnd()
+    void onCleanup()
     {
         shutdown();
     }
 
-    void onInstancePass(const sim::InstancePassFlags &flags, bool first)
+    void onInstancePass(const sim::InstancePassFlags &flags)
     {
         rclcpp::spin_some(node);
     }
