@@ -29,16 +29,16 @@
             switch(result.code)
             {
             case rclcpp_action::ResultCode::SUCCEEDED:
-                lua_code = sim_ros2_action_result_code_succeeded;
+                lua_code = simros2_action_result_code_succeeded;
                 break;
             case rclcpp_action::ResultCode::ABORTED:
-                lua_code = sim_ros2_action_result_code_aborted;
+                lua_code = simros2_action_result_code_aborted;
                 break;
             case rclcpp_action::ResultCode::CANCELED:
-                lua_code = sim_ros2_action_result_code_canceled;
+                lua_code = simros2_action_result_code_canceled;
                 break;
             default:
-                lua_code = sim_ros2_action_result_code_unknown;
+                lua_code = simros2_action_result_code_unknown;
                 break;
             }
             ros_action_callback__`interface.result.cpp_type_normalized`(actionClientProxy->resultCallback.scriptId, actionClientProxy->resultCallback.name.c_str(), result.goal_id, lua_code, result.result, actionClientProxy);

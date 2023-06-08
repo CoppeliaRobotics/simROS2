@@ -378,7 +378,7 @@ void ros_action_callback__`interface.result.cpp_type_normalized`(int scriptID, c
 rclcpp_action::GoalResponse ros_action_callback__handle_goal__`interface.goal.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, const `interface.goal.cpp_type` *goal, ActionServerProxy *proxy)
 {
     int stack = -1;
-    int ret = sim_ros2_goal_response_reject;
+    int ret = simros2_goal_response_reject;
     try
     {
         stack = sim::createStack();
@@ -399,11 +399,11 @@ rclcpp_action::GoalResponse ros_action_callback__handle_goal__`interface.goal.cp
     }
     switch(ret)
     {
-    case sim_ros2_goal_response_reject:
+    case simros2_goal_response_reject:
         return rclcpp_action::GoalResponse::REJECT;
-    case sim_ros2_goal_response_accept_and_execute:
+    case simros2_goal_response_accept_and_execute:
         return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
-    case sim_ros2_goal_response_accept_and_defer:
+    case simros2_goal_response_accept_and_defer:
         return rclcpp_action::GoalResponse::ACCEPT_AND_DEFER;
     default:
         sim::addLog(sim_verbosity_scripterrors, "invalid goal response");
@@ -414,7 +414,7 @@ rclcpp_action::GoalResponse ros_action_callback__handle_goal__`interface.goal.cp
 rclcpp_action::CancelResponse ros_action_callback__handle_cancel__`interface.goal.cpp_type_normalized`(int scriptID, const char *callback, const rclcpp_action::GoalUUID &goal_id, const `interface.goal.cpp_type` *goal, ActionServerProxy *proxy)
 {
     int stack = -1;
-    int ret = sim_ros2_cancel_response_reject;
+    int ret = simros2_cancel_response_reject;
     try
     {
         stack = sim::createStack();
@@ -435,9 +435,9 @@ rclcpp_action::CancelResponse ros_action_callback__handle_cancel__`interface.goa
     }
     switch(ret)
     {
-    case sim_ros2_cancel_response_reject:
+    case simros2_cancel_response_reject:
         return rclcpp_action::CancelResponse::REJECT;
-    case sim_ros2_cancel_response_accept:
+    case simros2_cancel_response_accept:
         return rclcpp_action::CancelResponse::ACCEPT;
     default:
         sim::addLog(sim_verbosity_scripterrors, "invalid cancel response");

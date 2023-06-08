@@ -769,9 +769,9 @@ public:
         rcl_clock_type_t t = RCL_ROS_TIME;
         switch(in->clock_type)
         {
-        case sim_ros2_clock_ros:    t = RCL_ROS_TIME;    break;
-        case sim_ros2_clock_system: t = RCL_SYSTEM_TIME; break;
-        case sim_ros2_clock_steady: t = RCL_STEADY_TIME; break;
+        case simros2_clock_ros:    t = RCL_ROS_TIME;    break;
+        case simros2_clock_system: t = RCL_SYSTEM_TIME; break;
+        case simros2_clock_steady: t = RCL_STEADY_TIME; break;
         }
         rclcpp::Clock ros_clock(t);
         builtin_interfaces::msg::Time ros_now = ros_clock.now();
@@ -941,5 +941,5 @@ private:
     sim::Handles<ActionServerProxy*> actionServerHandles;
 };
 
-SIM_PLUGIN(PLUGIN_NAME, PLUGIN_VERSION, Plugin)
+SIM_PLUGIN(Plugin)
 #include "stubsPlusPlus.cpp"

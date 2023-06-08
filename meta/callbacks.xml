@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <?xml-stylesheet type="text/xsl" href="callbacks.xsl"?>
 
-<plugin name="ROS2" author="federico.ferri.it@gmail.com">
+<plugin name="simROS2" author="federico.ferri.it@gmail.com">
     <description>This plugin provides an interface with the ROS2 API</description>
     <command name="createSubscription">
         <description>Create a subscription to a topic.</description>
@@ -798,12 +798,12 @@
             <category name="time" />
         </categories>
         <params>
-            <param name="clock_type" type="int" default="sim_ros2_clock_ros">
+            <param name="clock_type" type="int" default="simros2_clock_ros">
                 <description>type of clock. see <enum-ref name="clock_type" />.</description>
             </param>
         </params>
         <return>
-            <param name="time" type="sim_ros2_time">
+            <param name="time" type="simros2_time">
                 <description>ROS time</description>
             </param>
         </return>
@@ -1088,7 +1088,7 @@
         <return>
         </return>
     </script-function>
-    <struct name="sim_ros2_time">
+    <struct name="simros2_time">
         <description>Time data structure, equivalent of builtin_interfaces/msg/Time</description>
         <param name="sec" type="int">
             <description>seconds</description>
