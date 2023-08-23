@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16.3)
 project(sim_ros2_interface)
 
 # Default to C99
@@ -93,7 +93,7 @@ add_dependencies(simROS2 generate_ros_code)
 target_include_directories(simROS2 PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
-target_link_libraries(simROS2 Boost::boost)
+target_link_libraries(simROS2 PRIVATE Boost::boost)
 #ament_target_dependencies(simROS2 rclcpp)
 ament_target_dependencies(
     simROS2
