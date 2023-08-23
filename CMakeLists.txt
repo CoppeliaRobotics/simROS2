@@ -97,29 +97,31 @@ target_link_libraries(simROS2 PRIVATE Boost::boost)
 #ament_target_dependencies(simROS2 rclcpp)
 ament_target_dependencies(
     simROS2
-    "diagnostic_msgs"
-    "geometry_msgs"
-    "lifecycle_msgs"
-    "map_msgs"
-    "nav_msgs"
-    "pendulum_msgs"
-    "rosgraph_msgs"
-    "sensor_msgs"
-    "shape_msgs"
-    "std_msgs"
-    "stereo_msgs"
-    "tf2_geometry_msgs"
-    "tf2_msgs"
-    "trajectory_msgs"
-    "unique_identifier_msgs"
-    "visualization_msgs"
-    "std_srvs"
-    "example_interfaces"
+    PUBLIC
+    diagnostic_msgs
+    geometry_msgs
+    lifecycle_msgs
+    map_msgs
+    nav_msgs
+    pendulum_msgs
+    rosgraph_msgs
+    sensor_msgs
+    shape_msgs
+    std_msgs
+    stereo_msgs
+    tf2_geometry_msgs
+    tf2_msgs
+    trajectory_msgs
+    unique_identifier_msgs
+    visualization_msgs
+    std_srvs
+    example_interfaces
 )
 if(image_transport_FOUND)
     ament_target_dependencies(
         simROS2
-        "image_transport"
+        PUBLIC
+        image_transport
     )
 endif()
 
