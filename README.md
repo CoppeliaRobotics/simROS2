@@ -3,7 +3,6 @@
 Supported ROS2 versions:
 
  - Humble Hawksbill
- - Foxy Fitzroy (in the 'foxy' branch)
 
 ### Compiling
 
@@ -19,7 +18,7 @@ $ git checkout coppeliasim-v4.5.0-rev0
 
 NOTE: replace `coppeliasim-v4.5.0-rev0` with the actual CoppeliaSim version you have.
 
-3. Edit `meta/interfaces.txt` if you need to include more ROS interfaces. You need to specify the fully qualified interface, e.g. geometry_msgs/msg/Twist rather than Twist.
+3. Edit `meta/interfaces.txt` if you need to include more ROS interfaces. You need to specify the fully qualified interface, e.g. geometry_msgs/msg/Twist rather than Twist. If an interface uses non-primitive types (i.e. other interfaces), then those should be added as well.
 4. Compile
 ```
 $ colcon build --symlink-install
@@ -32,7 +31,7 @@ VERBOSE=1 MAKEFLAGS=-j1 colcon build --symlink-install --event-handlers console_
 
 Add `--cmake-args -DCMAKE_BUILD_TYPE=Debug` if you are encountering a runtime error (e.g. crash, unexpected behavior, etc...).
 
-Note: *gcc* is known to fail compile the plugin when a large number of interfaces is compiled in. Use *clang* in that case, i.e.:
+Note: *gcc* can fail compile the plugin when a large number of interfaces is compiled in. Use *clang* in that case, i.e.:
 
  ```
  sudo apt install clang
