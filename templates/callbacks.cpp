@@ -252,7 +252,7 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
                     throw sim::exception(msg);
                 }
 
-                simReleaseBuffer(str);
+                sim::releaseBuffer(str);
             }
             else
             {
@@ -289,10 +289,11 @@ void ros_callback__`interface.cpp_type_normalized`(const `interface.cpp_type`::S
     catch(std::exception &ex)
     {
         if(stack != -1)
-            simReleaseStack(stack); // don't throw
+            sim::releaseStack(stack); // don't throw
         std::string msg = "ros_callback__`interface.cpp_type_normalized`: ";
+        msg += proxy->topicCallback.name + ": ";
         msg += ex.what();
-        simSetLastError(proxy->topicCallback.name.c_str(), msg.c_str());
+        sim::setLastError(msg);
     }
 }
 
@@ -318,10 +319,11 @@ bool ros_srv_callback__`interface.cpp_type_normalized`(const std::shared_ptr<rmw
     catch(std::exception &ex)
     {
         if(stack != -1)
-            simReleaseStack(stack); // don't throw
+            sim::releaseStack(stack); // don't throw
         std::string msg = "ros_srv_callback__`interface.cpp_type_normalized`: ";
+        msg += proxy->serviceCallback.name + ": ";
         msg += ex.what();
-        simSetLastError(proxy->serviceCallback.name.c_str(), msg.c_str());
+        sim::setLastError(msg);
         return false;
     }
 }
@@ -345,10 +347,11 @@ void ros_action_callback__`interface.feedback.cpp_type_normalized`(int scriptID,
     catch(std::exception &ex)
     {
         if(stack != -1)
-            simReleaseStack(stack); // don't throw
+            sim::releaseStack(stack); // don't throw
         std::string msg = "ros_action_callback__`interface.feedback.cpp_type_normalized`: ";
+        msg += std::string(callback) + ": ";
         msg += ex.what();
-        simSetLastError(callback, msg.c_str());
+        sim::setLastError(msg);
     }
 }
 
@@ -368,10 +371,11 @@ void ros_action_callback__`interface.result.cpp_type_normalized`(int scriptID, c
     catch(std::exception &ex)
     {
         if(stack != -1)
-            simReleaseStack(stack); // don't throw
+            sim::releaseStack(stack); // don't throw
         std::string msg = "ros_action_callback__`interface.result.cpp_type_normalized`: ";
+        msg += std::string(callback) + ": ";
         msg += ex.what();
-        simSetLastError(callback, msg.c_str());
+        sim::setLastError(msg);
     }
 }
 
@@ -392,10 +396,11 @@ rclcpp_action::GoalResponse ros_action_callback__handle_goal__`interface.goal.cp
     catch(std::exception &ex)
     {
         if(stack != -1)
-            simReleaseStack(stack); // don't throw
+            sim::releaseStack(stack); // don't throw
         std::string msg = "ros_action_callback__handle_goal__`interface.goal.cpp_type_normalized`: ";
+        msg += std::string(callback) + ": ";
         msg += ex.what();
-        simSetLastError(callback, msg.c_str());
+        sim::setLastError(msg);
     }
     switch(ret)
     {
@@ -428,10 +433,11 @@ rclcpp_action::CancelResponse ros_action_callback__handle_cancel__`interface.goa
     catch(std::exception &ex)
     {
         if(stack != -1)
-            simReleaseStack(stack); // don't throw
+            sim::releaseStack(stack); // don't throw
         std::string msg = "ros_action_callback__handle_cancel__`interface.goal.cpp_type_normalized`: ";
+        msg += std::string(callback) + ": ";
         msg += ex.what();
-        simSetLastError(callback, msg.c_str());
+        sim::setLastError(msg);
     }
     switch(ret)
     {
@@ -460,10 +466,11 @@ void ros_action_callback__handle_accepted__`interface.goal.cpp_type_normalized`(
     catch(std::exception &ex)
     {
         if(stack != -1)
-            simReleaseStack(stack); // don't throw
+            sim::releaseStack(stack); // don't throw
         std::string msg = "ros_action_callback__handle_accepted__`interface.goal.cpp_type_normalized`: ";
+        msg += std::string(callback) + ": ";
         msg += ex.what();
-        simSetLastError(callback, msg.c_str());
+        sim::setLastError(msg);
     }
 }
 

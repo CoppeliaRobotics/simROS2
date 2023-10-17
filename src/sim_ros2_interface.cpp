@@ -59,10 +59,8 @@ public:
 
     void onMainScriptAboutToBeCalled(int &out)
     {
-
-        int stopSimulationRequestCounter;
-        simGetInt32Param(sim_intparam_stop_request_counter, &stopSimulationRequestCounter);
-        bool doNotRun = simGetBoolParam(sim_boolparam_rosinterface_donotrunmainscript);
+        int stopSimulationRequestCounter = sim::getInt32Param(sim_intparam_stop_request_counter);
+        bool doNotRun = sim::getBoolParam(sim_boolparam_rosinterface_donotrunmainscript);
         if(doNotRun > 0)
         {
             if(previousStopSimulationRequestCounter == -1)
@@ -151,11 +149,9 @@ public:
 
     bool shouldProxyBeDestroyedAfterSimulationStop(int scriptID)
     {
-        if(simGetSimulationState() == sim_simulation_stopped)
+        if(sim::getSimulationState() == sim_simulation_stopped)
             return false;
-        int property;
-        if(simGetScriptInt32Param(scriptID,sim_scriptintparam_type,&property) != 1)
-            return false;
+        int property = sim::getScriptInt32Param(scriptID, sim_scriptintparam_type);
 #if SIM_PROGRAM_FULL_VERSION_NB <= 4010003
         if(property & sim_scripttype_threaded)
             property -= sim_scripttype_threaded;
@@ -280,7 +276,7 @@ public:
     {
         PublisherProxy *publisherProxy = publisherHandles.get(in->publisherHandle);
 
-        simMoveStackItemToTop(in->_.stackID, 0);
+        sim::moveStackItemToTop(in->_.stackID, 0);
 
         if(0) {}
 #include <pub_publish.cpp>
@@ -343,7 +339,7 @@ public:
     {
         ClientProxy *clientProxy = clientHandles.get(in->clientHandle);
 
-        simMoveStackItemToTop(in->_.stackID, 0);
+        sim::moveStackItemToTop(in->_.stackID, 0);
 
         if(0) {}
 #include <cli_call.cpp>
@@ -439,7 +435,7 @@ public:
     {
         ActionClientProxy *actionClientProxy = actionClientHandles.get(in->actionClientHandle);
 
-        simMoveStackItemToTop(in->_.stackID, 0);
+        sim::moveStackItemToTop(in->_.stackID, 0);
 
         if(0) {}
 #include <actcli_sendGoal.cpp>
@@ -661,7 +657,7 @@ public:
             sim::moveStackItemToTop(in->_.stackID, oldsz - 1);
             int j;
             read__int32(in->_.stackID, &j);
-            simMoveStackItemToTop(in->_.stackID, oldsz - 1);
+            sim::moveStackItemToTop(in->_.stackID, oldsz - 1);
             geometry_msgs::msg::TransformStamped t;
             read__geometry_msgs__msg__TransformStamped(in->_.stackID, &t);
             v.push_back(t);
@@ -883,13 +879,9 @@ public:
     {
         rclcpp::init(0, nullptr);
 
-        int node_name_length = 0;
-        char *node_name = nullptr;
-        node_name = simGetNamedStringParam("ROS2Interface.nodeName", &node_name_length);
+        auto node_name = sim::getNamedStringParam("ROS2Interface.nodeName");
 
-        node = rclcpp::Node::make_shared(node_name && node_name_length ? node_name : "sim_ros2_interface");
-
-        if(node_name) simReleaseBuffer(node_name);
+        node = rclcpp::Node::make_shared(node_name.value_or("sim_ros2_interface"));
 
         tfbr = new tf2_ros::TransformBroadcaster(node);
 #if image_transport_FOUND
