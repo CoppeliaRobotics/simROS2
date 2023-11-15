@@ -103,36 +103,4 @@ end
 
 (require 'simROS2-typecheck')(simROS2)
 
--- accept pure function where callback string is expected:
-
-simROS2.createSubscription = wrap(simROS2.createSubscription, function(origFunc)
-    return function(topicName, topicType, topicCallback, ...)
-        return origFunc(topicName, topicType, reify(topicCallback), ...)
-    end
-end)
-
-simROS2.createService = wrap(simROS2.createService, function(origFunc)
-    return function(serviceName, serviceType, serviceCallback)
-        return origFunc(serviceName, serviceType, reify(serviceCallback))
-    end
-end)
-
-simROS2.createActionClient = wrap(simROS2.createActionClient, function(origFunc)
-    return function(actionName, actionType, goalResponseCallback, feedbackCallback, resultCallback)
-        return origFunc(actionName, actionType, reify(goalResponseCallback), reify(feedbackCallback), reify(resultCallback))
-    end
-end)
-
-simROS2.createActionServer = wrap(simROS2.createActionServer, function(origFunc)
-    return function(actionName, actionType, handleGoalCallback, handleCancelCallback, handleAcceptedCallback)
-        return origFunc(actionName, actionType, reify(handleGoalCallback), reify(handleCancelCallback), reify(handleAcceptedCallback))
-    end
-end)
-
-simROS2.imageTransportCreateSubscription = wrap(simROS2.imageTransportCreateSubscription, function(origFunc)
-    return function(topicName, topicCallback, ...)
-        return origFunc(topicName, reify(topicCallback), ...)
-    end
-end)
-
 return simROS2
