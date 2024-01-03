@@ -4,7 +4,7 @@
   <name>sim_ros2_interface</name>
   <version>0.0.0</version>
   <description>CoppeliaSim ROS2 interface plugin</description>
-  <maintainer email="marc@coppeliarobotics.com">Marc</maintainer>
+  <maintainer email="info@coppeliarobotics.com">Coppelia</maintainer>
   <license>BSD2</license>
 
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
