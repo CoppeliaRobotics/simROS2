@@ -198,6 +198,72 @@ public:
         }
     }
 
+    rclcpp::QoS get_qos(const std::optional<simros2_qos> &opt_qos)
+    {
+        if(!opt_qos.has_value())
+            return rclcpp::QoS {10};
+
+        const simros2_qos &qos = opt_qos.value();
+        rmw_qos_profile_t profile;
+        switch(qos.history)
+        {
+        case simros2_qos_history_policy_system_default:
+            profile.history = RMW_QOS_POLICY_HISTORY_SYSTEM_DEFAULT;
+            break;
+        case simros2_qos_history_policy_keep_last:
+            profile.history = RMW_QOS_POLICY_HISTORY_KEEP_LAST;
+            break;
+        case simros2_qos_history_policy_keep_all:
+            profile.history = RMW_QOS_POLICY_HISTORY_KEEP_ALL;
+            break;
+        }
+        profile.depth = qos.depth;
+        switch(qos.reliability)
+        {
+        case simros2_qos_reliability_policy_system_default:
+            profile.reliability = RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT;
+            break;
+        case simros2_qos_reliability_policy_reliable:
+            profile.reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;
+            break;
+        case simros2_qos_reliability_policy_best_effort:
+            profile.reliability = RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT;
+            break;
+        }
+        switch(qos.durability)
+        {
+        case simros2_qos_durability_policy_system_default:
+            profile.durability = RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT;
+            break;
+        case simros2_qos_durability_policy_transient_local:
+            profile.durability = RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL;
+            break;
+        case simros2_qos_durability_policy_volatile:
+            profile.durability = RMW_QOS_POLICY_DURABILITY_VOLATILE;
+            break;
+        }
+        profile.deadline.sec = qos.deadline.sec;
+        profile.deadline.nsec = qos.deadline.nanosec;
+        profile.lifespan.sec = qos.lifespan.sec;
+        profile.lifespan.nsec = qos.lifespan.nanosec;
+        switch(qos.liveliness)
+        {
+        case simros2_qos_liveliness_policy_system_default:
+            profile.liveliness = RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT;
+            break;
+        case simros2_qos_liveliness_policy_automatic:
+            profile.liveliness = RMW_QOS_POLICY_LIVELINESS_AUTOMATIC;
+            break;
+        case simros2_qos_liveliness_policy_manual_by_topic:
+            profile.liveliness = RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC;
+            break;
+        }
+        profile.liveliness_lease_duration.sec = qos.liveliness_lease_duration.sec;
+        profile.liveliness_lease_duration.nsec = qos.liveliness_lease_duration.nanosec;
+        profile.avoid_ros_namespace_conventions = qos.avoid_ros_namespace_conventions;
+        return rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(profile), profile);
+    }
+
     void createSubscription(createSubscription_in *in, createSubscription_out *out)
     {
         SubscriptionProxy *subscriptionProxy = new SubscriptionProxy();

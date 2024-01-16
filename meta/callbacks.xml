@@ -21,8 +21,11 @@
             <param name="topicCallback" type="func">
                 <description>callback function, which will be called with a single argument of type table containing the message payload, e.g.: {linear={x=1.5, y=0.0, z=0.0}, angular={x=0.0, y=0.0, z=-2.3}}</description>
             </param>
-            <param name="queueSize" type="int" default="1">
-                <description>(optional) queue size</description>
+            <param name="unused" type="int" default="0">
+                <description>unused, set to zero</description>
+            </param>
+            <param name="qos" type="simros2_qos" nullable="true" default="nil">
+                <description>QoS settings, see <struct-ref name="simros2_qos" /></description>
             </param>
         </params>
         <return>
@@ -78,11 +81,14 @@
             <param name="topicType" type="string">
                 <description>topic type, e.g.: 'geometry_msgs/msg/Twist'</description>
             </param>
-            <param name="queueSize" type="int" default="1">
-                <description>(optional) queue size</description>
+            <param name="unused" type="int" default="0">
+                <description>unused, set to zero</description>
             </param>
-            <param name="latch" type="bool" default="false">
-                <description>(optional) latch topic</description>
+            <param name="unused2" type="bool" default="false">
+                <description>unused, set to false</description>
+            </param>
+            <param name="qos" type="simros2_qos" nullable="true" default="nil">
+                <description>QoS settings, see <struct-ref name="simros2_qos" /></description>
             </param>
         </params>
         <return>
@@ -1117,4 +1123,36 @@
         <item name="reject" />
         <item name="accept" />
     </enum>
+    <enum name="qos_history_policy" item-prefix="qos_history_policy_" base="12300">
+        <item name="system_default" />
+        <item name="keep_last" />
+        <item name="keep_all" />
+    </enum>
+    <enum name="qos_reliability_policy" item-prefix="qos_reliability_policy_" base="12400">
+        <item name="system_default" />
+        <item name="reliable" />
+        <item name="best_effort" />
+    </enum>
+    <enum name="qos_durability_policy" item-prefix="qos_durability_policy_" base="12500">
+        <item name="system_default" />
+        <item name="transient_local" />
+        <item name="volatile" />
+    </enum>
+    <enum name="qos_liveliness_policy" item-prefix="qos_liveliness_policy_" base="12600">
+        <item name="system_default" />
+        <item name="automatic" />
+        <item name="manual_by_topic" />
+    </enum>
+    <struct name="simros2_qos">
+        <description>QoS data structure</description>
+        <param name="history" type="int" default="simros2_qos_history_policy_system_default"></param>
+        <param name="depth" type="int" default="10"></param>
+        <param name="reliability" type="int" default="simros2_qos_reliability_policy_system_default"></param>
+        <param name="durability" type="int" default="simros2_qos_durability_policy_system_default"></param>
+        <param name="deadline" type="simros2_time"></param>
+        <param name="lifespan" type="simros2_time"></param>
+        <param name="liveliness" type="int" default="simros2_qos_liveliness_policy_system_default"></param>
+        <param name="liveliness_lease_duration" type="simros2_time"></param>
+        <param name="avoid_ros_namespace_conventions" type="bool" default="false"></param>
+    </struct>
 </plugin>
