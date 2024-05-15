@@ -77,9 +77,9 @@ public:
         previousStopSimulationRequestCounter = -1;
     }
 
-    void onScriptStateDestroyed(int scriptID)
+    void onScriptStateAboutToBeDestroyed(int scriptHandle)
     {
-        for(auto subscriptionProxy : subscriptionHandles.find(scriptID))
+        for(auto subscriptionProxy : subscriptionHandles.find(scriptHandle))
         {
             if(!subscriptionProxy->subscription.empty())
             {
@@ -98,7 +98,7 @@ public:
             }
 #endif
         }
-        for(auto publisherProxy : publisherHandles.find(scriptID))
+        for(auto publisherProxy : publisherHandles.find(scriptHandle))
         {
             if(!publisherProxy->publisher.empty())
             {
@@ -117,28 +117,28 @@ public:
             }
 #endif
         }
-        for(auto clientProxy : clientHandles.find(scriptID))
+        for(auto clientProxy : clientHandles.find(scriptHandle))
         {
             shutdownClient_in in1;
             in1.clientHandle = clientProxy->handle;
             shutdownClient_out out1;
             shutdownClient(&in1, &out1);
         }
-        for(auto serviceProxy : serviceHandles.find(scriptID))
+        for(auto serviceProxy : serviceHandles.find(scriptHandle))
         {
             shutdownService_in in1;
             in1.serviceHandle = serviceProxy->handle;
             shutdownService_out out1;
             shutdownService(&in1, &out1);
         }
-        for(auto actionClientProxy : actionClientHandles.find(scriptID))
+        for(auto actionClientProxy : actionClientHandles.find(scriptHandle))
         {
             shutdownActionClient_in in1;
             in1.actionClientHandle = actionClientProxy->handle;
             shutdownActionClient_out out1;
             shutdownActionClient(&in1, &out1);
         }
-        for(auto actionServerProxy : actionServerHandles.find(scriptID))
+        for(auto actionServerProxy : actionServerHandles.find(scriptHandle))
         {
             shutdownActionServer_in in1;
             in1.actionServerHandle = actionServerProxy->handle;
@@ -147,11 +147,11 @@ public:
         }
     }
 
-    bool shouldProxyBeDestroyedAfterSimulationStop(int scriptID)
+    bool shouldProxyBeDestroyedAfterSimulationStop(int scriptHandle)
     {
         if(sim::getSimulationState() == sim_simulation_stopped)
             return false;
-        int property = sim::getScriptInt32Param(scriptID, sim_scriptintparam_type);
+        int property = sim::getScriptInt32Param(scriptHandle, sim_scriptintparam_type);
 #if SIM_PROGRAM_FULL_VERSION_NB <= 4010003
         if(property & sim_scripttype_threaded)
             property -= sim_scripttype_threaded;
