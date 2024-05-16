@@ -77,7 +77,7 @@ public:
         previousStopSimulationRequestCounter = -1;
     }
 
-    void onScriptStateAboutToBeDestroyed(int scriptHandle)
+    void onScriptStateAboutToBeDestroyed(int scriptHandle, int scriptUid)
     {
         for(auto subscriptionProxy : subscriptionHandles.find(scriptHandle))
         {
