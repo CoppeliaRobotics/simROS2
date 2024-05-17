@@ -1,7 +1,7 @@
 --@mode child
 
 function simulationCount()
-    local t=sim.unpackInt32Table(sim.readCustomDataBlock(sim_handle_app,'@tmpsimulationCount'))
+    local t=sim.unpackInt32Table(sim.readCustomBufferData(sim_handle_app,'@tmpsimulationCount'))
     return t[1]
 end
 
