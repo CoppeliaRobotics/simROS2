@@ -159,7 +159,7 @@ public:
         if(property & sim_scripttype_threaded_old)
             property -= sim_scripttype_threaded_old;
 #endif
-        if(property == sim_scripttype_addonscript || property == sim_scripttype_addonfunction || property == sim_scripttype_customizationscript)
+        if(property == sim_scripttype_addon || property == sim_scripttype_addonfunction || property == sim_scripttype_customization)
             return false;
         return true;
     }
