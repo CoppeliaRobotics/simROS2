@@ -497,6 +497,11 @@ public:
         actionClientProxy->wr_opt.uint8array_as_string = true;
     }
 
+    void spinSome(spinSome_in *in, spinSome_out *out)
+    {
+        rclcpp::spin_some(node);
+    }    
+
     void sendGoal(sendGoal_in *in, sendGoal_out *out)
     {
         ActionClientProxy *actionClientProxy = actionClientHandles.get(in->actionClientHandle);

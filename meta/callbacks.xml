@@ -372,6 +372,19 @@
         <return>
         </return>
     </command>
+    <command name="spinSome">
+        <description>Calls spin_some(node).</description>
+        <categories>
+            <category name="action" />
+        </categories>
+        <see-also>
+            <!--command name="..." /-->
+        </see-also>
+        <params>
+        </params>
+        <return>
+        </return>
+    </command>
     <command name="sendGoal">
         <description>Send a goal using the specified action client.</description>
         <categories>
