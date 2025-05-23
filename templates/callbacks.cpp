@@ -128,7 +128,7 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
                         if(sz < 0)
                             throw sim::exception("expected array");
                         if(sim::getStackTableInfo(stack, 2) != 1)
-                            throw sim::exception("fast_write_type reader exception #1");
+                            throw sim::exception("expected an array of numbers only (fast_write_type #1)");
 #py if field.type.array_size:
                         // field has fixed size -> no need to reserve space into vector
 #py else:
@@ -177,7 +177,7 @@ void read__`subinterface.cpp_type_normalized`(int stack, `subinterface.cpp_type`
                             if(sz < 0)
                                 throw sim::exception("expected uint8 array");
                             if(sim::getStackTableInfo(stack, 2) != 1)
-                                throw sim::exception("fast_write_type uint8[] reader exception #1");
+                                throw sim::exception("expected an array of numbers only (fast_write_type uint8[] #2)");
 #py if field.type.array_size:
                             // field has fixed size -> no need to reserve space into vector
 #py else:
