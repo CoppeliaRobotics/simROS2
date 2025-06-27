@@ -98,7 +98,4 @@ struct ActionServerProxy : Proxy
     ROS2WriteOptions wr_opt;
 };
 
-#include <stubs.h>
-#include <callbacks.h>
-
 #endif // SIM_ROS2_INTERFACE_H_INCLUDED

@@ -1,6 +1,8 @@
-#include <sim_ros2_interface.h>
 #include <simPlusPlus/Plugin.h>
 #include <simPlusPlus/Handles.h>
+#include <stubs.h>
+#include <callbacks.h>
+#include <sim_ros2_interface.h>
 
 #include <cstdlib>
 #include <functional>
