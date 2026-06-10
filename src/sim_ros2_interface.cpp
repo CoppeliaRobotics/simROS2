@@ -44,9 +44,6 @@ public:
 
         if(!registerScriptStuff())
             throw std::runtime_error("failed to register script stuff");
-
-        setExtVersion("ROS2 Interface Plugin");
-        setBuildDate(BUILD_DATE);
     }
 
     void onCleanup()
@@ -502,7 +499,7 @@ public:
     void spinSome(spinSome_in *in, spinSome_out *out)
     {
         rclcpp::spin_some(node);
-    }    
+    }
 
     void sendGoal(sendGoal_in *in, sendGoal_out *out)
     {
